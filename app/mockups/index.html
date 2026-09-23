@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mockups · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    body { background: var(--canvas); }
+    .wrap-index { max-width: 1200px; margin: 0 auto; padding: 24px 32px 96px; }
+    .hero { position: relative; overflow: hidden; isolation: isolate; padding: 72px 0 56px; }
+    .hero h1 { font-family: var(--font-display); font-weight: 300; font-size: 64px; line-height: 1.05; letter-spacing: -1.92px; color: var(--ink); max-width: 760px; }
+    .hero p { margin-top: 20px; max-width: 620px; font-size: 16px; }
+    .group { margin-top: 56px; }
+    .group h2 { font-family: var(--font-display); font-weight: 300; font-size: 28px; color: var(--ink); margin-bottom: 4px; }
+    .group > p { margin-bottom: 16px; color: var(--muted); }
+    .journey { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 28px; }
+    .journey a { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 14px; border-radius: 9999px; border: 1px solid var(--hairline-strong); background: var(--card); font-size: 14px; font-weight: 500; color: var(--ink); }
+    .journey a:hover { border-color: var(--ink); }
+    .journey .arrow { color: var(--muted-soft); }
+    @media (max-width: 639px) { .hero h1 { font-size: 40px; } .wrap-index { padding: 16px; } }
+  </style>
+</head>
+<body>
+<div class="wrap-index">
+  <header class="hero">
+    <span class="orb orb-mint" style="width:420px;height:420px;right:6%;top:-120px"></span>
+    <span class="orb orb-peach" style="width:340px;height:340px;right:24%;top:60px"></span>
+    <span class="orb orb-lavender" style="width:360px;height:360px;right:-40px;top:70px"></span>
+    <div class="row-sm"><span class="brand-orb"></span><span class="eyebrow">Voice Agent · Static mockups</span></div>
+    <h1 style="margin-top:20px">Every screen of the platform, in one place.</h1>
+    <p>Clickable, build-free HTML mockups derived from <span class="mono">api/prisma/schema.prisma</span>, <span class="mono">docs/Product_Specification.md</span> and <span class="mono">DESIGN.MD</span>. Open any page directly — navigation, tabs, modals and the agent wizard all work. Company: Aegean Homes · date: Tue 23 Sep 2026.</p>
+    <div class="journey" aria-label="First-version journey (spec §45)">
+      <a href="signup.html">Register</a><span class="arrow">→</span>
+      <a href="agent-new.html">Create agent</a><span class="arrow">→</span>
+      <a href="integration-new.html">Connect CRM</a><span class="arrow">→</span>
+      <a href="knowledge-new.html">Add knowledge</a><span class="arrow">→</span>
+      <a href="phone-numbers.html">Assign number</a><span class="arrow">→</span>
+      <a href="agent-detail.html">Test &amp; activate</a><span class="arrow">→</span>
+      <a href="call-detail.html">Review the call</a>
+    </div>
+  </header>
+
+  <section class="group">
+    <h2>Account &amp; access</h2><p>Spec §2 — sign up, log in, verify email, reset password, accept an invite. No app shell.</p>
+    <div class="gallery-grid">
+      <a class="gallery-card" href="login.html"><b>Log in</b><span>Email and password, with a validation-error example.</span><span class="spec">§2</span></a>
+      <a class="gallery-card" href="signup.html"><b>Sign up</b><span>Name, email, password, company — optional phone and website.</span><span class="spec">§2</span></a>
+      <a class="gallery-card" href="verify-email.html"><b>Verify email</b><span>Check-your-inbox and verified states.</span><span class="spec">§2</span></a>
+      <a class="gallery-card" href="forgot-password.html"><b>Forgot password</b><span>Request a reset link.</span><span class="spec">§2</span></a>
+      <a class="gallery-card" href="reset-password.html"><b>Reset password</b><span>Choose a new password.</span><span class="spec">§2</span></a>
+      <a class="gallery-card" href="invite-accept.html"><b>Accept invitation</b><span>Join a company as Admin, Member or Viewer.</span><span class="spec">§3</span></a>
+    </div>
+  </section>
+
+  <section class="group">
+    <h2>Overview</h2><p>Dashboard and the things that need attention.</p>
+    <div class="gallery-grid">
+      <a class="gallery-card" href="dashboard.html"><b>Dashboard</b><span>Today's calls, outcomes, cost, active agents, failures and follow-ups.</span><span class="spec">§4</span></a>
+      <a class="gallery-card" href="alerts.html"><b>Alerts</b><span>Failed CRM updates, connections, calls and uploads — never silent.</span><span class="spec">§33–§34</span></a>
+      <a class="gallery-card" href="analytics.html"><b>Analytics</b><span>Company totals, per-agent breakdown, cost split, time periods.</span><span class="spec">§23–§24</span></a>
+    </div>
+  </section>
+
+  <section class="group">
+    <h2>Voice agents</h2><p>List, guided seven-step creation, overview and full configuration.</p>
+    <div class="gallery-grid">
+      <a class="gallery-card" href="agents.html"><b>All agents</b><span>Cards or table, status filter, templates by use case.</span><span class="spec">§5, §42</span></a>
+      <a class="gallery-card" href="agent-new.html"><b>Create agent (wizard)</b><span>Basics → Behavior → Knowledge → CRM → Phone → Test → Activate.</span><span class="spec">§41, §6–§10, §14</span></a>
+      <a class="gallery-card" href="agent-detail.html"><b>Agent overview</b><span>Goal, knowledge, CRM, phone, voice, results and test call.</span><span class="spec">§35–§36</span></a>
+      <a class="gallery-card" href="agent-edit.html"><b>Edit agent</b><span>Instructions, goals, questions, outcomes, transfer, CRM tools, retries, automations, access.</span><span class="spec">§5–§10, §13–§15, §28–§29</span></a>
+    </div>
+  </section>
+
+  <section class="group">
+    <h2>Calls</h2><p>Every call, its detail, and the calls still to come.</p>
+    <div class="gallery-grid">
+      <a class="gallery-card" href="calls.html"><b>All calls</b><span>Filterable call history with status, outcome and cost.</span><span class="spec">§21</span></a>
+      <a class="gallery-card" href="call-detail.html"><b>Call detail</b><span>Transcript, summary, gathered data, recording, CRM actions, cost, event log.</span><span class="spec">§22–§25, §33, §44</span></a>
+      <a class="gallery-card" href="scheduled-calls.html"><b>Scheduled calls</b><span>Follow-ups and retries, calling-hours aware.</span><span class="spec">§26–§28</span></a>
+    </div>
+  </section>
+
+  <section class="group">
+    <h2>Knowledge</h2><p>Typed text and uploaded files, versioned.</p>
+    <div class="gallery-grid">
+      <a class="gallery-card" href="knowledge.html"><b>Knowledge sources</b><span>Status, owners, versions and which agents use each source.</span><span class="spec">§16–§17</span></a>
+      <a class="gallery-card" href="knowledge-new.html"><b>Add knowledge</b><span>Type it, upload a file, or see upcoming connections.</span><span class="spec">§16, §19</span></a>
+      <a class="gallery-card" href="knowledge-detail.html"><b>Source detail &amp; versions</b><span>View, restore, refresh and disable a source.</span><span class="spec">§18</span></a>
+    </div>
+  </section>
+
+  <section class="group">
+    <h2>Integrations &amp; phone</h2><p>CRMs, other apps and numbers.</p>
+    <div class="gallery-grid">
+      <a class="gallery-card" href="integrations.html"><b>Integrations</b><span>Connected apps and the catalogue of what's available.</span><span class="spec">§11, §19–§20</span></a>
+      <a class="gallery-card" href="integration-new.html"><b>Connect a CRM</b><span>OAuth CRMs or a custom CRM with five auth types.</span><span class="spec">§11–§12, §39</span></a>
+      <a class="gallery-card" href="integration-detail.html"><b>Connection detail</b><span>Error state, tools, field mapping, agents and contacts.</span><span class="spec">§11, §13–§14, §38</span></a>
+      <a class="gallery-card" href="phone-numbers.html"><b>Phone numbers</b><span>Provisioned or bring-your-own, assigned to agents.</span><span class="spec">§30</span></a>
+    </div>
+  </section>
+
+  <section class="group">
+    <h2>Settings</h2><p>Organization, team, security, account and the audit trail.</p>
+    <div class="gallery-grid">
+      <a class="gallery-card" href="settings-organization.html"><b>Organization</b><span>Company details, calling hours, recording retention, data deletion.</span><span class="spec">§25, §27, §39</span></a>
+      <a class="gallery-card" href="settings-team.html"><b>Team</b><span>Members, roles, invitations and per-agent access.</span><span class="spec">§3</span></a>
+      <a class="gallery-card" href="settings-security.html"><b>Security</b><span>Password, sessions across devices, credential handling.</span><span class="spec">§2, §39</span></a>
+      <a class="gallery-card" href="settings-account.html"><b>Account</b><span>Profile, timezone, language.</span><span class="spec">§2</span></a>
+      <a class="gallery-card" href="activity-log.html"><b>Activity log</b><span>Who did what, and when.</span><span class="spec">§32</span></a>
+    </div>
+  </section>
+
+  <section class="group">
+    <h2>Notes</h2>
+    <div class="grid-2">
+      <div class="card card-body stack-sm">
+        <div class="title">Scope</div>
+        <p class="small">Campaigns (spec §37) are Version 2 and deliberately have no page — the agent overview shows a disabled "Start campaign" button. The text simulator (§35) is shown as "coming later". The voice-calling vendor is never named or configurable anywhere in the UI (§31).</p>
+      </div>
+      <div class="card card-body stack-sm">
+        <div class="title">Design source</div>
+        <p class="small">Tokens come from the root <span class="mono">DESIGN.MD</span> (quiet editorial: off-white canvas, ink pill CTAs, EB Garamond standing in for Waldenburg, pastel orbs as atmosphere only). Note <span class="mono">app/DESIGN.md</span> is a different, inherited document and was not used.</p>
+      </div>
+    </div>
+  </section>
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>
