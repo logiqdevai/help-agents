@@ -627,12 +627,17 @@ model AgentAccess {
 }
 
 // Internal link to the voice provider's agent. Never exposed to customers.
+// Retell splits an agent into the agent (voice, versioned) and its response-engine
+// LLM (prompt, tools, knowledge_base_ids, versioned); both must be tracked.
 model AgentProviderLink {
   id                String        @id @default(uuid())
   agent_uuid        String
   provider          VoiceProvider
   external_agent_id String
-  external_ids      Json?
+  external_llm_id   String?
+  agent_version     Int?
+  llm_version       Int?
+  is_published      Boolean       @default(false)
   config_hash       String?
   sync_status       SyncStatus    @default(PENDING)
   synced_at         DateTime?
@@ -644,6 +649,7 @@ model AgentProviderLink {
 
   @@unique([agent_uuid, provider])
   @@unique([provider, external_agent_id])
+  @@unique([provider, external_llm_id])
   @@map("agent_provider_links")
 }
 
@@ -820,25 +826,28 @@ model KnowledgeSource {
 
 // Immutable history: edits create a new version rather than overwriting.
 model KnowledgeSourceVersion {
-  id              String          @id @default(uuid())
-  source_uuid     String
-  version         Int
-  created_by_uuid String?
-  document_uuid   String?
-  content         String
-  content_hash    String?
-  status          KnowledgeStatus @default(PROCESSING)
-  error           String?
-  // Internal references in the voice provider's knowledge store.
-  provider_refs   Json?
-  indexed_at      DateTime?
-  created_at      DateTime        @default(now())
+  id                         String          @id @default(uuid())
+  source_uuid                String
+  version                    Int
+  created_by_uuid            String?
+  document_uuid              String?
+  content                    String
+  content_hash               String?
+  status                     KnowledgeStatus @default(PROCESSING)
+  error                      String?
+  // Retell sources can't be edited in place, so each version gets its own knowledge
+  // base (one source inside); agents attach it via the LLM's knowledge_base_ids.
+  external_knowledge_base_id String?
+  external_source_id         String?
+  indexed_at                 DateTime?
+  created_at                 DateTime        @default(now())
 
   source     KnowledgeSource @relation(fields: [source_uuid], references: [id], onDelete: Cascade)
   created_by User?           @relation(fields: [created_by_uuid], references: [id], onDelete: SetNull)
   document   Document?       @relation(fields: [document_uuid], references: [id], onDelete: SetNull)
 
   @@unique([source_uuid, version])
+  @@index([external_knowledge_base_id])
   @@map("knowledge_source_versions")
 }
 
@@ -860,20 +869,24 @@ model AgentKnowledgeSource {
 // ============================================================================
 
 model PhoneNumber {
-  id           String            @id @default(uuid())
-  company_uuid String
-  agent_uuid   String?
-  number       String            @unique
-  label        String?
-  source       PhoneNumberSource
-  status       PhoneNumberStatus @default(PENDING)
-  provider     VoiceProvider
-  external_id  String?
-  // BYO numbers: SIP / verification details.
-  byo_config   Json?
-  last_error   String?
-  created_at   DateTime          @default(now())
-  updated_at   DateTime          @updatedAt
+  id                   String            @id @default(uuid())
+  company_uuid         String
+  agent_uuid           String?
+  number               String            @unique
+  label                String?
+  source               PhoneNumberSource
+  status               PhoneNumberStatus @default(PENDING)
+  provider             VoiceProvider
+  // Retell identifies numbers by their E.164 value, so this equals `number`.
+  external_id          String?
+  // Retell type: retell-twilio | retell-telnyx | custom (BYO via SIP trunk).
+  provider_number_type String?
+  // Binding an agent sets both inbound and outbound agents (weight 1) on the number.
+  // BYO numbers: SIP termination URI / verification details.
+  byo_config           Json?
+  last_error           String?
+  created_at           DateTime          @default(now())
+  updated_at           DateTime          @updatedAt
 
   company Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
   agent   Agent?  @relation(fields: [agent_uuid], references: [id], onDelete: SetNull)
@@ -912,8 +925,10 @@ model Call {
   outcome_label String?
   is_successful Boolean?
 
-  provider         VoiceProvider
-  external_call_id String?
+  provider               VoiceProvider
+  external_call_id       String?
+  // Provider agent version the call ran on (Retell agents are versioned).
+  provider_agent_version Int?
 
   queued_at         DateTime?
   started_at        DateTime?
@@ -927,6 +942,8 @@ model Call {
   transcript_text String?
   // Values collected against the agent's goal items / questions.
   gathered_data   Json?
+  // Voicemail detected by the provider's post-call analysis.
+  in_voicemail    Boolean?
   analysis_status ProcessingStatus @default(PENDING)
 
   transferred_to  String?
@@ -940,6 +957,12 @@ model Call {
   // What the agent was configured with / had access to at call time.
   agent_snapshot     Json?
   knowledge_snapshot Json?
+  // Personalization values passed to the agent before dialing (Retell dynamic variables).
+  dynamic_variables  Json?
+
+  // Raw provider-reported cost (Retell call_cost, in cents) kept for audit;
+  // customer-facing cost is calculated from PricingRate into CallCostItem.
+  provider_cost Json?
 
   // Denormalised totals; line items live in CallCostItem.
   ai_cost        Decimal @default(0) @db.Decimal(14, 6)
@@ -1073,6 +1096,8 @@ model CallAction {
 }
 
 // Inbox of verified provider webhooks; processed idempotently and retried.
+// Retell events carry no event id, so dedupe_key = `${event}:${call_id}`
+// (call_started | call_ended | call_analyzed | transfer_* ...).
 model ProviderEvent {
   id                 String              @id @default(uuid())
   provider           VoiceProvider

@@ -7,6 +7,7 @@ import { RetellLlmsService } from './services/retell-llms.service';
 import { RetellVoicesService } from './services/retell-voices.service';
 import { RetellPhoneNumbersService } from './services/retell-phone-numbers.service';
 import { RetellWebhooksService } from './services/retell-webhooks.service';
+import { RetellKnowledgeBasesService } from './services/retell-knowledge-bases.service';
 
 const providers = [
   RetellConfig,
@@ -16,6 +17,7 @@ const providers = [
   RetellVoicesService,
   RetellPhoneNumbersService,
   RetellWebhooksService,
+  RetellKnowledgeBasesService,
 ];
 
 @Module({
