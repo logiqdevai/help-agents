@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { EmailAuthService } from '../services/email.service';
 import { RegisterEmailDto } from '../dto/register-email.dto';
 import { LoginEmailDto } from '../dto/login-email.dto';
@@ -12,7 +12,7 @@ export class EmailAuthController {
     constructor(private readonly authService: EmailAuthService) { }
 
     @Post('register')
-    @ApiOperation({ summary: 'Register a new user with email and password' })
+    @ApiOperation({ summary: 'Register a user and create their company (or join one via invitation)' })
     @ApiBody({ type: RegisterEmailDto })
     @ApiResponse({
         status: 201,
@@ -23,15 +23,12 @@ export class EmailAuthController {
         status: 409,
         description: 'Conflict - User with this email already exists'
     })
-    async registerWithEmail(@Body() dto: RegisterEmailDto) {
-        try {
-            return this.authService.registerWithEmail(dto);
-
-        } catch (error) {
-        }
+    registerWithEmail(@Body() dto: RegisterEmailDto) {
+        return this.authService.registerWithEmail(dto);
     }
 
     @Post('login')
+    @HttpCode(200)
     @ApiOperation({ summary: 'Login user with email and password' })
     @ApiBody({ type: LoginEmailDto })
     @ApiResponse({
@@ -39,19 +36,20 @@ export class EmailAuthController {
         description: 'User logged in successfully',
         type: AuthResponse
     })
-    async loginWithEmail(@Body() dto: LoginEmailDto) {
+    @ApiResponse({ status: 401, description: 'Invalid credentials' })
+    loginWithEmail(@Body() dto: LoginEmailDto) {
         return this.authService.loginWithEmail(dto);
     }
 
     @Post('/waitlist')
-    @ApiOperation({ summary: 'Waitlist a user with ref code' })
+    @HttpCode(200)
+    @ApiOperation({ summary: 'Add an email to the waitlist' })
     @ApiBody({ type: WaitlistDto })
     @ApiResponse({
         status: 200,
-        description: 'User referred successfully',
-        type: AuthResponse
+        description: 'Added to the waitlist',
     })
-    async waitlist(@Body() dto: WaitlistDto) {
+    waitlist(@Body() dto: WaitlistDto) {
         return this.authService.waitlist(dto);
     }
 }

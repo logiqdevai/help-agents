@@ -15,11 +15,9 @@ export class CreateJwtService {
         this.expiration = this.config.get('JWT_EXPIRATION_TIME');
     }
 
-    async signToken(payload: any): Promise<string> {
-
-
+    async signToken(payload: any, expiresIn?: string): Promise<string> {
         const token = await this.jwt.signAsync(payload, {
-            expiresIn: this.expiration,
+            expiresIn: expiresIn ?? this.expiration,
             secret: this.secret,
         });
 
@@ -28,7 +26,7 @@ export class CreateJwtService {
 
     async verifyToken(token: string): Promise<any> {
         try {
-            return this.jwt.verifyAsync(token, { secret: this.secret });
+            return await this.jwt.verifyAsync(token, { secret: this.secret });
         } catch (error) {
             throw new UnauthorizedException('Invalid token');
         }

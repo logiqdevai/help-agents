@@ -2,6 +2,7 @@ export const GcsFolders = {
     documents: 'documents',
     avatars: 'avatars',
     uploads: 'uploads',
+    recordings: 'recordings',
 } as const;
 
 export type GcsFolderKey = keyof typeof GcsFolders;

@@ -14,5 +14,13 @@ export const EmailConfig = {
             subject: 'Reset your password',
             template_id: EmailTemplates.PASSWORD_RESET,
         },
+        email_verification: {
+            subject: 'Verify your email address',
+            template_id: EmailTemplates.EMAIL_VERIFICATION,
+        },
+        team_invitation: {
+            subject: 'You have been invited to join a team',
+            template_id: EmailTemplates.TEAM_INVITATION,
+        },
     }
 }

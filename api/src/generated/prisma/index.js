@@ -98,7 +98,12 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   phone: 'phone',
   password: 'password',
+  name: 'name',
+  timezone: 'timezone',
+  language: 'language',
   role: 'role',
+  email_verified_at: 'email_verified_at',
+  last_login_at: 'last_login_at',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -115,6 +120,7 @@ exports.Prisma.PasswordResetTokenScalarFieldEnum = {
 exports.Prisma.DocumentScalarFieldEnum = {
   id: 'id',
   user_uuid: 'user_uuid',
+  company_uuid: 'company_uuid',
   filename: 'filename',
   mimetype: 'mimetype',
   size: 'size',
@@ -124,9 +130,505 @@ exports.Prisma.DocumentScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.CompanyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  website: 'website',
+  phone: 'phone',
+  timezone: 'timezone',
+  recording_retention_days: 'recording_retention_days',
+  stripe_customer_id: 'stripe_customer_id',
+  deletion_requested_at: 'deletion_requested_at',
+  deleted_at: 'deleted_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CompanyMemberScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  user_uuid: 'user_uuid',
+  role: 'role',
+  permissions: 'permissions',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CompanyInvitationScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  email: 'email',
+  role: 'role',
+  token_hash: 'token_hash',
+  invited_by_uuid: 'invited_by_uuid',
+  expires_at: 'expires_at',
+  accepted_at: 'accepted_at',
+  revoked_at: 'revoked_at',
+  created_at: 'created_at'
+};
+
+exports.Prisma.CompanyCallingHourScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  day_of_week: 'day_of_week',
+  start_time: 'start_time',
+  end_time: 'end_time',
+  is_enabled: 'is_enabled',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AgentScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  created_by_uuid: 'created_by_uuid',
+  name: 'name',
+  description: 'description',
+  purpose: 'purpose',
+  status: 'status',
+  voice: 'voice',
+  language: 'language',
+  first_message: 'first_message',
+  instructions: 'instructions',
+  goal: 'goal',
+  success_criteria: 'success_criteria',
+  failure_criteria: 'failure_criteria',
+  max_call_duration_seconds: 'max_call_duration_seconds',
+  crm_integration_uuid: 'crm_integration_uuid',
+  personalization_config: 'personalization_config',
+  detect_voicemail: 'detect_voicemail',
+  leave_voicemail: 'leave_voicemail',
+  voicemail_message: 'voicemail_message',
+  transfer_enabled: 'transfer_enabled',
+  transfer_on_request: 'transfer_on_request',
+  transfer_on_unresolved: 'transfer_on_unresolved',
+  transfer_number: 'transfer_number',
+  transfer_fallback_message: 'transfer_fallback_message',
+  activated_at: 'activated_at',
+  deleted_at: 'deleted_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AgentGoalItemScalarFieldEnum = {
+  id: 'id',
+  agent_uuid: 'agent_uuid',
+  key: 'key',
+  label: 'label',
+  description: 'description',
+  requirement: 'requirement',
+  data_type: 'data_type',
+  enum_values: 'enum_values',
+  position: 'position',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AgentQuestionScalarFieldEnum = {
+  id: 'id',
+  agent_uuid: 'agent_uuid',
+  question: 'question',
+  is_required: 'is_required',
+  expected_answer: 'expected_answer',
+  position: 'position',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AgentOutcomeScalarFieldEnum = {
+  id: 'id',
+  agent_uuid: 'agent_uuid',
+  key: 'key',
+  label: 'label',
+  description: 'description',
+  is_success: 'is_success',
+  system_type: 'system_type',
+  position: 'position',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AgentTransferOutcomeScalarFieldEnum = {
+  agent_uuid: 'agent_uuid',
+  outcome_uuid: 'outcome_uuid'
+};
+
+exports.Prisma.AgentAccessScalarFieldEnum = {
+  agent_uuid: 'agent_uuid',
+  member_uuid: 'member_uuid',
+  created_at: 'created_at'
+};
+
+exports.Prisma.AgentProviderLinkScalarFieldEnum = {
+  id: 'id',
+  agent_uuid: 'agent_uuid',
+  provider: 'provider',
+  external_agent_id: 'external_agent_id',
+  external_llm_id: 'external_llm_id',
+  agent_version: 'agent_version',
+  llm_version: 'llm_version',
+  is_published: 'is_published',
+  config_hash: 'config_hash',
+  sync_status: 'sync_status',
+  synced_at: 'synced_at',
+  last_error: 'last_error',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.IntegrationScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  created_by_uuid: 'created_by_uuid',
+  category: 'category',
+  provider: 'provider',
+  name: 'name',
+  status: 'status',
+  base_url: 'base_url',
+  api_docs_url: 'api_docs_url',
+  auth_type: 'auth_type',
+  credentials_encrypted: 'credentials_encrypted',
+  credentials_hint: 'credentials_hint',
+  token_expires_at: 'token_expires_at',
+  config: 'config',
+  last_error: 'last_error',
+  last_verified_at: 'last_verified_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CrmToolScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  integration_uuid: 'integration_uuid',
+  provider: 'provider',
+  key: 'key',
+  name: 'name',
+  description: 'description',
+  category: 'category',
+  input_schema: 'input_schema',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AgentCrmToolScalarFieldEnum = {
+  agent_uuid: 'agent_uuid',
+  crm_tool_uuid: 'crm_tool_uuid',
+  created_at: 'created_at'
+};
+
+exports.Prisma.CrmFieldMappingScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  integration_uuid: 'integration_uuid',
+  agent_uuid: 'agent_uuid',
+  internal_field: 'internal_field',
+  external_object: 'external_object',
+  external_field: 'external_field',
+  direction: 'direction',
+  use_for_personalization: 'use_for_personalization',
+  transform: 'transform',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ContactScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  integration_uuid: 'integration_uuid',
+  external_id: 'external_id',
+  record_type: 'record_type',
+  name: 'name',
+  phone: 'phone',
+  email: 'email',
+  external_url: 'external_url',
+  do_not_call: 'do_not_call',
+  data: 'data',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.KnowledgeSourceScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  added_by_uuid: 'added_by_uuid',
+  integration_uuid: 'integration_uuid',
+  name: 'name',
+  type: 'type',
+  status: 'status',
+  is_enabled: 'is_enabled',
+  current_version: 'current_version',
+  external_ref: 'external_ref',
+  last_error: 'last_error',
+  last_refreshed_at: 'last_refreshed_at',
+  deleted_at: 'deleted_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.KnowledgeSourceVersionScalarFieldEnum = {
+  id: 'id',
+  source_uuid: 'source_uuid',
+  version: 'version',
+  created_by_uuid: 'created_by_uuid',
+  document_uuid: 'document_uuid',
+  content: 'content',
+  content_hash: 'content_hash',
+  status: 'status',
+  error: 'error',
+  external_knowledge_base_id: 'external_knowledge_base_id',
+  external_source_id: 'external_source_id',
+  indexed_at: 'indexed_at',
+  created_at: 'created_at'
+};
+
+exports.Prisma.AgentKnowledgeSourceScalarFieldEnum = {
+  agent_uuid: 'agent_uuid',
+  source_uuid: 'source_uuid',
+  created_at: 'created_at'
+};
+
+exports.Prisma.PhoneNumberScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  agent_uuid: 'agent_uuid',
+  number: 'number',
+  label: 'label',
+  source: 'source',
+  status: 'status',
+  provider: 'provider',
+  external_id: 'external_id',
+  provider_number_type: 'provider_number_type',
+  byo_config: 'byo_config',
+  last_error: 'last_error',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CallScalarFieldEnum = {
+  id: 'id',
+  call_number: 'call_number',
+  company_uuid: 'company_uuid',
+  agent_uuid: 'agent_uuid',
+  contact_uuid: 'contact_uuid',
+  phone_number_uuid: 'phone_number_uuid',
+  scheduled_call_uuid: 'scheduled_call_uuid',
+  outcome_uuid: 'outcome_uuid',
+  direction: 'direction',
+  status: 'status',
+  is_test: 'is_test',
+  attempt_number: 'attempt_number',
+  from_number: 'from_number',
+  to_number: 'to_number',
+  contact_name: 'contact_name',
+  outcome_key: 'outcome_key',
+  outcome_label: 'outcome_label',
+  is_successful: 'is_successful',
+  provider: 'provider',
+  external_call_id: 'external_call_id',
+  provider_agent_version: 'provider_agent_version',
+  queued_at: 'queued_at',
+  started_at: 'started_at',
+  answered_at: 'answered_at',
+  ended_at: 'ended_at',
+  duration_seconds: 'duration_seconds',
+  disconnect_reason: 'disconnect_reason',
+  summary: 'summary',
+  transcript: 'transcript',
+  transcript_text: 'transcript_text',
+  gathered_data: 'gathered_data',
+  in_voicemail: 'in_voicemail',
+  analysis_status: 'analysis_status',
+  transferred_to: 'transferred_to',
+  transfer_reason: 'transfer_reason',
+  recording_path: 'recording_path',
+  recording_duration_seconds: 'recording_duration_seconds',
+  recording_expires_at: 'recording_expires_at',
+  recording_deleted_at: 'recording_deleted_at',
+  agent_snapshot: 'agent_snapshot',
+  knowledge_snapshot: 'knowledge_snapshot',
+  dynamic_variables: 'dynamic_variables',
+  provider_cost: 'provider_cost',
+  ai_cost: 'ai_cost',
+  telephony_cost: 'telephony_cost',
+  total_cost: 'total_cost',
+  currency: 'currency',
+  error_code: 'error_code',
+  error_message: 'error_message',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CallEventScalarFieldEnum = {
+  id: 'id',
+  call_uuid: 'call_uuid',
+  type: 'type',
+  message: 'message',
+  data: 'data',
+  occurred_at: 'occurred_at'
+};
+
+exports.Prisma.PricingRateScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  key: 'key',
+  category: 'category',
+  provider: 'provider',
+  unit: 'unit',
+  unit_price: 'unit_price',
+  currency: 'currency',
+  effective_from: 'effective_from',
+  effective_to: 'effective_to',
+  created_at: 'created_at'
+};
+
+exports.Prisma.CallCostItemScalarFieldEnum = {
+  id: 'id',
+  call_uuid: 'call_uuid',
+  pricing_rate_uuid: 'pricing_rate_uuid',
+  category: 'category',
+  description: 'description',
+  quantity: 'quantity',
+  unit: 'unit',
+  unit_price: 'unit_price',
+  amount: 'amount',
+  currency: 'currency',
+  created_at: 'created_at'
+};
+
+exports.Prisma.CallActionScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  call_uuid: 'call_uuid',
+  agent_uuid: 'agent_uuid',
+  integration_uuid: 'integration_uuid',
+  crm_tool_uuid: 'crm_tool_uuid',
+  automation_action_uuid: 'automation_action_uuid',
+  kind: 'kind',
+  tool_key: 'tool_key',
+  status: 'status',
+  request_payload: 'request_payload',
+  result: 'result',
+  rejection_reason: 'rejection_reason',
+  attempt_count: 'attempt_count',
+  max_attempts: 'max_attempts',
+  next_retry_at: 'next_retry_at',
+  last_error: 'last_error',
+  executed_at: 'executed_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ProviderEventScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  event_type: 'event_type',
+  dedupe_key: 'dedupe_key',
+  external_call_id: 'external_call_id',
+  call_uuid: 'call_uuid',
+  payload: 'payload',
+  signature_verified: 'signature_verified',
+  status: 'status',
+  attempts: 'attempts',
+  error: 'error',
+  received_at: 'received_at',
+  processed_at: 'processed_at'
+};
+
+exports.Prisma.ScheduledCallScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  agent_uuid: 'agent_uuid',
+  contact_uuid: 'contact_uuid',
+  origin_call_uuid: 'origin_call_uuid',
+  source: 'source',
+  status: 'status',
+  scheduled_for: 'scheduled_for',
+  attempt_number: 'attempt_number',
+  closed_reason: 'closed_reason',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.RetryRuleScalarFieldEnum = {
+  id: 'id',
+  agent_uuid: 'agent_uuid',
+  is_enabled: 'is_enabled',
+  max_attempts: 'max_attempts',
+  delays_minutes: 'delays_minutes',
+  retry_on: 'retry_on',
+  calling_hours_override: 'calling_hours_override',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AutomationRuleScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  agent_uuid: 'agent_uuid',
+  outcome_uuid: 'outcome_uuid',
+  name: 'name',
+  trigger: 'trigger',
+  conditions: 'conditions',
+  is_enabled: 'is_enabled',
+  position: 'position',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AutomationActionScalarFieldEnum = {
+  id: 'id',
+  rule_uuid: 'rule_uuid',
+  type: 'type',
+  config: 'config',
+  delay_minutes: 'delay_minutes',
+  position: 'position',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ActivityLogScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  user_uuid: 'user_uuid',
+  actor_type: 'actor_type',
+  action: 'action',
+  entity_type: 'entity_type',
+  entity_uuid: 'entity_uuid',
+  metadata: 'metadata',
+  ip_address: 'ip_address',
+  created_at: 'created_at'
+};
+
+exports.Prisma.AlertScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  type: 'type',
+  severity: 'severity',
+  status: 'status',
+  title: 'title',
+  message: 'message',
+  entity_type: 'entity_type',
+  entity_uuid: 'entity_uuid',
+  metadata: 'metadata',
+  resolved_at: 'resolved_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -138,11 +640,24 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
 exports.AuthRole = exports.$Enums.AuthRole = {
   USER: 'USER',
   ADMIN: 'ADMIN',
   SUPER_ADMIN: 'SUPER_ADMIN',
   SUPPORT: 'SUPPORT'
+};
+
+exports.CompanyRole = exports.$Enums.CompanyRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER',
+  VIEWER: 'VIEWER'
 };
 
 exports.DocumentType = exports.$Enums.DocumentType = {
@@ -153,13 +668,305 @@ exports.DocumentType = exports.$Enums.DocumentType = {
   AUDIO: 'AUDIO',
   PDF: 'PDF',
   DOCUMENT: 'DOCUMENT',
+  KNOWLEDGE: 'KNOWLEDGE',
   OTHER: 'OTHER'
+};
+
+exports.AgentStatus = exports.$Enums.AgentStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+};
+
+exports.GoalRequirement = exports.$Enums.GoalRequirement = {
+  REQUIRED: 'REQUIRED',
+  OPTIONAL: 'OPTIONAL'
+};
+
+exports.GoalDataType = exports.$Enums.GoalDataType = {
+  STRING: 'STRING',
+  BOOLEAN: 'BOOLEAN',
+  NUMBER: 'NUMBER',
+  DATE: 'DATE',
+  ENUM: 'ENUM'
+};
+
+exports.OutcomeSystemType = exports.$Enums.OutcomeSystemType = {
+  VOICEMAIL: 'VOICEMAIL',
+  NO_ANSWER: 'NO_ANSWER',
+  WRONG_NUMBER: 'WRONG_NUMBER',
+  UNKNOWN: 'UNKNOWN'
+};
+
+exports.IntegrationCategory = exports.$Enums.IntegrationCategory = {
+  CRM: 'CRM',
+  KNOWLEDGE: 'KNOWLEDGE',
+  CALENDAR: 'CALENDAR',
+  EMAIL: 'EMAIL',
+  MESSAGING: 'MESSAGING',
+  STORAGE: 'STORAGE',
+  OTHER: 'OTHER'
+};
+
+exports.IntegrationProvider = exports.$Enums.IntegrationProvider = {
+  HUBSPOT: 'HUBSPOT',
+  SALESFORCE: 'SALESFORCE',
+  PIPEDRIVE: 'PIPEDRIVE',
+  ZOHO: 'ZOHO',
+  CUSTOM_CRM: 'CUSTOM_CRM',
+  GENERIC_API: 'GENERIC_API',
+  GOOGLE_DOCS: 'GOOGLE_DOCS',
+  GOOGLE_DRIVE: 'GOOGLE_DRIVE',
+  GOOGLE_CALENDAR: 'GOOGLE_CALENDAR',
+  GMAIL: 'GMAIL',
+  NOTION: 'NOTION',
+  DROPBOX: 'DROPBOX',
+  SHAREPOINT: 'SHAREPOINT',
+  SLACK: 'SLACK',
+  OTHER: 'OTHER'
+};
+
+exports.IntegrationStatus = exports.$Enums.IntegrationStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  ERROR: 'ERROR',
+  DISCONNECTED: 'DISCONNECTED'
+};
+
+exports.IntegrationAuthType = exports.$Enums.IntegrationAuthType = {
+  API_KEY: 'API_KEY',
+  BEARER_TOKEN: 'BEARER_TOKEN',
+  BASIC: 'BASIC',
+  OAUTH2: 'OAUTH2',
+  CUSTOM_HEADERS: 'CUSTOM_HEADERS'
+};
+
+exports.CrmRecordType = exports.$Enums.CrmRecordType = {
+  CONTACT: 'CONTACT',
+  LEAD: 'LEAD',
+  COMPANY: 'COMPANY',
+  DEAL: 'DEAL',
+  OTHER: 'OTHER'
+};
+
+exports.MappingDirection = exports.$Enums.MappingDirection = {
+  READ: 'READ',
+  WRITE: 'WRITE',
+  BOTH: 'BOTH'
+};
+
+exports.KnowledgeSourceType = exports.$Enums.KnowledgeSourceType = {
+  TEXT: 'TEXT',
+  FILE: 'FILE',
+  GOOGLE_DOCS: 'GOOGLE_DOCS',
+  NOTION: 'NOTION',
+  GOOGLE_DRIVE: 'GOOGLE_DRIVE',
+  DROPBOX: 'DROPBOX',
+  SHAREPOINT: 'SHAREPOINT'
+};
+
+exports.KnowledgeStatus = exports.$Enums.KnowledgeStatus = {
+  PROCESSING: 'PROCESSING',
+  READY: 'READY',
+  FAILED: 'FAILED'
+};
+
+exports.PhoneNumberSource = exports.$Enums.PhoneNumberSource = {
+  PROVISIONED: 'PROVISIONED',
+  BYO: 'BYO'
+};
+
+exports.PhoneNumberStatus = exports.$Enums.PhoneNumberStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  ERROR: 'ERROR',
+  RELEASED: 'RELEASED'
+};
+
+exports.VoiceProvider = exports.$Enums.VoiceProvider = {
+  RETELL: 'RETELL'
+};
+
+exports.SyncStatus = exports.$Enums.SyncStatus = {
+  PENDING: 'PENDING',
+  SYNCED: 'SYNCED',
+  FAILED: 'FAILED'
+};
+
+exports.CallDirection = exports.$Enums.CallDirection = {
+  INBOUND: 'INBOUND',
+  OUTBOUND: 'OUTBOUND'
+};
+
+exports.CallStatus = exports.$Enums.CallStatus = {
+  SCHEDULED: 'SCHEDULED',
+  QUEUED: 'QUEUED',
+  RINGING: 'RINGING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  TRANSFERRED: 'TRANSFERRED',
+  NO_ANSWER: 'NO_ANSWER',
+  BUSY: 'BUSY',
+  FAILED: 'FAILED',
+  CANCELED: 'CANCELED'
+};
+
+exports.ProcessingStatus = exports.$Enums.ProcessingStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+};
+
+exports.CostCategory = exports.$Enums.CostCategory = {
+  AI: 'AI',
+  TELEPHONY: 'TELEPHONY',
+  OTHER: 'OTHER'
+};
+
+exports.CostUnit = exports.$Enums.CostUnit = {
+  SECOND: 'SECOND',
+  MINUTE: 'MINUTE',
+  CALL: 'CALL',
+  TOKEN: 'TOKEN',
+  MESSAGE: 'MESSAGE'
+};
+
+exports.ActionKind = exports.$Enums.ActionKind = {
+  CRM: 'CRM',
+  CALENDAR: 'CALENDAR',
+  EMAIL: 'EMAIL',
+  MESSAGING: 'MESSAGING',
+  OTHER: 'OTHER'
+};
+
+exports.ActionStatus = exports.$Enums.ActionStatus = {
+  REQUESTED: 'REQUESTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  EXECUTED: 'EXECUTED',
+  FAILED: 'FAILED',
+  RETRYING: 'RETRYING',
+  NEEDS_ATTENTION: 'NEEDS_ATTENTION',
+  CANCELED: 'CANCELED'
+};
+
+exports.ScheduledCallStatus = exports.$Enums.ScheduledCallStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELED: 'CANCELED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED'
+};
+
+exports.ScheduledCallSource = exports.$Enums.ScheduledCallSource = {
+  MANUAL: 'MANUAL',
+  RETRY: 'RETRY',
+  AUTOMATION: 'AUTOMATION',
+  FOLLOW_UP: 'FOLLOW_UP'
+};
+
+exports.RetryTrigger = exports.$Enums.RetryTrigger = {
+  NO_ANSWER: 'NO_ANSWER',
+  BUSY: 'BUSY',
+  FAILED: 'FAILED',
+  VOICEMAIL: 'VOICEMAIL'
+};
+
+exports.AutomationTrigger = exports.$Enums.AutomationTrigger = {
+  CALL_OUTCOME: 'CALL_OUTCOME',
+  CALL_COMPLETED: 'CALL_COMPLETED',
+  CALL_FAILED: 'CALL_FAILED',
+  CALL_TRANSFERRED: 'CALL_TRANSFERRED',
+  VOICEMAIL_DETECTED: 'VOICEMAIL_DETECTED'
+};
+
+exports.AutomationActionType = exports.$Enums.AutomationActionType = {
+  UPDATE_CRM: 'UPDATE_CRM',
+  ADD_CRM_NOTE: 'ADD_CRM_NOTE',
+  CREATE_CRM_TASK: 'CREATE_CRM_TASK',
+  SCHEDULE_FOLLOW_UP: 'SCHEDULE_FOLLOW_UP',
+  CANCEL_FOLLOW_UPS: 'CANCEL_FOLLOW_UPS',
+  CREATE_CALENDAR_EVENT: 'CREATE_CALENDAR_EVENT',
+  SEND_EMAIL: 'SEND_EMAIL',
+  SEND_SMS: 'SEND_SMS',
+  WEBHOOK: 'WEBHOOK'
+};
+
+exports.ProviderEventStatus = exports.$Enums.ProviderEventStatus = {
+  RECEIVED: 'RECEIVED',
+  PROCESSED: 'PROCESSED',
+  FAILED: 'FAILED',
+  IGNORED: 'IGNORED'
+};
+
+exports.ActorType = exports.$Enums.ActorType = {
+  USER: 'USER',
+  SYSTEM: 'SYSTEM',
+  AGENT: 'AGENT',
+  PROVIDER: 'PROVIDER'
+};
+
+exports.AlertType = exports.$Enums.AlertType = {
+  INTEGRATION_FAILED: 'INTEGRATION_FAILED',
+  AI_SERVICE_UNAVAILABLE: 'AI_SERVICE_UNAVAILABLE',
+  CALL_FAILED: 'CALL_FAILED',
+  KNOWLEDGE_PROCESSING_FAILED: 'KNOWLEDGE_PROCESSING_FAILED',
+  CRM_UPDATE_FAILED: 'CRM_UPDATE_FAILED',
+  INVALID_PHONE_NUMBER: 'INVALID_PHONE_NUMBER',
+  NO_PHONE_NUMBER_AVAILABLE: 'NO_PHONE_NUMBER_AVAILABLE',
+  OTHER: 'OTHER'
+};
+
+exports.AlertSeverity = exports.$Enums.AlertSeverity = {
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  ERROR: 'ERROR'
+};
+
+exports.AlertStatus = exports.$Enums.AlertStatus = {
+  OPEN: 'OPEN',
+  RESOLVED: 'RESOLVED',
+  DISMISSED: 'DISMISSED'
 };
 
 exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
-  Document: 'Document'
+  Document: 'Document',
+  Company: 'Company',
+  CompanyMember: 'CompanyMember',
+  CompanyInvitation: 'CompanyInvitation',
+  CompanyCallingHour: 'CompanyCallingHour',
+  Agent: 'Agent',
+  AgentGoalItem: 'AgentGoalItem',
+  AgentQuestion: 'AgentQuestion',
+  AgentOutcome: 'AgentOutcome',
+  AgentTransferOutcome: 'AgentTransferOutcome',
+  AgentAccess: 'AgentAccess',
+  AgentProviderLink: 'AgentProviderLink',
+  Integration: 'Integration',
+  CrmTool: 'CrmTool',
+  AgentCrmTool: 'AgentCrmTool',
+  CrmFieldMapping: 'CrmFieldMapping',
+  Contact: 'Contact',
+  KnowledgeSource: 'KnowledgeSource',
+  KnowledgeSourceVersion: 'KnowledgeSourceVersion',
+  AgentKnowledgeSource: 'AgentKnowledgeSource',
+  PhoneNumber: 'PhoneNumber',
+  Call: 'Call',
+  CallEvent: 'CallEvent',
+  PricingRate: 'PricingRate',
+  CallCostItem: 'CallCostItem',
+  CallAction: 'CallAction',
+  ProviderEvent: 'ProviderEvent',
+  ScheduledCall: 'ScheduledCall',
+  RetryRule: 'RetryRule',
+  AutomationRule: 'AutomationRule',
+  AutomationAction: 'AutomationAction',
+  ActivityLog: 'ActivityLog',
+  Alert: 'Alert'
 };
 /**
  * Create the Client
@@ -169,10 +976,10 @@ const config = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum AuthRole {\n  USER\n  ADMIN\n  SUPER_ADMIN\n  SUPPORT\n}\n\nenum DocumentType {\n  LOGO\n  BANNER\n  IMAGE\n  VIDEO\n  AUDIO\n  PDF\n  DOCUMENT\n  OTHER\n}\n\nmodel User {\n  id       String  @id @default(uuid())\n  email    String  @unique\n  phone    String? @unique\n  password String\n\n  role       AuthRole\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  password_reset_tokens PasswordResetToken[]\n\n  @@index([email])\n  @@index([phone])\n  @@index([id])\n  @@map(\"users\")\n}\n\nmodel PasswordResetToken {\n  id         String    @id @default(uuid())\n  token_hash String    @unique\n  user_uuid  String\n  expires_at DateTime\n  used_at    DateTime?\n  created_at DateTime  @default(now())\n\n  user User @relation(fields: [user_uuid], references: [id], onDelete: Cascade)\n\n  @@index([user_uuid])\n  @@index([expires_at])\n  @@map(\"password_reset_tokens\")\n}\n\nmodel Document {\n  id         String       @id @default(uuid())\n  user_uuid  String\n  filename   String\n  mimetype   String\n  size       Int\n  url        String\n  path       String\n  type       DocumentType @default(LOGO)\n  created_at DateTime     @default(now())\n\n  @@index([user_uuid])\n  @@index([id])\n  @@map(\"documents\")\n}\n"
+  "inlineSchema": "// AI Voice Agent Platform — Prisma schema (see docs/Product_Specification.md)\n//\n// Conventions\n// - Every tenant-owned table carries company_uuid; all queries must be scoped by it.\n// - Voice-provider details (external ids, sync state, webhooks) live in dedicated\n//   *ProviderLink / provider_* columns and are never exposed to customers.\n// - Secrets are stored encrypted (credentials_encrypted) with only a masked hint.\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\n// ============================================================================\n// ENUMS\n// ============================================================================\n\n// Platform-level role (JWT / RolesGuard). Company-level access is CompanyRole.\nenum AuthRole {\n  USER\n  ADMIN\n  SUPER_ADMIN\n  SUPPORT\n}\n\nenum CompanyRole {\n  OWNER\n  ADMIN\n  MEMBER\n  VIEWER\n}\n\nenum DocumentType {\n  LOGO\n  BANNER\n  IMAGE\n  VIDEO\n  AUDIO\n  PDF\n  DOCUMENT\n  KNOWLEDGE\n  OTHER\n}\n\nenum AgentStatus {\n  DRAFT\n  ACTIVE\n  INACTIVE\n}\n\nenum GoalRequirement {\n  REQUIRED\n  OPTIONAL\n}\n\nenum GoalDataType {\n  STRING\n  BOOLEAN\n  NUMBER\n  DATE\n  ENUM\n}\n\n// Lets the platform map automatically detected results onto an agent's own outcomes.\nenum OutcomeSystemType {\n  VOICEMAIL\n  NO_ANSWER\n  WRONG_NUMBER\n  UNKNOWN\n}\n\nenum IntegrationCategory {\n  CRM\n  KNOWLEDGE\n  CALENDAR\n  EMAIL\n  MESSAGING\n  STORAGE\n  OTHER\n}\n\nenum IntegrationProvider {\n  HUBSPOT\n  SALESFORCE\n  PIPEDRIVE\n  ZOHO\n  CUSTOM_CRM\n  GENERIC_API\n  GOOGLE_DOCS\n  GOOGLE_DRIVE\n  GOOGLE_CALENDAR\n  GMAIL\n  NOTION\n  DROPBOX\n  SHAREPOINT\n  SLACK\n  OTHER\n}\n\nenum IntegrationStatus {\n  PENDING\n  ACTIVE\n  ERROR\n  DISCONNECTED\n}\n\nenum IntegrationAuthType {\n  API_KEY\n  BEARER_TOKEN\n  BASIC\n  OAUTH2\n  CUSTOM_HEADERS\n}\n\nenum CrmRecordType {\n  CONTACT\n  LEAD\n  COMPANY\n  DEAL\n  OTHER\n}\n\nenum MappingDirection {\n  READ\n  WRITE\n  BOTH\n}\n\nenum KnowledgeSourceType {\n  TEXT\n  FILE\n  GOOGLE_DOCS\n  NOTION\n  GOOGLE_DRIVE\n  DROPBOX\n  SHAREPOINT\n}\n\nenum KnowledgeStatus {\n  PROCESSING\n  READY\n  FAILED\n}\n\nenum PhoneNumberSource {\n  PROVISIONED\n  BYO\n}\n\nenum PhoneNumberStatus {\n  PENDING\n  ACTIVE\n  ERROR\n  RELEASED\n}\n\n// Internal only — never surfaced to customers.\nenum VoiceProvider {\n  RETELL\n}\n\nenum SyncStatus {\n  PENDING\n  SYNCED\n  FAILED\n}\n\nenum CallDirection {\n  INBOUND\n  OUTBOUND\n}\n\nenum CallStatus {\n  SCHEDULED\n  QUEUED\n  RINGING\n  IN_PROGRESS\n  COMPLETED\n  TRANSFERRED\n  NO_ANSWER\n  BUSY\n  FAILED\n  CANCELED\n}\n\nenum ProcessingStatus {\n  PENDING\n  PROCESSING\n  COMPLETED\n  FAILED\n}\n\nenum CostCategory {\n  AI\n  TELEPHONY\n  OTHER\n}\n\nenum CostUnit {\n  SECOND\n  MINUTE\n  CALL\n  TOKEN\n  MESSAGE\n}\n\nenum ActionKind {\n  CRM\n  CALENDAR\n  EMAIL\n  MESSAGING\n  OTHER\n}\n\n// Lifecycle of an action the AI requested. Platform validates before EXECUTED.\nenum ActionStatus {\n  REQUESTED\n  APPROVED\n  REJECTED\n  EXECUTED\n  FAILED\n  RETRYING\n  NEEDS_ATTENTION\n  CANCELED\n}\n\nenum ScheduledCallStatus {\n  PENDING\n  IN_PROGRESS\n  COMPLETED\n  CANCELED\n  FAILED\n  SKIPPED\n}\n\nenum ScheduledCallSource {\n  MANUAL\n  RETRY\n  AUTOMATION\n  FOLLOW_UP\n}\n\nenum RetryTrigger {\n  NO_ANSWER\n  BUSY\n  FAILED\n  VOICEMAIL\n}\n\nenum AutomationTrigger {\n  CALL_OUTCOME\n  CALL_COMPLETED\n  CALL_FAILED\n  CALL_TRANSFERRED\n  VOICEMAIL_DETECTED\n}\n\nenum AutomationActionType {\n  UPDATE_CRM\n  ADD_CRM_NOTE\n  CREATE_CRM_TASK\n  SCHEDULE_FOLLOW_UP\n  CANCEL_FOLLOW_UPS\n  CREATE_CALENDAR_EVENT\n  SEND_EMAIL\n  SEND_SMS\n  WEBHOOK\n}\n\nenum ProviderEventStatus {\n  RECEIVED\n  PROCESSED\n  FAILED\n  IGNORED\n}\n\nenum ActorType {\n  USER\n  SYSTEM\n  AGENT\n  PROVIDER\n}\n\nenum AlertType {\n  INTEGRATION_FAILED\n  AI_SERVICE_UNAVAILABLE\n  CALL_FAILED\n  KNOWLEDGE_PROCESSING_FAILED\n  CRM_UPDATE_FAILED\n  INVALID_PHONE_NUMBER\n  NO_PHONE_NUMBER_AVAILABLE\n  OTHER\n}\n\nenum AlertSeverity {\n  INFO\n  WARNING\n  ERROR\n}\n\nenum AlertStatus {\n  OPEN\n  RESOLVED\n  DISMISSED\n}\n\n// ============================================================================\n// ACCOUNTS & AUTH\n// ============================================================================\n\nmodel User {\n  id                String    @id @default(uuid())\n  email             String    @unique\n  phone             String?   @unique\n  password          String\n  name              String?\n  timezone          String?\n  language          String?\n  role              AuthRole\n  email_verified_at DateTime?\n  last_login_at     DateTime?\n  created_at        DateTime  @default(now())\n  updated_at        DateTime  @updatedAt\n\n  password_reset_tokens      PasswordResetToken[]\n  company_members            CompanyMember[]\n  sent_invitations           CompanyInvitation[]\n  created_agents             Agent[]\n  created_integrations       Integration[]\n  added_knowledge_sources    KnowledgeSource[]\n  created_knowledge_versions KnowledgeSourceVersion[]\n  activity_logs              ActivityLog[]\n\n  @@map(\"users\")\n}\n\nmodel PasswordResetToken {\n  id         String    @id @default(uuid())\n  token_hash String    @unique\n  user_uuid  String\n  expires_at DateTime\n  used_at    DateTime?\n  created_at DateTime  @default(now())\n\n  user User @relation(fields: [user_uuid], references: [id], onDelete: Cascade)\n\n  @@index([user_uuid])\n  @@index([expires_at])\n  @@map(\"password_reset_tokens\")\n}\n\nmodel Document {\n  id           String       @id @default(uuid())\n  user_uuid    String\n  company_uuid String?\n  filename     String\n  mimetype     String\n  size         Int\n  url          String\n  path         String\n  type         DocumentType @default(LOGO)\n  created_at   DateTime     @default(now())\n\n  company                   Company?                 @relation(fields: [company_uuid], references: [id], onDelete: SetNull)\n  knowledge_source_versions KnowledgeSourceVersion[]\n\n  @@index([user_uuid])\n  @@index([company_uuid])\n  @@map(\"documents\")\n}\n\n// ============================================================================\n// COMPANIES & TEAMS\n// ============================================================================\n\nmodel Company {\n  id                       String    @id @default(uuid())\n  name                     String\n  website                  String?\n  phone                    String?\n  timezone                 String    @default(\"UTC\")\n  // How long call recordings are kept; null = keep until manually deleted.\n  recording_retention_days Int?\n  stripe_customer_id       String?   @unique\n  deletion_requested_at    DateTime?\n  deleted_at               DateTime?\n  created_at               DateTime  @default(now())\n  updated_at               DateTime  @updatedAt\n\n  members            CompanyMember[]\n  invitations        CompanyInvitation[]\n  calling_hours      CompanyCallingHour[]\n  agents             Agent[]\n  integrations       Integration[]\n  crm_field_mappings CrmFieldMapping[]\n  crm_tools          CrmTool[]\n  contacts           Contact[]\n  knowledge_sources  KnowledgeSource[]\n  phone_numbers      PhoneNumber[]\n  calls              Call[]\n  call_actions       CallAction[]\n  scheduled_calls    ScheduledCall[]\n  automation_rules   AutomationRule[]\n  pricing_rates      PricingRate[]\n  activity_logs      ActivityLog[]\n  alerts             Alert[]\n  documents          Document[]\n\n  @@index([deleted_at])\n  @@map(\"companies\")\n}\n\nmodel CompanyMember {\n  id           String      @id @default(uuid())\n  company_uuid String\n  user_uuid    String\n  role         CompanyRole @default(MEMBER)\n  // Extra fine-grained grants layered on top of the role.\n  permissions  String[]    @default([])\n  created_at   DateTime    @default(now())\n  updated_at   DateTime    @updatedAt\n\n  company      Company       @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  user         User          @relation(fields: [user_uuid], references: [id], onDelete: Cascade)\n  agent_access AgentAccess[]\n\n  @@unique([company_uuid, user_uuid])\n  @@index([user_uuid])\n  @@map(\"company_members\")\n}\n\nmodel CompanyInvitation {\n  id              String      @id @default(uuid())\n  company_uuid    String\n  email           String\n  role            CompanyRole @default(MEMBER)\n  token_hash      String      @unique\n  invited_by_uuid String?\n  expires_at      DateTime\n  accepted_at     DateTime?\n  revoked_at      DateTime?\n  created_at      DateTime    @default(now())\n\n  company    Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  invited_by User?   @relation(fields: [invited_by_uuid], references: [id], onDelete: SetNull)\n\n  @@index([company_uuid])\n  @@index([email])\n  @@map(\"company_invitations\")\n}\n\n// Allowed calling windows per weekday (0 = Sunday ... 6 = Saturday), in the company timezone.\n// Times are \"HH:mm\". is_enabled = false means \"No calling\" that day.\nmodel CompanyCallingHour {\n  id           String   @id @default(uuid())\n  company_uuid String\n  day_of_week  Int\n  start_time   String   @default(\"09:00\")\n  end_time     String   @default(\"18:00\")\n  is_enabled   Boolean  @default(true)\n  created_at   DateTime @default(now())\n  updated_at   DateTime @updatedAt\n\n  company Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n\n  @@unique([company_uuid, day_of_week])\n  @@map(\"company_calling_hours\")\n}\n\n// ============================================================================\n// VOICE AGENTS\n// ============================================================================\n\nmodel Agent {\n  id              String      @id @default(uuid())\n  company_uuid    String\n  created_by_uuid String?\n  name            String\n  description     String?\n  purpose         String?\n  status          AgentStatus @default(DRAFT)\n\n  voice         String?\n  language      String  @default(\"en\")\n  first_message String?\n\n  // Plain-language behaviour description; compiled to provider config internally.\n  instructions              String  @default(\"\")\n  goal                      String?\n  success_criteria          String?\n  failure_criteria          String?\n  max_call_duration_seconds Int?\n\n  // Integrations\n  crm_integration_uuid String?\n\n  // Personalization: extra context passed to the agent before a call.\n  personalization_config Json?\n\n  // Voicemail handling\n  detect_voicemail  Boolean @default(true)\n  leave_voicemail   Boolean @default(false)\n  voicemail_message String?\n\n  // Human transfer\n  transfer_enabled          Boolean @default(false)\n  transfer_on_request       Boolean @default(true)\n  transfer_on_unresolved    Boolean @default(false)\n  transfer_number           String?\n  transfer_fallback_message String?\n\n  activated_at DateTime?\n  deleted_at   DateTime?\n  created_at   DateTime  @default(now())\n  updated_at   DateTime  @updatedAt\n\n  company         Company      @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  created_by      User?        @relation(fields: [created_by_uuid], references: [id], onDelete: SetNull)\n  crm_integration Integration? @relation(\"AgentCrmIntegration\", fields: [crm_integration_uuid], references: [id], onDelete: SetNull)\n\n  goal_items         AgentGoalItem[]\n  questions          AgentQuestion[]\n  outcomes           AgentOutcome[]\n  transfer_outcomes  AgentTransferOutcome[]\n  crm_tools          AgentCrmTool[]\n  knowledge_sources  AgentKnowledgeSource[]\n  provider_links     AgentProviderLink[]\n  access             AgentAccess[]\n  crm_field_mappings CrmFieldMapping[]\n  phone_numbers      PhoneNumber[]\n  retry_rule         RetryRule?\n  automation_rules   AutomationRule[]\n  scheduled_calls    ScheduledCall[]\n  calls              Call[]\n  call_actions       CallAction[]\n\n  @@index([company_uuid, status])\n  @@index([company_uuid, deleted_at])\n  @@index([crm_integration_uuid])\n  @@map(\"agents\")\n}\n\n// Structured checklist of information the agent must / should come away with.\nmodel AgentGoalItem {\n  id          String          @id @default(uuid())\n  agent_uuid  String\n  key         String\n  label       String\n  description String?\n  requirement GoalRequirement @default(REQUIRED)\n  data_type   GoalDataType    @default(STRING)\n  enum_values String[]        @default([])\n  position    Int             @default(0)\n  created_at  DateTime        @default(now())\n  updated_at  DateTime        @updatedAt\n\n  agent Agent @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)\n\n  @@unique([agent_uuid, key])\n  @@index([agent_uuid, position])\n  @@map(\"agent_goal_items\")\n}\n\n// Questions worked naturally into the conversation (not a rigid script).\nmodel AgentQuestion {\n  id              String   @id @default(uuid())\n  agent_uuid      String\n  question        String\n  is_required     Boolean  @default(true)\n  expected_answer String?\n  position        Int      @default(0)\n  created_at      DateTime @default(now())\n  updated_at      DateTime @updatedAt\n\n  agent Agent @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)\n\n  @@index([agent_uuid, position])\n  @@map(\"agent_questions\")\n}\n\nmodel AgentOutcome {\n  id          String             @id @default(uuid())\n  agent_uuid  String\n  key         String\n  label       String\n  description String?\n  is_success  Boolean            @default(false)\n  system_type OutcomeSystemType?\n  position    Int                @default(0)\n  created_at  DateTime           @default(now())\n  updated_at  DateTime           @updatedAt\n\n  agent             Agent                  @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)\n  automation_rules  AutomationRule[]\n  transfer_triggers AgentTransferOutcome[]\n  calls             Call[]\n\n  @@unique([agent_uuid, key])\n  @@index([agent_uuid, position])\n  @@map(\"agent_outcomes\")\n}\n\n// \"Transfer to a human when a specific outcome is reached\".\nmodel AgentTransferOutcome {\n  agent_uuid   String\n  outcome_uuid String\n\n  agent   Agent        @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)\n  outcome AgentOutcome @relation(fields: [outcome_uuid], references: [id], onDelete: Cascade)\n\n  @@id([agent_uuid, outcome_uuid])\n  @@map(\"agent_transfer_outcomes\")\n}\n\n// Members with restricted access only see agents they were granted.\nmodel AgentAccess {\n  agent_uuid  String\n  member_uuid String\n  created_at  DateTime @default(now())\n\n  agent  Agent         @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)\n  member CompanyMember @relation(fields: [member_uuid], references: [id], onDelete: Cascade)\n\n  @@id([agent_uuid, member_uuid])\n  @@index([member_uuid])\n  @@map(\"agent_access\")\n}\n\n// Internal link to the voice provider's agent. Never exposed to customers.\n// Retell splits an agent into the agent (voice, versioned) and its response-engine\n// LLM (prompt, tools, knowledge_base_ids, versioned); both must be tracked.\nmodel AgentProviderLink {\n  id                String        @id @default(uuid())\n  agent_uuid        String\n  provider          VoiceProvider\n  external_agent_id String\n  external_llm_id   String?\n  agent_version     Int?\n  llm_version       Int?\n  is_published      Boolean       @default(false)\n  config_hash       String?\n  sync_status       SyncStatus    @default(PENDING)\n  synced_at         DateTime?\n  last_error        String?\n  created_at        DateTime      @default(now())\n  updated_at        DateTime      @updatedAt\n\n  agent Agent @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)\n\n  @@unique([agent_uuid, provider])\n  @@unique([provider, external_agent_id])\n  @@unique([provider, external_llm_id])\n  @@map(\"agent_provider_links\")\n}\n\n// ============================================================================\n// INTEGRATIONS (CRM, knowledge, calendar, messaging, ...)\n// ============================================================================\n\nmodel Integration {\n  id              String              @id @default(uuid())\n  company_uuid    String\n  created_by_uuid String?\n  category        IntegrationCategory\n  provider        IntegrationProvider\n  name            String\n  status          IntegrationStatus   @default(PENDING)\n\n  // Custom / generic API connection details\n  base_url     String?\n  api_docs_url String?\n  auth_type    IntegrationAuthType?\n\n  // Encrypted JSON blob (keys, tokens, refresh tokens, basic auth, custom headers).\n  // Never returned by the API; only credentials_hint (e.g. \"••••abcd\") is shown.\n  credentials_encrypted String?\n  credentials_hint      String?\n  token_expires_at      DateTime?\n\n  config           Json?\n  last_error       String?\n  last_verified_at DateTime?\n  created_at       DateTime  @default(now())\n  updated_at       DateTime  @updatedAt\n\n  company            Company           @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  created_by         User?             @relation(fields: [created_by_uuid], references: [id], onDelete: SetNull)\n  agents             Agent[]           @relation(\"AgentCrmIntegration\")\n  crm_field_mappings CrmFieldMapping[]\n  crm_tools          CrmTool[]\n  contacts           Contact[]\n  knowledge_sources  KnowledgeSource[]\n  call_actions       CallAction[]\n\n  @@index([company_uuid, category])\n  @@index([company_uuid, provider])\n  @@map(\"integrations\")\n}\n\n// Catalogue of actions a CRM offers. integration_uuid = null -> platform catalogue for\n// that provider; set -> tools defined for one custom connection.\nmodel CrmTool {\n  id               String              @id @default(uuid())\n  company_uuid     String?\n  integration_uuid String?\n  provider         IntegrationProvider\n  key              String\n  name             String\n  description      String?\n  category         String?\n  input_schema     Json?\n  is_active        Boolean             @default(true)\n  created_at       DateTime            @default(now())\n  updated_at       DateTime            @updatedAt\n\n  company      Company?       @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  integration  Integration?   @relation(fields: [integration_uuid], references: [id], onDelete: Cascade)\n  agent_tools  AgentCrmTool[]\n  call_actions CallAction[]\n\n  @@index([provider, key])\n  @@index([integration_uuid])\n  @@index([company_uuid])\n  @@map(\"crm_tools\")\n}\n\n// Which CRM tools a specific agent is explicitly allowed to use.\nmodel AgentCrmTool {\n  agent_uuid    String\n  crm_tool_uuid String\n  created_at    DateTime @default(now())\n\n  agent    Agent   @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)\n  crm_tool CrmTool @relation(fields: [crm_tool_uuid], references: [id], onDelete: Cascade)\n\n  @@id([agent_uuid, crm_tool_uuid])\n  @@index([crm_tool_uuid])\n  @@map(\"agent_crm_tools\")\n}\n\n// Maps a platform field to a CRM field. Per connection (agent_uuid null) or per agent.\nmodel CrmFieldMapping {\n  id                      String           @id @default(uuid())\n  company_uuid            String\n  integration_uuid        String\n  agent_uuid              String?\n  internal_field          String\n  external_object         String?\n  external_field          String\n  direction               MappingDirection @default(BOTH)\n  use_for_personalization Boolean          @default(false)\n  transform               Json?\n  created_at              DateTime         @default(now())\n  updated_at              DateTime         @updatedAt\n\n  company     Company     @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  integration Integration @relation(fields: [integration_uuid], references: [id], onDelete: Cascade)\n  agent       Agent?      @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)\n\n  @@index([company_uuid])\n  @@index([integration_uuid, agent_uuid])\n  @@map(\"crm_field_mappings\")\n}\n\n// Lightweight call target; real customer data stays in the CRM.\nmodel Contact {\n  id               String        @id @default(uuid())\n  company_uuid     String\n  integration_uuid String?\n  external_id      String?\n  record_type      CrmRecordType @default(CONTACT)\n  name             String?\n  phone            String?\n  email            String?\n  external_url     String?\n  do_not_call      Boolean       @default(false)\n  data             Json?\n  created_at       DateTime      @default(now())\n  updated_at       DateTime      @updatedAt\n\n  company         Company         @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  integration     Integration?    @relation(fields: [integration_uuid], references: [id], onDelete: SetNull)\n  calls           Call[]\n  scheduled_calls ScheduledCall[]\n\n  @@unique([company_uuid, integration_uuid, record_type, external_id])\n  @@index([company_uuid, phone])\n  @@index([company_uuid, email])\n  @@map(\"contacts\")\n}\n\n// ============================================================================\n// KNOWLEDGE BASE\n// ============================================================================\n\nmodel KnowledgeSource {\n  id                String              @id @default(uuid())\n  company_uuid      String\n  added_by_uuid     String?\n  integration_uuid  String?\n  name              String\n  type              KnowledgeSourceType\n  status            KnowledgeStatus     @default(PROCESSING)\n  // Turn a source off without deleting it.\n  is_enabled        Boolean             @default(true)\n  // Version number of the currently active KnowledgeSourceVersion.\n  current_version   Int                 @default(1)\n  // Reference inside an external system (Google Doc id, Notion page id, ...).\n  external_ref      String?\n  last_error        String?\n  last_refreshed_at DateTime?\n  deleted_at        DateTime?\n  created_at        DateTime            @default(now())\n  updated_at        DateTime            @updatedAt\n\n  company     Company                  @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  added_by    User?                    @relation(fields: [added_by_uuid], references: [id], onDelete: SetNull)\n  integration Integration?             @relation(fields: [integration_uuid], references: [id], onDelete: SetNull)\n  versions    KnowledgeSourceVersion[]\n  agents      AgentKnowledgeSource[]\n\n  @@index([company_uuid, status])\n  @@index([company_uuid, deleted_at])\n  @@map(\"knowledge_sources\")\n}\n\n// Immutable history: edits create a new version rather than overwriting.\nmodel KnowledgeSourceVersion {\n  id                         String          @id @default(uuid())\n  source_uuid                String\n  version                    Int\n  created_by_uuid            String?\n  document_uuid              String?\n  content                    String\n  content_hash               String?\n  status                     KnowledgeStatus @default(PROCESSING)\n  error                      String?\n  // Retell sources can't be edited in place, so each version gets its own knowledge\n  // base (one source inside); agents attach it via the LLM's knowledge_base_ids.\n  external_knowledge_base_id String?\n  external_source_id         String?\n  indexed_at                 DateTime?\n  created_at                 DateTime        @default(now())\n\n  source     KnowledgeSource @relation(fields: [source_uuid], references: [id], onDelete: Cascade)\n  created_by User?           @relation(fields: [created_by_uuid], references: [id], onDelete: SetNull)\n  document   Document?       @relation(fields: [document_uuid], references: [id], onDelete: SetNull)\n\n  @@unique([source_uuid, version])\n  @@index([external_knowledge_base_id])\n  @@map(\"knowledge_source_versions\")\n}\n\nmodel AgentKnowledgeSource {\n  agent_uuid  String\n  source_uuid String\n  created_at  DateTime @default(now())\n\n  agent  Agent           @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)\n  source KnowledgeSource @relation(fields: [source_uuid], references: [id], onDelete: Cascade)\n\n  @@id([agent_uuid, source_uuid])\n  @@index([source_uuid])\n  @@map(\"agent_knowledge_sources\")\n}\n\n// ============================================================================\n// PHONE NUMBERS\n// ============================================================================\n\nmodel PhoneNumber {\n  id                   String            @id @default(uuid())\n  company_uuid         String\n  agent_uuid           String?\n  number               String            @unique\n  label                String?\n  source               PhoneNumberSource\n  status               PhoneNumberStatus @default(PENDING)\n  provider             VoiceProvider\n  // Retell identifies numbers by their E.164 value, so this equals `number`.\n  external_id          String?\n  // Retell type: retell-twilio | retell-telnyx | custom (BYO via SIP trunk).\n  provider_number_type String?\n  // Binding an agent sets both inbound and outbound agents (weight 1) on the number.\n  // BYO numbers: SIP termination URI / verification details.\n  byo_config           Json?\n  last_error           String?\n  created_at           DateTime          @default(now())\n  updated_at           DateTime          @updatedAt\n\n  company Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  agent   Agent?  @relation(fields: [agent_uuid], references: [id], onDelete: SetNull)\n  calls   Call[]\n\n  @@index([company_uuid, status])\n  @@index([agent_uuid])\n  @@map(\"phone_numbers\")\n}\n\n// ============================================================================\n// CALLS\n// ============================================================================\n\nmodel Call {\n  id                  String  @id @default(uuid())\n  // Human-friendly sequential number (\"Call #18372\").\n  call_number         Int     @unique @default(autoincrement())\n  company_uuid        String\n  agent_uuid          String\n  contact_uuid        String?\n  phone_number_uuid   String?\n  scheduled_call_uuid String? @unique\n  outcome_uuid        String?\n\n  direction      CallDirection\n  status         CallStatus    @default(QUEUED)\n  is_test        Boolean       @default(false)\n  attempt_number Int           @default(1)\n  from_number    String?\n  to_number      String?\n  contact_name   String?\n\n  // Snapshot so history survives later edits to the outcome.\n  outcome_key   String?\n  outcome_label String?\n  is_successful Boolean?\n\n  provider               VoiceProvider\n  external_call_id       String?\n  // Provider agent version the call ran on (Retell agents are versioned).\n  provider_agent_version Int?\n\n  queued_at         DateTime?\n  started_at        DateTime?\n  answered_at       DateTime?\n  ended_at          DateTime?\n  duration_seconds  Int?\n  disconnect_reason String?\n\n  summary         String?\n  transcript      Json?\n  transcript_text String?\n  // Values collected against the agent's goal items / questions.\n  gathered_data   Json?\n  // Voicemail detected by the provider's post-call analysis.\n  in_voicemail    Boolean?\n  analysis_status ProcessingStatus @default(PENDING)\n\n  transferred_to  String?\n  transfer_reason String?\n\n  recording_path             String?\n  recording_duration_seconds Int?\n  recording_expires_at       DateTime?\n  recording_deleted_at       DateTime?\n\n  // What the agent was configured with / had access to at call time.\n  agent_snapshot     Json?\n  knowledge_snapshot Json?\n  // Personalization values passed to the agent before dialing (Retell dynamic variables).\n  dynamic_variables  Json?\n\n  // Raw provider-reported cost (Retell call_cost, in cents) kept for audit;\n  // customer-facing cost is calculated from PricingRate into CallCostItem.\n  provider_cost Json?\n\n  // Denormalised totals; line items live in CallCostItem.\n  ai_cost        Decimal @default(0) @db.Decimal(14, 6)\n  telephony_cost Decimal @default(0) @db.Decimal(14, 6)\n  total_cost     Decimal @default(0) @db.Decimal(14, 6)\n  currency       String  @default(\"EUR\")\n\n  error_code    String?\n  error_message String?\n  created_at    DateTime @default(now())\n  updated_at    DateTime @updatedAt\n\n  company        Company        @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  agent          Agent          @relation(fields: [agent_uuid], references: [id], onDelete: NoAction)\n  contact        Contact?       @relation(fields: [contact_uuid], references: [id], onDelete: SetNull)\n  phone_number   PhoneNumber?   @relation(fields: [phone_number_uuid], references: [id], onDelete: SetNull)\n  scheduled_call ScheduledCall? @relation(fields: [scheduled_call_uuid], references: [id], onDelete: SetNull)\n  outcome        AgentOutcome?  @relation(fields: [outcome_uuid], references: [id], onDelete: SetNull)\n\n  events          CallEvent[]\n  cost_items      CallCostItem[]\n  actions         CallAction[]\n  provider_events ProviderEvent[]\n  origin_of       ScheduledCall[] @relation(\"ScheduledCallOrigin\")\n\n  @@unique([provider, external_call_id])\n  @@index([company_uuid, started_at])\n  @@index([company_uuid, agent_uuid, started_at])\n  @@index([company_uuid, status])\n  @@index([company_uuid, outcome_key])\n  @@index([company_uuid, direction])\n  @@index([contact_uuid])\n  @@map(\"calls\")\n}\n\n// Behind-the-scenes activity trail for troubleshooting.\nmodel CallEvent {\n  id          String   @id @default(uuid())\n  call_uuid   String\n  type        String\n  message     String?\n  data        Json?\n  occurred_at DateTime @default(now())\n\n  call Call @relation(fields: [call_uuid], references: [id], onDelete: Cascade)\n\n  @@index([call_uuid, occurred_at])\n  @@map(\"call_events\")\n}\n\n// Versioned, never hard-coded pricing. company_uuid set = company-specific override.\nmodel PricingRate {\n  id             String         @id @default(uuid())\n  company_uuid   String?\n  key            String\n  category       CostCategory\n  provider       VoiceProvider?\n  unit           CostUnit\n  unit_price     Decimal        @db.Decimal(14, 8)\n  currency       String         @default(\"EUR\")\n  effective_from DateTime       @default(now())\n  effective_to   DateTime?\n  created_at     DateTime       @default(now())\n\n  company    Company?       @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  cost_items CallCostItem[]\n\n  @@index([key, effective_from])\n  @@index([company_uuid])\n  @@map(\"pricing_rates\")\n}\n\n// Cost actually calculated for a call; values are snapshotted so later price\n// changes never alter past calls.\nmodel CallCostItem {\n  id                String       @id @default(uuid())\n  call_uuid         String\n  pricing_rate_uuid String?\n  category          CostCategory\n  description       String\n  quantity          Decimal      @db.Decimal(14, 4)\n  unit              CostUnit\n  unit_price        Decimal      @db.Decimal(14, 8)\n  amount            Decimal      @db.Decimal(14, 6)\n  currency          String       @default(\"EUR\")\n  created_at        DateTime     @default(now())\n\n  call         Call         @relation(fields: [call_uuid], references: [id], onDelete: Cascade)\n  pricing_rate PricingRate? @relation(fields: [pricing_rate_uuid], references: [id], onDelete: SetNull)\n\n  @@index([call_uuid])\n  @@map(\"call_cost_items\")\n}\n\n// An action the AI *requested* during/after a call. The platform validates it\n// (agent permission, company, connection, payload) before executing. Also drives\n// automatic retries of failed CRM updates.\nmodel CallAction {\n  id                     String       @id @default(uuid())\n  company_uuid           String\n  call_uuid              String\n  agent_uuid             String?\n  integration_uuid       String?\n  crm_tool_uuid          String?\n  automation_action_uuid String?\n  kind                   ActionKind   @default(CRM)\n  tool_key               String\n  status                 ActionStatus @default(REQUESTED)\n  request_payload        Json?\n  result                 Json?\n  rejection_reason       String?\n  attempt_count          Int          @default(0)\n  max_attempts           Int          @default(5)\n  next_retry_at          DateTime?\n  last_error             String?\n  executed_at            DateTime?\n  created_at             DateTime     @default(now())\n  updated_at             DateTime     @updatedAt\n\n  company           Company           @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  call              Call              @relation(fields: [call_uuid], references: [id], onDelete: Cascade)\n  agent             Agent?            @relation(fields: [agent_uuid], references: [id], onDelete: SetNull)\n  integration       Integration?      @relation(fields: [integration_uuid], references: [id], onDelete: SetNull)\n  crm_tool          CrmTool?          @relation(fields: [crm_tool_uuid], references: [id], onDelete: SetNull)\n  automation_action AutomationAction? @relation(fields: [automation_action_uuid], references: [id], onDelete: SetNull)\n\n  @@index([call_uuid])\n  @@index([company_uuid, status])\n  @@index([status, next_retry_at])\n  @@map(\"call_actions\")\n}\n\n// Inbox of verified provider webhooks; processed idempotently and retried.\n// Retell events carry no event id, so dedupe_key = `${event}:${call_id}`\n// (call_started | call_ended | call_analyzed | transfer_* ...).\nmodel ProviderEvent {\n  id                 String              @id @default(uuid())\n  provider           VoiceProvider\n  event_type         String\n  dedupe_key         String?\n  external_call_id   String?\n  call_uuid          String?\n  payload            Json\n  signature_verified Boolean             @default(false)\n  status             ProviderEventStatus @default(RECEIVED)\n  attempts           Int                 @default(0)\n  error              String?\n  received_at        DateTime            @default(now())\n  processed_at       DateTime?\n\n  call Call? @relation(fields: [call_uuid], references: [id], onDelete: SetNull)\n\n  @@unique([provider, dedupe_key])\n  @@index([status, received_at])\n  @@index([external_call_id])\n  @@index([call_uuid])\n  @@map(\"provider_events\")\n}\n\n// ============================================================================\n// SCHEDULING, RETRIES & AUTOMATION\n// ============================================================================\n\nmodel ScheduledCall {\n  id               String              @id @default(uuid())\n  company_uuid     String\n  agent_uuid       String\n  contact_uuid     String\n  origin_call_uuid String?\n  source           ScheduledCallSource @default(MANUAL)\n  status           ScheduledCallStatus @default(PENDING)\n  scheduled_for    DateTime\n  attempt_number   Int                 @default(1)\n  closed_reason    String?\n  created_at       DateTime            @default(now())\n  updated_at       DateTime            @updatedAt\n\n  company     Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  agent       Agent   @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)\n  contact     Contact @relation(fields: [contact_uuid], references: [id], onDelete: Cascade)\n  origin_call Call?   @relation(\"ScheduledCallOrigin\", fields: [origin_call_uuid], references: [id], onDelete: SetNull)\n  call        Call?\n\n  @@index([status, scheduled_for])\n  @@index([company_uuid, status])\n  @@index([agent_uuid])\n  @@index([contact_uuid])\n  @@map(\"scheduled_calls\")\n}\n\n// Per-agent retry policy. delays_minutes[n] is the wait before attempt n+2\n// (e.g. [120, 1440] = 2h then 24h).\nmodel RetryRule {\n  id                     String         @id @default(uuid())\n  agent_uuid             String         @unique\n  is_enabled             Boolean        @default(true)\n  max_attempts           Int            @default(3)\n  delays_minutes         Int[]          @default([120, 1440])\n  retry_on               RetryTrigger[] @default([NO_ANSWER, BUSY, FAILED])\n  // null = use the company's calling hours.\n  calling_hours_override Json?\n  created_at             DateTime       @default(now())\n  updated_at             DateTime       @updatedAt\n\n  agent Agent @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)\n\n  @@map(\"retry_rules\")\n}\n\n// \"WHEN <trigger> [outcome] THEN <actions>\". agent_uuid null = applies company-wide.\nmodel AutomationRule {\n  id           String            @id @default(uuid())\n  company_uuid String\n  agent_uuid   String?\n  outcome_uuid String?\n  name         String\n  trigger      AutomationTrigger\n  conditions   Json?\n  is_enabled   Boolean           @default(true)\n  position     Int               @default(0)\n  created_at   DateTime          @default(now())\n  updated_at   DateTime          @updatedAt\n\n  company Company            @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  agent   Agent?             @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)\n  outcome AgentOutcome?      @relation(fields: [outcome_uuid], references: [id], onDelete: Cascade)\n  actions AutomationAction[]\n\n  @@index([company_uuid, trigger, is_enabled])\n  @@index([agent_uuid])\n  @@index([outcome_uuid])\n  @@map(\"automation_rules\")\n}\n\nmodel AutomationAction {\n  id            String               @id @default(uuid())\n  rule_uuid     String\n  type          AutomationActionType\n  config        Json?\n  delay_minutes Int                  @default(0)\n  position      Int                  @default(0)\n  created_at    DateTime             @default(now())\n  updated_at    DateTime             @updatedAt\n\n  rule         AutomationRule @relation(fields: [rule_uuid], references: [id], onDelete: Cascade)\n  call_actions CallAction[]\n\n  @@index([rule_uuid, position])\n  @@map(\"automation_actions\")\n}\n\n// ============================================================================\n// AUDIT & ERROR SURFACING\n// ============================================================================\n\nmodel ActivityLog {\n  id           String    @id @default(uuid())\n  company_uuid String\n  user_uuid    String?\n  actor_type   ActorType @default(USER)\n  action       String\n  entity_type  String?\n  entity_uuid  String?\n  metadata     Json?\n  ip_address   String?\n  created_at   DateTime  @default(now())\n\n  company Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n  user    User?   @relation(fields: [user_uuid], references: [id], onDelete: SetNull)\n\n  @@index([company_uuid, created_at])\n  @@index([company_uuid, entity_type, entity_uuid])\n  @@index([user_uuid])\n  @@map(\"activity_logs\")\n}\n\n// User-visible problems (\"CRM update failed\", \"Invalid phone number\", ...).\nmodel Alert {\n  id           String        @id @default(uuid())\n  company_uuid String\n  type         AlertType\n  severity     AlertSeverity @default(ERROR)\n  status       AlertStatus   @default(OPEN)\n  title        String\n  message      String?\n  entity_type  String?\n  entity_uuid  String?\n  metadata     Json?\n  resolved_at  DateTime?\n  created_at   DateTime      @default(now())\n  updated_at   DateTime      @updatedAt\n\n  company Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)\n\n  @@index([company_uuid, status, created_at])\n  @@index([company_uuid, entity_type, entity_uuid])\n  @@map(\"alerts\")\n}\n"
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"AuthRole\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"password_reset_tokens\",\"kind\":\"object\",\"type\":\"PasswordResetToken\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"users\"},\"PasswordResetToken\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"used_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"password_reset_tokens\"},\"Document\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"filename\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mimetype\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"path\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"DocumentType\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"documents\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timezone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"language\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"AuthRole\"},{\"name\":\"email_verified_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"last_login_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"password_reset_tokens\",\"kind\":\"object\",\"type\":\"PasswordResetToken\",\"relationName\":\"PasswordResetTokenToUser\"},{\"name\":\"company_members\",\"kind\":\"object\",\"type\":\"CompanyMember\",\"relationName\":\"CompanyMemberToUser\"},{\"name\":\"sent_invitations\",\"kind\":\"object\",\"type\":\"CompanyInvitation\",\"relationName\":\"CompanyInvitationToUser\"},{\"name\":\"created_agents\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToUser\"},{\"name\":\"created_integrations\",\"kind\":\"object\",\"type\":\"Integration\",\"relationName\":\"IntegrationToUser\"},{\"name\":\"added_knowledge_sources\",\"kind\":\"object\",\"type\":\"KnowledgeSource\",\"relationName\":\"KnowledgeSourceToUser\"},{\"name\":\"created_knowledge_versions\",\"kind\":\"object\",\"type\":\"KnowledgeSourceVersion\",\"relationName\":\"KnowledgeSourceVersionToUser\"},{\"name\":\"activity_logs\",\"kind\":\"object\",\"type\":\"ActivityLog\",\"relationName\":\"ActivityLogToUser\"}],\"dbName\":\"users\"},\"PasswordResetToken\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"used_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PasswordResetTokenToUser\"}],\"dbName\":\"password_reset_tokens\"},\"Document\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"filename\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mimetype\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"size\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"path\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"DocumentType\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToDocument\"},{\"name\":\"knowledge_source_versions\",\"kind\":\"object\",\"type\":\"KnowledgeSourceVersion\",\"relationName\":\"DocumentToKnowledgeSourceVersion\"}],\"dbName\":\"documents\"},\"Company\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timezone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"recording_retention_days\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"stripe_customer_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"deletion_requested_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"members\",\"kind\":\"object\",\"type\":\"CompanyMember\",\"relationName\":\"CompanyToCompanyMember\"},{\"name\":\"invitations\",\"kind\":\"object\",\"type\":\"CompanyInvitation\",\"relationName\":\"CompanyToCompanyInvitation\"},{\"name\":\"calling_hours\",\"kind\":\"object\",\"type\":\"CompanyCallingHour\",\"relationName\":\"CompanyToCompanyCallingHour\"},{\"name\":\"agents\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToCompany\"},{\"name\":\"integrations\",\"kind\":\"object\",\"type\":\"Integration\",\"relationName\":\"CompanyToIntegration\"},{\"name\":\"crm_field_mappings\",\"kind\":\"object\",\"type\":\"CrmFieldMapping\",\"relationName\":\"CompanyToCrmFieldMapping\"},{\"name\":\"crm_tools\",\"kind\":\"object\",\"type\":\"CrmTool\",\"relationName\":\"CompanyToCrmTool\"},{\"name\":\"contacts\",\"kind\":\"object\",\"type\":\"Contact\",\"relationName\":\"CompanyToContact\"},{\"name\":\"knowledge_sources\",\"kind\":\"object\",\"type\":\"KnowledgeSource\",\"relationName\":\"CompanyToKnowledgeSource\"},{\"name\":\"phone_numbers\",\"kind\":\"object\",\"type\":\"PhoneNumber\",\"relationName\":\"CompanyToPhoneNumber\"},{\"name\":\"calls\",\"kind\":\"object\",\"type\":\"Call\",\"relationName\":\"CallToCompany\"},{\"name\":\"call_actions\",\"kind\":\"object\",\"type\":\"CallAction\",\"relationName\":\"CallActionToCompany\"},{\"name\":\"scheduled_calls\",\"kind\":\"object\",\"type\":\"ScheduledCall\",\"relationName\":\"CompanyToScheduledCall\"},{\"name\":\"automation_rules\",\"kind\":\"object\",\"type\":\"AutomationRule\",\"relationName\":\"AutomationRuleToCompany\"},{\"name\":\"pricing_rates\",\"kind\":\"object\",\"type\":\"PricingRate\",\"relationName\":\"CompanyToPricingRate\"},{\"name\":\"activity_logs\",\"kind\":\"object\",\"type\":\"ActivityLog\",\"relationName\":\"ActivityLogToCompany\"},{\"name\":\"alerts\",\"kind\":\"object\",\"type\":\"Alert\",\"relationName\":\"AlertToCompany\"},{\"name\":\"documents\",\"kind\":\"object\",\"type\":\"Document\",\"relationName\":\"CompanyToDocument\"}],\"dbName\":\"companies\"},\"CompanyMember\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"CompanyRole\"},{\"name\":\"permissions\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToCompanyMember\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CompanyMemberToUser\"},{\"name\":\"agent_access\",\"kind\":\"object\",\"type\":\"AgentAccess\",\"relationName\":\"AgentAccessToCompanyMember\"}],\"dbName\":\"company_members\"},\"CompanyInvitation\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"CompanyRole\"},{\"name\":\"token_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"invited_by_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"accepted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"revoked_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToCompanyInvitation\"},{\"name\":\"invited_by\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CompanyInvitationToUser\"}],\"dbName\":\"company_invitations\"},\"CompanyCallingHour\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"day_of_week\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"start_time\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"end_time\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_enabled\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToCompanyCallingHour\"}],\"dbName\":\"company_calling_hours\"},\"Agent\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_by_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"purpose\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"AgentStatus\"},{\"name\":\"voice\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"language\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"first_message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"instructions\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"goal\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"success_criteria\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"failure_criteria\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"max_call_duration_seconds\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"crm_integration_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"personalization_config\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"detect_voicemail\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"leave_voicemail\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"voicemail_message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transfer_enabled\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"transfer_on_request\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"transfer_on_unresolved\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"transfer_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transfer_fallback_message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"activated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"AgentToCompany\"},{\"name\":\"created_by\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AgentToUser\"},{\"name\":\"crm_integration\",\"kind\":\"object\",\"type\":\"Integration\",\"relationName\":\"AgentCrmIntegration\"},{\"name\":\"goal_items\",\"kind\":\"object\",\"type\":\"AgentGoalItem\",\"relationName\":\"AgentToAgentGoalItem\"},{\"name\":\"questions\",\"kind\":\"object\",\"type\":\"AgentQuestion\",\"relationName\":\"AgentToAgentQuestion\"},{\"name\":\"outcomes\",\"kind\":\"object\",\"type\":\"AgentOutcome\",\"relationName\":\"AgentToAgentOutcome\"},{\"name\":\"transfer_outcomes\",\"kind\":\"object\",\"type\":\"AgentTransferOutcome\",\"relationName\":\"AgentToAgentTransferOutcome\"},{\"name\":\"crm_tools\",\"kind\":\"object\",\"type\":\"AgentCrmTool\",\"relationName\":\"AgentToAgentCrmTool\"},{\"name\":\"knowledge_sources\",\"kind\":\"object\",\"type\":\"AgentKnowledgeSource\",\"relationName\":\"AgentToAgentKnowledgeSource\"},{\"name\":\"provider_links\",\"kind\":\"object\",\"type\":\"AgentProviderLink\",\"relationName\":\"AgentToAgentProviderLink\"},{\"name\":\"access\",\"kind\":\"object\",\"type\":\"AgentAccess\",\"relationName\":\"AgentToAgentAccess\"},{\"name\":\"crm_field_mappings\",\"kind\":\"object\",\"type\":\"CrmFieldMapping\",\"relationName\":\"AgentToCrmFieldMapping\"},{\"name\":\"phone_numbers\",\"kind\":\"object\",\"type\":\"PhoneNumber\",\"relationName\":\"AgentToPhoneNumber\"},{\"name\":\"retry_rule\",\"kind\":\"object\",\"type\":\"RetryRule\",\"relationName\":\"AgentToRetryRule\"},{\"name\":\"automation_rules\",\"kind\":\"object\",\"type\":\"AutomationRule\",\"relationName\":\"AgentToAutomationRule\"},{\"name\":\"scheduled_calls\",\"kind\":\"object\",\"type\":\"ScheduledCall\",\"relationName\":\"AgentToScheduledCall\"},{\"name\":\"calls\",\"kind\":\"object\",\"type\":\"Call\",\"relationName\":\"AgentToCall\"},{\"name\":\"call_actions\",\"kind\":\"object\",\"type\":\"CallAction\",\"relationName\":\"AgentToCallAction\"}],\"dbName\":\"agents\"},\"AgentGoalItem\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"label\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"requirement\",\"kind\":\"enum\",\"type\":\"GoalRequirement\"},{\"name\":\"data_type\",\"kind\":\"enum\",\"type\":\"GoalDataType\"},{\"name\":\"enum_values\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"position\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToAgentGoalItem\"}],\"dbName\":\"agent_goal_items\"},\"AgentQuestion\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"question\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_required\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"expected_answer\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"position\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToAgentQuestion\"}],\"dbName\":\"agent_questions\"},\"AgentOutcome\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"label\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_success\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"system_type\",\"kind\":\"enum\",\"type\":\"OutcomeSystemType\"},{\"name\":\"position\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToAgentOutcome\"},{\"name\":\"automation_rules\",\"kind\":\"object\",\"type\":\"AutomationRule\",\"relationName\":\"AgentOutcomeToAutomationRule\"},{\"name\":\"transfer_triggers\",\"kind\":\"object\",\"type\":\"AgentTransferOutcome\",\"relationName\":\"AgentOutcomeToAgentTransferOutcome\"},{\"name\":\"calls\",\"kind\":\"object\",\"type\":\"Call\",\"relationName\":\"AgentOutcomeToCall\"}],\"dbName\":\"agent_outcomes\"},\"AgentTransferOutcome\":{\"fields\":[{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"outcome_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToAgentTransferOutcome\"},{\"name\":\"outcome\",\"kind\":\"object\",\"type\":\"AgentOutcome\",\"relationName\":\"AgentOutcomeToAgentTransferOutcome\"}],\"dbName\":\"agent_transfer_outcomes\"},\"AgentAccess\":{\"fields\":[{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"member_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToAgentAccess\"},{\"name\":\"member\",\"kind\":\"object\",\"type\":\"CompanyMember\",\"relationName\":\"AgentAccessToCompanyMember\"}],\"dbName\":\"agent_access\"},\"AgentProviderLink\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"provider\",\"kind\":\"enum\",\"type\":\"VoiceProvider\"},{\"name\":\"external_agent_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"external_llm_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_version\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"llm_version\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"is_published\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"config_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sync_status\",\"kind\":\"enum\",\"type\":\"SyncStatus\"},{\"name\":\"synced_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"last_error\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToAgentProviderLink\"}],\"dbName\":\"agent_provider_links\"},\"Integration\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_by_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"enum\",\"type\":\"IntegrationCategory\"},{\"name\":\"provider\",\"kind\":\"enum\",\"type\":\"IntegrationProvider\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"IntegrationStatus\"},{\"name\":\"base_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"api_docs_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"auth_type\",\"kind\":\"enum\",\"type\":\"IntegrationAuthType\"},{\"name\":\"credentials_encrypted\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"credentials_hint\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token_expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"config\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"last_error\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"last_verified_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToIntegration\"},{\"name\":\"created_by\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"IntegrationToUser\"},{\"name\":\"agents\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentCrmIntegration\"},{\"name\":\"crm_field_mappings\",\"kind\":\"object\",\"type\":\"CrmFieldMapping\",\"relationName\":\"CrmFieldMappingToIntegration\"},{\"name\":\"crm_tools\",\"kind\":\"object\",\"type\":\"CrmTool\",\"relationName\":\"CrmToolToIntegration\"},{\"name\":\"contacts\",\"kind\":\"object\",\"type\":\"Contact\",\"relationName\":\"ContactToIntegration\"},{\"name\":\"knowledge_sources\",\"kind\":\"object\",\"type\":\"KnowledgeSource\",\"relationName\":\"IntegrationToKnowledgeSource\"},{\"name\":\"call_actions\",\"kind\":\"object\",\"type\":\"CallAction\",\"relationName\":\"CallActionToIntegration\"}],\"dbName\":\"integrations\"},\"CrmTool\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"integration_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"provider\",\"kind\":\"enum\",\"type\":\"IntegrationProvider\"},{\"name\":\"key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"input_schema\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"is_active\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToCrmTool\"},{\"name\":\"integration\",\"kind\":\"object\",\"type\":\"Integration\",\"relationName\":\"CrmToolToIntegration\"},{\"name\":\"agent_tools\",\"kind\":\"object\",\"type\":\"AgentCrmTool\",\"relationName\":\"AgentCrmToolToCrmTool\"},{\"name\":\"call_actions\",\"kind\":\"object\",\"type\":\"CallAction\",\"relationName\":\"CallActionToCrmTool\"}],\"dbName\":\"crm_tools\"},\"AgentCrmTool\":{\"fields\":[{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"crm_tool_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToAgentCrmTool\"},{\"name\":\"crm_tool\",\"kind\":\"object\",\"type\":\"CrmTool\",\"relationName\":\"AgentCrmToolToCrmTool\"}],\"dbName\":\"agent_crm_tools\"},\"CrmFieldMapping\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"integration_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"internal_field\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"external_object\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"external_field\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"direction\",\"kind\":\"enum\",\"type\":\"MappingDirection\"},{\"name\":\"use_for_personalization\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"transform\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToCrmFieldMapping\"},{\"name\":\"integration\",\"kind\":\"object\",\"type\":\"Integration\",\"relationName\":\"CrmFieldMappingToIntegration\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToCrmFieldMapping\"}],\"dbName\":\"crm_field_mappings\"},\"Contact\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"integration_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"external_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"record_type\",\"kind\":\"enum\",\"type\":\"CrmRecordType\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"external_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"do_not_call\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"data\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToContact\"},{\"name\":\"integration\",\"kind\":\"object\",\"type\":\"Integration\",\"relationName\":\"ContactToIntegration\"},{\"name\":\"calls\",\"kind\":\"object\",\"type\":\"Call\",\"relationName\":\"CallToContact\"},{\"name\":\"scheduled_calls\",\"kind\":\"object\",\"type\":\"ScheduledCall\",\"relationName\":\"ContactToScheduledCall\"}],\"dbName\":\"contacts\"},\"KnowledgeSource\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"added_by_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"integration_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"KnowledgeSourceType\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"KnowledgeStatus\"},{\"name\":\"is_enabled\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"current_version\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"external_ref\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"last_error\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"last_refreshed_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToKnowledgeSource\"},{\"name\":\"added_by\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"KnowledgeSourceToUser\"},{\"name\":\"integration\",\"kind\":\"object\",\"type\":\"Integration\",\"relationName\":\"IntegrationToKnowledgeSource\"},{\"name\":\"versions\",\"kind\":\"object\",\"type\":\"KnowledgeSourceVersion\",\"relationName\":\"KnowledgeSourceToKnowledgeSourceVersion\"},{\"name\":\"agents\",\"kind\":\"object\",\"type\":\"AgentKnowledgeSource\",\"relationName\":\"AgentKnowledgeSourceToKnowledgeSource\"}],\"dbName\":\"knowledge_sources\"},\"KnowledgeSourceVersion\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"version\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_by_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"document_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"KnowledgeStatus\"},{\"name\":\"error\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"external_knowledge_base_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"external_source_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"indexed_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"source\",\"kind\":\"object\",\"type\":\"KnowledgeSource\",\"relationName\":\"KnowledgeSourceToKnowledgeSourceVersion\"},{\"name\":\"created_by\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"KnowledgeSourceVersionToUser\"},{\"name\":\"document\",\"kind\":\"object\",\"type\":\"Document\",\"relationName\":\"DocumentToKnowledgeSourceVersion\"}],\"dbName\":\"knowledge_source_versions\"},\"AgentKnowledgeSource\":{\"fields\":[{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToAgentKnowledgeSource\"},{\"name\":\"source\",\"kind\":\"object\",\"type\":\"KnowledgeSource\",\"relationName\":\"AgentKnowledgeSourceToKnowledgeSource\"}],\"dbName\":\"agent_knowledge_sources\"},\"PhoneNumber\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"label\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source\",\"kind\":\"enum\",\"type\":\"PhoneNumberSource\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"PhoneNumberStatus\"},{\"name\":\"provider\",\"kind\":\"enum\",\"type\":\"VoiceProvider\"},{\"name\":\"external_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"provider_number_type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"byo_config\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"last_error\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToPhoneNumber\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToPhoneNumber\"},{\"name\":\"calls\",\"kind\":\"object\",\"type\":\"Call\",\"relationName\":\"CallToPhoneNumber\"}],\"dbName\":\"phone_numbers\"},\"Call\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"call_number\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contact_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone_number_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"scheduled_call_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"outcome_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"direction\",\"kind\":\"enum\",\"type\":\"CallDirection\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"CallStatus\"},{\"name\":\"is_test\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"attempt_number\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"from_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"to_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contact_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"outcome_key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"outcome_label\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_successful\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"provider\",\"kind\":\"enum\",\"type\":\"VoiceProvider\"},{\"name\":\"external_call_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"provider_agent_version\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"queued_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"started_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"answered_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"ended_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"duration_seconds\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"disconnect_reason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"summary\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transcript\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"transcript_text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"gathered_data\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"in_voicemail\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"analysis_status\",\"kind\":\"enum\",\"type\":\"ProcessingStatus\"},{\"name\":\"transferred_to\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transfer_reason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"recording_path\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"recording_duration_seconds\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"recording_expires_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"recording_deleted_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"agent_snapshot\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"knowledge_snapshot\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"dynamic_variables\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"provider_cost\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"ai_cost\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"telephony_cost\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"total_cost\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"error_code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"error_message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CallToCompany\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToCall\"},{\"name\":\"contact\",\"kind\":\"object\",\"type\":\"Contact\",\"relationName\":\"CallToContact\"},{\"name\":\"phone_number\",\"kind\":\"object\",\"type\":\"PhoneNumber\",\"relationName\":\"CallToPhoneNumber\"},{\"name\":\"scheduled_call\",\"kind\":\"object\",\"type\":\"ScheduledCall\",\"relationName\":\"CallToScheduledCall\"},{\"name\":\"outcome\",\"kind\":\"object\",\"type\":\"AgentOutcome\",\"relationName\":\"AgentOutcomeToCall\"},{\"name\":\"events\",\"kind\":\"object\",\"type\":\"CallEvent\",\"relationName\":\"CallToCallEvent\"},{\"name\":\"cost_items\",\"kind\":\"object\",\"type\":\"CallCostItem\",\"relationName\":\"CallToCallCostItem\"},{\"name\":\"actions\",\"kind\":\"object\",\"type\":\"CallAction\",\"relationName\":\"CallToCallAction\"},{\"name\":\"provider_events\",\"kind\":\"object\",\"type\":\"ProviderEvent\",\"relationName\":\"CallToProviderEvent\"},{\"name\":\"origin_of\",\"kind\":\"object\",\"type\":\"ScheduledCall\",\"relationName\":\"ScheduledCallOrigin\"}],\"dbName\":\"calls\"},\"CallEvent\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"call_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"data\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"occurred_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"call\",\"kind\":\"object\",\"type\":\"Call\",\"relationName\":\"CallToCallEvent\"}],\"dbName\":\"call_events\"},\"PricingRate\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"enum\",\"type\":\"CostCategory\"},{\"name\":\"provider\",\"kind\":\"enum\",\"type\":\"VoiceProvider\"},{\"name\":\"unit\",\"kind\":\"enum\",\"type\":\"CostUnit\"},{\"name\":\"unit_price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"effective_from\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"effective_to\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToPricingRate\"},{\"name\":\"cost_items\",\"kind\":\"object\",\"type\":\"CallCostItem\",\"relationName\":\"CallCostItemToPricingRate\"}],\"dbName\":\"pricing_rates\"},\"CallCostItem\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"call_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"pricing_rate_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"enum\",\"type\":\"CostCategory\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"quantity\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"unit\",\"kind\":\"enum\",\"type\":\"CostUnit\"},{\"name\":\"unit_price\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"currency\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"call\",\"kind\":\"object\",\"type\":\"Call\",\"relationName\":\"CallToCallCostItem\"},{\"name\":\"pricing_rate\",\"kind\":\"object\",\"type\":\"PricingRate\",\"relationName\":\"CallCostItemToPricingRate\"}],\"dbName\":\"call_cost_items\"},\"CallAction\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"call_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"integration_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"crm_tool_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"automation_action_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"kind\",\"kind\":\"enum\",\"type\":\"ActionKind\"},{\"name\":\"tool_key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"ActionStatus\"},{\"name\":\"request_payload\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"result\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"rejection_reason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"attempt_count\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"max_attempts\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"next_retry_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"last_error\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"executed_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CallActionToCompany\"},{\"name\":\"call\",\"kind\":\"object\",\"type\":\"Call\",\"relationName\":\"CallToCallAction\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToCallAction\"},{\"name\":\"integration\",\"kind\":\"object\",\"type\":\"Integration\",\"relationName\":\"CallActionToIntegration\"},{\"name\":\"crm_tool\",\"kind\":\"object\",\"type\":\"CrmTool\",\"relationName\":\"CallActionToCrmTool\"},{\"name\":\"automation_action\",\"kind\":\"object\",\"type\":\"AutomationAction\",\"relationName\":\"AutomationActionToCallAction\"}],\"dbName\":\"call_actions\"},\"ProviderEvent\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"provider\",\"kind\":\"enum\",\"type\":\"VoiceProvider\"},{\"name\":\"event_type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dedupe_key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"external_call_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"call_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"payload\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"signature_verified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"ProviderEventStatus\"},{\"name\":\"attempts\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"error\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"received_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"processed_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"call\",\"kind\":\"object\",\"type\":\"Call\",\"relationName\":\"CallToProviderEvent\"}],\"dbName\":\"provider_events\"},\"ScheduledCall\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contact_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"origin_call_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source\",\"kind\":\"enum\",\"type\":\"ScheduledCallSource\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"ScheduledCallStatus\"},{\"name\":\"scheduled_for\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"attempt_number\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"closed_reason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToScheduledCall\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToScheduledCall\"},{\"name\":\"contact\",\"kind\":\"object\",\"type\":\"Contact\",\"relationName\":\"ContactToScheduledCall\"},{\"name\":\"origin_call\",\"kind\":\"object\",\"type\":\"Call\",\"relationName\":\"ScheduledCallOrigin\"},{\"name\":\"call\",\"kind\":\"object\",\"type\":\"Call\",\"relationName\":\"CallToScheduledCall\"}],\"dbName\":\"scheduled_calls\"},\"RetryRule\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_enabled\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"max_attempts\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"delays_minutes\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"retry_on\",\"kind\":\"enum\",\"type\":\"RetryTrigger\"},{\"name\":\"calling_hours_override\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToRetryRule\"}],\"dbName\":\"retry_rules\"},\"AutomationRule\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"outcome_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"trigger\",\"kind\":\"enum\",\"type\":\"AutomationTrigger\"},{\"name\":\"conditions\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"is_enabled\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"position\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"AutomationRuleToCompany\"},{\"name\":\"agent\",\"kind\":\"object\",\"type\":\"Agent\",\"relationName\":\"AgentToAutomationRule\"},{\"name\":\"outcome\",\"kind\":\"object\",\"type\":\"AgentOutcome\",\"relationName\":\"AgentOutcomeToAutomationRule\"},{\"name\":\"actions\",\"kind\":\"object\",\"type\":\"AutomationAction\",\"relationName\":\"AutomationActionToAutomationRule\"}],\"dbName\":\"automation_rules\"},\"AutomationAction\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rule_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"AutomationActionType\"},{\"name\":\"config\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"delay_minutes\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"position\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"rule\",\"kind\":\"object\",\"type\":\"AutomationRule\",\"relationName\":\"AutomationActionToAutomationRule\"},{\"name\":\"call_actions\",\"kind\":\"object\",\"type\":\"CallAction\",\"relationName\":\"AutomationActionToCallAction\"}],\"dbName\":\"automation_actions\"},\"ActivityLog\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"actor_type\",\"kind\":\"enum\",\"type\":\"ActorType\"},{\"name\":\"action\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"entity_type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"entity_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"metadata\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"ip_address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"ActivityLogToCompany\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ActivityLogToUser\"}],\"dbName\":\"activity_logs\"},\"Alert\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"AlertType\"},{\"name\":\"severity\",\"kind\":\"enum\",\"type\":\"AlertSeverity\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"AlertStatus\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"entity_type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"entity_uuid\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"metadata\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"resolved_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"AlertToCompany\"}],\"dbName\":\"alerts\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.compilerWasm = {
       getRuntime: async () => require('./query_compiler_bg.js'),

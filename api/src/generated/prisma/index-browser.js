@@ -125,7 +125,12 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   phone: 'phone',
   password: 'password',
+  name: 'name',
+  timezone: 'timezone',
+  language: 'language',
   role: 'role',
+  email_verified_at: 'email_verified_at',
+  last_login_at: 'last_login_at',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -142,6 +147,7 @@ exports.Prisma.PasswordResetTokenScalarFieldEnum = {
 exports.Prisma.DocumentScalarFieldEnum = {
   id: 'id',
   user_uuid: 'user_uuid',
+  company_uuid: 'company_uuid',
   filename: 'filename',
   mimetype: 'mimetype',
   size: 'size',
@@ -151,9 +157,505 @@ exports.Prisma.DocumentScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.CompanyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  website: 'website',
+  phone: 'phone',
+  timezone: 'timezone',
+  recording_retention_days: 'recording_retention_days',
+  stripe_customer_id: 'stripe_customer_id',
+  deletion_requested_at: 'deletion_requested_at',
+  deleted_at: 'deleted_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CompanyMemberScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  user_uuid: 'user_uuid',
+  role: 'role',
+  permissions: 'permissions',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CompanyInvitationScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  email: 'email',
+  role: 'role',
+  token_hash: 'token_hash',
+  invited_by_uuid: 'invited_by_uuid',
+  expires_at: 'expires_at',
+  accepted_at: 'accepted_at',
+  revoked_at: 'revoked_at',
+  created_at: 'created_at'
+};
+
+exports.Prisma.CompanyCallingHourScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  day_of_week: 'day_of_week',
+  start_time: 'start_time',
+  end_time: 'end_time',
+  is_enabled: 'is_enabled',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AgentScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  created_by_uuid: 'created_by_uuid',
+  name: 'name',
+  description: 'description',
+  purpose: 'purpose',
+  status: 'status',
+  voice: 'voice',
+  language: 'language',
+  first_message: 'first_message',
+  instructions: 'instructions',
+  goal: 'goal',
+  success_criteria: 'success_criteria',
+  failure_criteria: 'failure_criteria',
+  max_call_duration_seconds: 'max_call_duration_seconds',
+  crm_integration_uuid: 'crm_integration_uuid',
+  personalization_config: 'personalization_config',
+  detect_voicemail: 'detect_voicemail',
+  leave_voicemail: 'leave_voicemail',
+  voicemail_message: 'voicemail_message',
+  transfer_enabled: 'transfer_enabled',
+  transfer_on_request: 'transfer_on_request',
+  transfer_on_unresolved: 'transfer_on_unresolved',
+  transfer_number: 'transfer_number',
+  transfer_fallback_message: 'transfer_fallback_message',
+  activated_at: 'activated_at',
+  deleted_at: 'deleted_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AgentGoalItemScalarFieldEnum = {
+  id: 'id',
+  agent_uuid: 'agent_uuid',
+  key: 'key',
+  label: 'label',
+  description: 'description',
+  requirement: 'requirement',
+  data_type: 'data_type',
+  enum_values: 'enum_values',
+  position: 'position',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AgentQuestionScalarFieldEnum = {
+  id: 'id',
+  agent_uuid: 'agent_uuid',
+  question: 'question',
+  is_required: 'is_required',
+  expected_answer: 'expected_answer',
+  position: 'position',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AgentOutcomeScalarFieldEnum = {
+  id: 'id',
+  agent_uuid: 'agent_uuid',
+  key: 'key',
+  label: 'label',
+  description: 'description',
+  is_success: 'is_success',
+  system_type: 'system_type',
+  position: 'position',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AgentTransferOutcomeScalarFieldEnum = {
+  agent_uuid: 'agent_uuid',
+  outcome_uuid: 'outcome_uuid'
+};
+
+exports.Prisma.AgentAccessScalarFieldEnum = {
+  agent_uuid: 'agent_uuid',
+  member_uuid: 'member_uuid',
+  created_at: 'created_at'
+};
+
+exports.Prisma.AgentProviderLinkScalarFieldEnum = {
+  id: 'id',
+  agent_uuid: 'agent_uuid',
+  provider: 'provider',
+  external_agent_id: 'external_agent_id',
+  external_llm_id: 'external_llm_id',
+  agent_version: 'agent_version',
+  llm_version: 'llm_version',
+  is_published: 'is_published',
+  config_hash: 'config_hash',
+  sync_status: 'sync_status',
+  synced_at: 'synced_at',
+  last_error: 'last_error',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.IntegrationScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  created_by_uuid: 'created_by_uuid',
+  category: 'category',
+  provider: 'provider',
+  name: 'name',
+  status: 'status',
+  base_url: 'base_url',
+  api_docs_url: 'api_docs_url',
+  auth_type: 'auth_type',
+  credentials_encrypted: 'credentials_encrypted',
+  credentials_hint: 'credentials_hint',
+  token_expires_at: 'token_expires_at',
+  config: 'config',
+  last_error: 'last_error',
+  last_verified_at: 'last_verified_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CrmToolScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  integration_uuid: 'integration_uuid',
+  provider: 'provider',
+  key: 'key',
+  name: 'name',
+  description: 'description',
+  category: 'category',
+  input_schema: 'input_schema',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AgentCrmToolScalarFieldEnum = {
+  agent_uuid: 'agent_uuid',
+  crm_tool_uuid: 'crm_tool_uuid',
+  created_at: 'created_at'
+};
+
+exports.Prisma.CrmFieldMappingScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  integration_uuid: 'integration_uuid',
+  agent_uuid: 'agent_uuid',
+  internal_field: 'internal_field',
+  external_object: 'external_object',
+  external_field: 'external_field',
+  direction: 'direction',
+  use_for_personalization: 'use_for_personalization',
+  transform: 'transform',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ContactScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  integration_uuid: 'integration_uuid',
+  external_id: 'external_id',
+  record_type: 'record_type',
+  name: 'name',
+  phone: 'phone',
+  email: 'email',
+  external_url: 'external_url',
+  do_not_call: 'do_not_call',
+  data: 'data',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.KnowledgeSourceScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  added_by_uuid: 'added_by_uuid',
+  integration_uuid: 'integration_uuid',
+  name: 'name',
+  type: 'type',
+  status: 'status',
+  is_enabled: 'is_enabled',
+  current_version: 'current_version',
+  external_ref: 'external_ref',
+  last_error: 'last_error',
+  last_refreshed_at: 'last_refreshed_at',
+  deleted_at: 'deleted_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.KnowledgeSourceVersionScalarFieldEnum = {
+  id: 'id',
+  source_uuid: 'source_uuid',
+  version: 'version',
+  created_by_uuid: 'created_by_uuid',
+  document_uuid: 'document_uuid',
+  content: 'content',
+  content_hash: 'content_hash',
+  status: 'status',
+  error: 'error',
+  external_knowledge_base_id: 'external_knowledge_base_id',
+  external_source_id: 'external_source_id',
+  indexed_at: 'indexed_at',
+  created_at: 'created_at'
+};
+
+exports.Prisma.AgentKnowledgeSourceScalarFieldEnum = {
+  agent_uuid: 'agent_uuid',
+  source_uuid: 'source_uuid',
+  created_at: 'created_at'
+};
+
+exports.Prisma.PhoneNumberScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  agent_uuid: 'agent_uuid',
+  number: 'number',
+  label: 'label',
+  source: 'source',
+  status: 'status',
+  provider: 'provider',
+  external_id: 'external_id',
+  provider_number_type: 'provider_number_type',
+  byo_config: 'byo_config',
+  last_error: 'last_error',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CallScalarFieldEnum = {
+  id: 'id',
+  call_number: 'call_number',
+  company_uuid: 'company_uuid',
+  agent_uuid: 'agent_uuid',
+  contact_uuid: 'contact_uuid',
+  phone_number_uuid: 'phone_number_uuid',
+  scheduled_call_uuid: 'scheduled_call_uuid',
+  outcome_uuid: 'outcome_uuid',
+  direction: 'direction',
+  status: 'status',
+  is_test: 'is_test',
+  attempt_number: 'attempt_number',
+  from_number: 'from_number',
+  to_number: 'to_number',
+  contact_name: 'contact_name',
+  outcome_key: 'outcome_key',
+  outcome_label: 'outcome_label',
+  is_successful: 'is_successful',
+  provider: 'provider',
+  external_call_id: 'external_call_id',
+  provider_agent_version: 'provider_agent_version',
+  queued_at: 'queued_at',
+  started_at: 'started_at',
+  answered_at: 'answered_at',
+  ended_at: 'ended_at',
+  duration_seconds: 'duration_seconds',
+  disconnect_reason: 'disconnect_reason',
+  summary: 'summary',
+  transcript: 'transcript',
+  transcript_text: 'transcript_text',
+  gathered_data: 'gathered_data',
+  in_voicemail: 'in_voicemail',
+  analysis_status: 'analysis_status',
+  transferred_to: 'transferred_to',
+  transfer_reason: 'transfer_reason',
+  recording_path: 'recording_path',
+  recording_duration_seconds: 'recording_duration_seconds',
+  recording_expires_at: 'recording_expires_at',
+  recording_deleted_at: 'recording_deleted_at',
+  agent_snapshot: 'agent_snapshot',
+  knowledge_snapshot: 'knowledge_snapshot',
+  dynamic_variables: 'dynamic_variables',
+  provider_cost: 'provider_cost',
+  ai_cost: 'ai_cost',
+  telephony_cost: 'telephony_cost',
+  total_cost: 'total_cost',
+  currency: 'currency',
+  error_code: 'error_code',
+  error_message: 'error_message',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CallEventScalarFieldEnum = {
+  id: 'id',
+  call_uuid: 'call_uuid',
+  type: 'type',
+  message: 'message',
+  data: 'data',
+  occurred_at: 'occurred_at'
+};
+
+exports.Prisma.PricingRateScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  key: 'key',
+  category: 'category',
+  provider: 'provider',
+  unit: 'unit',
+  unit_price: 'unit_price',
+  currency: 'currency',
+  effective_from: 'effective_from',
+  effective_to: 'effective_to',
+  created_at: 'created_at'
+};
+
+exports.Prisma.CallCostItemScalarFieldEnum = {
+  id: 'id',
+  call_uuid: 'call_uuid',
+  pricing_rate_uuid: 'pricing_rate_uuid',
+  category: 'category',
+  description: 'description',
+  quantity: 'quantity',
+  unit: 'unit',
+  unit_price: 'unit_price',
+  amount: 'amount',
+  currency: 'currency',
+  created_at: 'created_at'
+};
+
+exports.Prisma.CallActionScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  call_uuid: 'call_uuid',
+  agent_uuid: 'agent_uuid',
+  integration_uuid: 'integration_uuid',
+  crm_tool_uuid: 'crm_tool_uuid',
+  automation_action_uuid: 'automation_action_uuid',
+  kind: 'kind',
+  tool_key: 'tool_key',
+  status: 'status',
+  request_payload: 'request_payload',
+  result: 'result',
+  rejection_reason: 'rejection_reason',
+  attempt_count: 'attempt_count',
+  max_attempts: 'max_attempts',
+  next_retry_at: 'next_retry_at',
+  last_error: 'last_error',
+  executed_at: 'executed_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ProviderEventScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  event_type: 'event_type',
+  dedupe_key: 'dedupe_key',
+  external_call_id: 'external_call_id',
+  call_uuid: 'call_uuid',
+  payload: 'payload',
+  signature_verified: 'signature_verified',
+  status: 'status',
+  attempts: 'attempts',
+  error: 'error',
+  received_at: 'received_at',
+  processed_at: 'processed_at'
+};
+
+exports.Prisma.ScheduledCallScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  agent_uuid: 'agent_uuid',
+  contact_uuid: 'contact_uuid',
+  origin_call_uuid: 'origin_call_uuid',
+  source: 'source',
+  status: 'status',
+  scheduled_for: 'scheduled_for',
+  attempt_number: 'attempt_number',
+  closed_reason: 'closed_reason',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.RetryRuleScalarFieldEnum = {
+  id: 'id',
+  agent_uuid: 'agent_uuid',
+  is_enabled: 'is_enabled',
+  max_attempts: 'max_attempts',
+  delays_minutes: 'delays_minutes',
+  retry_on: 'retry_on',
+  calling_hours_override: 'calling_hours_override',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AutomationRuleScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  agent_uuid: 'agent_uuid',
+  outcome_uuid: 'outcome_uuid',
+  name: 'name',
+  trigger: 'trigger',
+  conditions: 'conditions',
+  is_enabled: 'is_enabled',
+  position: 'position',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AutomationActionScalarFieldEnum = {
+  id: 'id',
+  rule_uuid: 'rule_uuid',
+  type: 'type',
+  config: 'config',
+  delay_minutes: 'delay_minutes',
+  position: 'position',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.ActivityLogScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  user_uuid: 'user_uuid',
+  actor_type: 'actor_type',
+  action: 'action',
+  entity_type: 'entity_type',
+  entity_uuid: 'entity_uuid',
+  metadata: 'metadata',
+  ip_address: 'ip_address',
+  created_at: 'created_at'
+};
+
+exports.Prisma.AlertScalarFieldEnum = {
+  id: 'id',
+  company_uuid: 'company_uuid',
+  type: 'type',
+  severity: 'severity',
+  status: 'status',
+  title: 'title',
+  message: 'message',
+  entity_type: 'entity_type',
+  entity_uuid: 'entity_uuid',
+  metadata: 'metadata',
+  resolved_at: 'resolved_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -164,6 +666,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.AuthRole = exports.$Enums.AuthRole = {
   USER: 'USER',
@@ -180,13 +688,312 @@ exports.DocumentType = exports.$Enums.DocumentType = {
   AUDIO: 'AUDIO',
   PDF: 'PDF',
   DOCUMENT: 'DOCUMENT',
+  KNOWLEDGE: 'KNOWLEDGE',
   OTHER: 'OTHER'
+};
+
+exports.CompanyRole = exports.$Enums.CompanyRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER',
+  VIEWER: 'VIEWER'
+};
+
+exports.AgentStatus = exports.$Enums.AgentStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+};
+
+exports.GoalRequirement = exports.$Enums.GoalRequirement = {
+  REQUIRED: 'REQUIRED',
+  OPTIONAL: 'OPTIONAL'
+};
+
+exports.GoalDataType = exports.$Enums.GoalDataType = {
+  STRING: 'STRING',
+  BOOLEAN: 'BOOLEAN',
+  NUMBER: 'NUMBER',
+  DATE: 'DATE',
+  ENUM: 'ENUM'
+};
+
+exports.OutcomeSystemType = exports.$Enums.OutcomeSystemType = {
+  VOICEMAIL: 'VOICEMAIL',
+  NO_ANSWER: 'NO_ANSWER',
+  WRONG_NUMBER: 'WRONG_NUMBER',
+  UNKNOWN: 'UNKNOWN'
+};
+
+exports.VoiceProvider = exports.$Enums.VoiceProvider = {
+  RETELL: 'RETELL'
+};
+
+exports.SyncStatus = exports.$Enums.SyncStatus = {
+  PENDING: 'PENDING',
+  SYNCED: 'SYNCED',
+  FAILED: 'FAILED'
+};
+
+exports.IntegrationCategory = exports.$Enums.IntegrationCategory = {
+  CRM: 'CRM',
+  KNOWLEDGE: 'KNOWLEDGE',
+  CALENDAR: 'CALENDAR',
+  EMAIL: 'EMAIL',
+  MESSAGING: 'MESSAGING',
+  STORAGE: 'STORAGE',
+  OTHER: 'OTHER'
+};
+
+exports.IntegrationProvider = exports.$Enums.IntegrationProvider = {
+  HUBSPOT: 'HUBSPOT',
+  SALESFORCE: 'SALESFORCE',
+  PIPEDRIVE: 'PIPEDRIVE',
+  ZOHO: 'ZOHO',
+  CUSTOM_CRM: 'CUSTOM_CRM',
+  GENERIC_API: 'GENERIC_API',
+  GOOGLE_DOCS: 'GOOGLE_DOCS',
+  GOOGLE_DRIVE: 'GOOGLE_DRIVE',
+  GOOGLE_CALENDAR: 'GOOGLE_CALENDAR',
+  GMAIL: 'GMAIL',
+  NOTION: 'NOTION',
+  DROPBOX: 'DROPBOX',
+  SHAREPOINT: 'SHAREPOINT',
+  SLACK: 'SLACK',
+  OTHER: 'OTHER'
+};
+
+exports.IntegrationStatus = exports.$Enums.IntegrationStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  ERROR: 'ERROR',
+  DISCONNECTED: 'DISCONNECTED'
+};
+
+exports.IntegrationAuthType = exports.$Enums.IntegrationAuthType = {
+  API_KEY: 'API_KEY',
+  BEARER_TOKEN: 'BEARER_TOKEN',
+  BASIC: 'BASIC',
+  OAUTH2: 'OAUTH2',
+  CUSTOM_HEADERS: 'CUSTOM_HEADERS'
+};
+
+exports.MappingDirection = exports.$Enums.MappingDirection = {
+  READ: 'READ',
+  WRITE: 'WRITE',
+  BOTH: 'BOTH'
+};
+
+exports.CrmRecordType = exports.$Enums.CrmRecordType = {
+  CONTACT: 'CONTACT',
+  LEAD: 'LEAD',
+  COMPANY: 'COMPANY',
+  DEAL: 'DEAL',
+  OTHER: 'OTHER'
+};
+
+exports.KnowledgeSourceType = exports.$Enums.KnowledgeSourceType = {
+  TEXT: 'TEXT',
+  FILE: 'FILE',
+  GOOGLE_DOCS: 'GOOGLE_DOCS',
+  NOTION: 'NOTION',
+  GOOGLE_DRIVE: 'GOOGLE_DRIVE',
+  DROPBOX: 'DROPBOX',
+  SHAREPOINT: 'SHAREPOINT'
+};
+
+exports.KnowledgeStatus = exports.$Enums.KnowledgeStatus = {
+  PROCESSING: 'PROCESSING',
+  READY: 'READY',
+  FAILED: 'FAILED'
+};
+
+exports.PhoneNumberSource = exports.$Enums.PhoneNumberSource = {
+  PROVISIONED: 'PROVISIONED',
+  BYO: 'BYO'
+};
+
+exports.PhoneNumberStatus = exports.$Enums.PhoneNumberStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  ERROR: 'ERROR',
+  RELEASED: 'RELEASED'
+};
+
+exports.CallDirection = exports.$Enums.CallDirection = {
+  INBOUND: 'INBOUND',
+  OUTBOUND: 'OUTBOUND'
+};
+
+exports.CallStatus = exports.$Enums.CallStatus = {
+  SCHEDULED: 'SCHEDULED',
+  QUEUED: 'QUEUED',
+  RINGING: 'RINGING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  TRANSFERRED: 'TRANSFERRED',
+  NO_ANSWER: 'NO_ANSWER',
+  BUSY: 'BUSY',
+  FAILED: 'FAILED',
+  CANCELED: 'CANCELED'
+};
+
+exports.ProcessingStatus = exports.$Enums.ProcessingStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+};
+
+exports.CostCategory = exports.$Enums.CostCategory = {
+  AI: 'AI',
+  TELEPHONY: 'TELEPHONY',
+  OTHER: 'OTHER'
+};
+
+exports.CostUnit = exports.$Enums.CostUnit = {
+  SECOND: 'SECOND',
+  MINUTE: 'MINUTE',
+  CALL: 'CALL',
+  TOKEN: 'TOKEN',
+  MESSAGE: 'MESSAGE'
+};
+
+exports.ActionKind = exports.$Enums.ActionKind = {
+  CRM: 'CRM',
+  CALENDAR: 'CALENDAR',
+  EMAIL: 'EMAIL',
+  MESSAGING: 'MESSAGING',
+  OTHER: 'OTHER'
+};
+
+exports.ActionStatus = exports.$Enums.ActionStatus = {
+  REQUESTED: 'REQUESTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  EXECUTED: 'EXECUTED',
+  FAILED: 'FAILED',
+  RETRYING: 'RETRYING',
+  NEEDS_ATTENTION: 'NEEDS_ATTENTION',
+  CANCELED: 'CANCELED'
+};
+
+exports.ProviderEventStatus = exports.$Enums.ProviderEventStatus = {
+  RECEIVED: 'RECEIVED',
+  PROCESSED: 'PROCESSED',
+  FAILED: 'FAILED',
+  IGNORED: 'IGNORED'
+};
+
+exports.ScheduledCallSource = exports.$Enums.ScheduledCallSource = {
+  MANUAL: 'MANUAL',
+  RETRY: 'RETRY',
+  AUTOMATION: 'AUTOMATION',
+  FOLLOW_UP: 'FOLLOW_UP'
+};
+
+exports.ScheduledCallStatus = exports.$Enums.ScheduledCallStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELED: 'CANCELED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED'
+};
+
+exports.RetryTrigger = exports.$Enums.RetryTrigger = {
+  NO_ANSWER: 'NO_ANSWER',
+  BUSY: 'BUSY',
+  FAILED: 'FAILED',
+  VOICEMAIL: 'VOICEMAIL'
+};
+
+exports.AutomationTrigger = exports.$Enums.AutomationTrigger = {
+  CALL_OUTCOME: 'CALL_OUTCOME',
+  CALL_COMPLETED: 'CALL_COMPLETED',
+  CALL_FAILED: 'CALL_FAILED',
+  CALL_TRANSFERRED: 'CALL_TRANSFERRED',
+  VOICEMAIL_DETECTED: 'VOICEMAIL_DETECTED'
+};
+
+exports.AutomationActionType = exports.$Enums.AutomationActionType = {
+  UPDATE_CRM: 'UPDATE_CRM',
+  ADD_CRM_NOTE: 'ADD_CRM_NOTE',
+  CREATE_CRM_TASK: 'CREATE_CRM_TASK',
+  SCHEDULE_FOLLOW_UP: 'SCHEDULE_FOLLOW_UP',
+  CANCEL_FOLLOW_UPS: 'CANCEL_FOLLOW_UPS',
+  CREATE_CALENDAR_EVENT: 'CREATE_CALENDAR_EVENT',
+  SEND_EMAIL: 'SEND_EMAIL',
+  SEND_SMS: 'SEND_SMS',
+  WEBHOOK: 'WEBHOOK'
+};
+
+exports.ActorType = exports.$Enums.ActorType = {
+  USER: 'USER',
+  SYSTEM: 'SYSTEM',
+  AGENT: 'AGENT',
+  PROVIDER: 'PROVIDER'
+};
+
+exports.AlertType = exports.$Enums.AlertType = {
+  INTEGRATION_FAILED: 'INTEGRATION_FAILED',
+  AI_SERVICE_UNAVAILABLE: 'AI_SERVICE_UNAVAILABLE',
+  CALL_FAILED: 'CALL_FAILED',
+  KNOWLEDGE_PROCESSING_FAILED: 'KNOWLEDGE_PROCESSING_FAILED',
+  CRM_UPDATE_FAILED: 'CRM_UPDATE_FAILED',
+  INVALID_PHONE_NUMBER: 'INVALID_PHONE_NUMBER',
+  NO_PHONE_NUMBER_AVAILABLE: 'NO_PHONE_NUMBER_AVAILABLE',
+  OTHER: 'OTHER'
+};
+
+exports.AlertSeverity = exports.$Enums.AlertSeverity = {
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  ERROR: 'ERROR'
+};
+
+exports.AlertStatus = exports.$Enums.AlertStatus = {
+  OPEN: 'OPEN',
+  RESOLVED: 'RESOLVED',
+  DISMISSED: 'DISMISSED'
 };
 
 exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
-  Document: 'Document'
+  Document: 'Document',
+  Company: 'Company',
+  CompanyMember: 'CompanyMember',
+  CompanyInvitation: 'CompanyInvitation',
+  CompanyCallingHour: 'CompanyCallingHour',
+  Agent: 'Agent',
+  AgentGoalItem: 'AgentGoalItem',
+  AgentQuestion: 'AgentQuestion',
+  AgentOutcome: 'AgentOutcome',
+  AgentTransferOutcome: 'AgentTransferOutcome',
+  AgentAccess: 'AgentAccess',
+  AgentProviderLink: 'AgentProviderLink',
+  Integration: 'Integration',
+  CrmTool: 'CrmTool',
+  AgentCrmTool: 'AgentCrmTool',
+  CrmFieldMapping: 'CrmFieldMapping',
+  Contact: 'Contact',
+  KnowledgeSource: 'KnowledgeSource',
+  KnowledgeSourceVersion: 'KnowledgeSourceVersion',
+  AgentKnowledgeSource: 'AgentKnowledgeSource',
+  PhoneNumber: 'PhoneNumber',
+  Call: 'Call',
+  CallEvent: 'CallEvent',
+  PricingRate: 'PricingRate',
+  CallCostItem: 'CallCostItem',
+  CallAction: 'CallAction',
+  ProviderEvent: 'ProviderEvent',
+  ScheduledCall: 'ScheduledCall',
+  RetryRule: 'RetryRule',
+  AutomationRule: 'AutomationRule',
+  AutomationAction: 'AutomationAction',
+  ActivityLog: 'ActivityLog',
+  Alert: 'Alert'
 };
 
 /**

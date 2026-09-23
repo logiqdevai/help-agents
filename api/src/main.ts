@@ -1,14 +1,24 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { parseCorsUrls, resolveCorsOrigins } from './shared/config/cors';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // rawBody is required to verify provider webhook signatures (req.rawBody).
+  const app = await NestFactory.create(AppModule, { rawBody: true });
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      transformOptions: { enableImplicitConversion: false },
+    }),
+  );
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Appointly API')
-    .setDescription('The Appointly API documentation')
+    .setTitle('Voice Agent Platform API')
+    .setDescription('AI voice agent platform API documentation')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -27,7 +37,7 @@ async function bootstrap() {
     origin: corsOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Access-Control-Allow-Origin'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Access-Control-Allow-Origin', 'X-Company-Id'],
   });
 
   const port = process.env.PORT ? Number(process.env.PORT) : 3000;

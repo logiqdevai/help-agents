@@ -1,5 +1,45 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+export class AuthUserEntity {
+    @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
+    id: string;
+
+    @ApiProperty({ example: 'user@example.com' })
+    email: string;
+
+    @ApiProperty({ nullable: true })
+    name: string | null;
+
+    @ApiProperty({ nullable: true })
+    phone: string | null;
+
+    @ApiProperty({ nullable: true, example: 'Europe/Athens' })
+    timezone: string | null;
+
+    @ApiProperty({ nullable: true, example: 'en' })
+    language: string | null;
+
+    @ApiProperty({ example: 'USER' })
+    role: string;
+
+    @ApiProperty()
+    email_verified: boolean;
+
+    @ApiProperty()
+    created_at: Date;
+}
+
+export class AuthCompanyEntity {
+    @ApiProperty()
+    id: string;
+
+    @ApiProperty()
+    name: string;
+
+    @ApiProperty({ example: 'OWNER' })
+    role: string;
+}
+
 export class AuthResponse {
     @ApiProperty({
         description: 'JWT access token for authentication',
@@ -7,22 +47,12 @@ export class AuthResponse {
     })
     access_token: string;
 
-    @ApiProperty({
-        description: 'User information',
-        type: 'object',
-        properties: {
-            id: { type: 'string', example: '123e4567-e89b-12d3-a456-426614174000' },
-            email: { type: 'string', example: 'user@example.com' },
-            phone: { type: 'string', example: '+1234567890', nullable: true },
-            created_at: { type: 'string', example: '2024-01-01T00:00:00.000Z' },
-            updated_at: { type: 'string', example: '2024-01-01T00:00:00.000Z' },
-        }
-    })
-    user: {
-        id: string;
-        email?: string;
-        phone?: string;
-        created_at: Date;
-        updated_at: Date;
-    };
+    @ApiProperty({ description: 'Token expiry as a unix timestamp (seconds)' })
+    expires_in: number;
+
+    @ApiProperty({ type: AuthUserEntity })
+    user: AuthUserEntity;
+
+    @ApiProperty({ type: [AuthCompanyEntity], description: 'Companies the user belongs to' })
+    companies: AuthCompanyEntity[];
 }

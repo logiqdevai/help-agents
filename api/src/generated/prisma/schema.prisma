@@ -1,8 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// AI Voice Agent Platform — Prisma schema (see docs/Product_Specification.md)
+//
+// Conventions
+// - Every tenant-owned table carries company_uuid; all queries must be scoped by it.
+// - Voice-provider details (external ids, sync state, webhooks) live in dedicated
+//   *ProviderLink / provider_* columns and are never exposed to customers.
+// - Secrets are stored encrypted (credentials_encrypted) with only a masked hint.
 
 generator client {
   provider = "prisma-client-js"
@@ -13,11 +15,23 @@ datasource db {
   provider = "postgresql"
 }
 
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+// Platform-level role (JWT / RolesGuard). Company-level access is CompanyRole.
 enum AuthRole {
   USER
   ADMIN
   SUPER_ADMIN
   SUPPORT
+}
+
+enum CompanyRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
 }
 
 enum DocumentType {
@@ -28,24 +42,299 @@ enum DocumentType {
   AUDIO
   PDF
   DOCUMENT
+  KNOWLEDGE
   OTHER
 }
 
+enum AgentStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+}
+
+enum GoalRequirement {
+  REQUIRED
+  OPTIONAL
+}
+
+enum GoalDataType {
+  STRING
+  BOOLEAN
+  NUMBER
+  DATE
+  ENUM
+}
+
+// Lets the platform map automatically detected results onto an agent's own outcomes.
+enum OutcomeSystemType {
+  VOICEMAIL
+  NO_ANSWER
+  WRONG_NUMBER
+  UNKNOWN
+}
+
+enum IntegrationCategory {
+  CRM
+  KNOWLEDGE
+  CALENDAR
+  EMAIL
+  MESSAGING
+  STORAGE
+  OTHER
+}
+
+enum IntegrationProvider {
+  HUBSPOT
+  SALESFORCE
+  PIPEDRIVE
+  ZOHO
+  CUSTOM_CRM
+  GENERIC_API
+  GOOGLE_DOCS
+  GOOGLE_DRIVE
+  GOOGLE_CALENDAR
+  GMAIL
+  NOTION
+  DROPBOX
+  SHAREPOINT
+  SLACK
+  OTHER
+}
+
+enum IntegrationStatus {
+  PENDING
+  ACTIVE
+  ERROR
+  DISCONNECTED
+}
+
+enum IntegrationAuthType {
+  API_KEY
+  BEARER_TOKEN
+  BASIC
+  OAUTH2
+  CUSTOM_HEADERS
+}
+
+enum CrmRecordType {
+  CONTACT
+  LEAD
+  COMPANY
+  DEAL
+  OTHER
+}
+
+enum MappingDirection {
+  READ
+  WRITE
+  BOTH
+}
+
+enum KnowledgeSourceType {
+  TEXT
+  FILE
+  GOOGLE_DOCS
+  NOTION
+  GOOGLE_DRIVE
+  DROPBOX
+  SHAREPOINT
+}
+
+enum KnowledgeStatus {
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum PhoneNumberSource {
+  PROVISIONED
+  BYO
+}
+
+enum PhoneNumberStatus {
+  PENDING
+  ACTIVE
+  ERROR
+  RELEASED
+}
+
+// Internal only — never surfaced to customers.
+enum VoiceProvider {
+  RETELL
+}
+
+enum SyncStatus {
+  PENDING
+  SYNCED
+  FAILED
+}
+
+enum CallDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum CallStatus {
+  SCHEDULED
+  QUEUED
+  RINGING
+  IN_PROGRESS
+  COMPLETED
+  TRANSFERRED
+  NO_ANSWER
+  BUSY
+  FAILED
+  CANCELED
+}
+
+enum ProcessingStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum CostCategory {
+  AI
+  TELEPHONY
+  OTHER
+}
+
+enum CostUnit {
+  SECOND
+  MINUTE
+  CALL
+  TOKEN
+  MESSAGE
+}
+
+enum ActionKind {
+  CRM
+  CALENDAR
+  EMAIL
+  MESSAGING
+  OTHER
+}
+
+// Lifecycle of an action the AI requested. Platform validates before EXECUTED.
+enum ActionStatus {
+  REQUESTED
+  APPROVED
+  REJECTED
+  EXECUTED
+  FAILED
+  RETRYING
+  NEEDS_ATTENTION
+  CANCELED
+}
+
+enum ScheduledCallStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+  FAILED
+  SKIPPED
+}
+
+enum ScheduledCallSource {
+  MANUAL
+  RETRY
+  AUTOMATION
+  FOLLOW_UP
+}
+
+enum RetryTrigger {
+  NO_ANSWER
+  BUSY
+  FAILED
+  VOICEMAIL
+}
+
+enum AutomationTrigger {
+  CALL_OUTCOME
+  CALL_COMPLETED
+  CALL_FAILED
+  CALL_TRANSFERRED
+  VOICEMAIL_DETECTED
+}
+
+enum AutomationActionType {
+  UPDATE_CRM
+  ADD_CRM_NOTE
+  CREATE_CRM_TASK
+  SCHEDULE_FOLLOW_UP
+  CANCEL_FOLLOW_UPS
+  CREATE_CALENDAR_EVENT
+  SEND_EMAIL
+  SEND_SMS
+  WEBHOOK
+}
+
+enum ProviderEventStatus {
+  RECEIVED
+  PROCESSED
+  FAILED
+  IGNORED
+}
+
+enum ActorType {
+  USER
+  SYSTEM
+  AGENT
+  PROVIDER
+}
+
+enum AlertType {
+  INTEGRATION_FAILED
+  AI_SERVICE_UNAVAILABLE
+  CALL_FAILED
+  KNOWLEDGE_PROCESSING_FAILED
+  CRM_UPDATE_FAILED
+  INVALID_PHONE_NUMBER
+  NO_PHONE_NUMBER_AVAILABLE
+  OTHER
+}
+
+enum AlertSeverity {
+  INFO
+  WARNING
+  ERROR
+}
+
+enum AlertStatus {
+  OPEN
+  RESOLVED
+  DISMISSED
+}
+
+// ============================================================================
+// ACCOUNTS & AUTH
+// ============================================================================
+
 model User {
-  id       String  @id @default(uuid())
-  email    String  @unique
-  phone    String? @unique
-  password String
+  id                String    @id @default(uuid())
+  email             String    @unique
+  phone             String?   @unique
+  password          String
+  name              String?
+  timezone          String?
+  language          String?
+  role              AuthRole
+  email_verified_at DateTime?
+  last_login_at     DateTime?
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
 
-  role       AuthRole
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  password_reset_tokens      PasswordResetToken[]
+  company_members            CompanyMember[]
+  sent_invitations           CompanyInvitation[]
+  created_agents             Agent[]
+  created_integrations       Integration[]
+  added_knowledge_sources    KnowledgeSource[]
+  created_knowledge_versions KnowledgeSourceVersion[]
+  activity_logs              ActivityLog[]
 
-  password_reset_tokens PasswordResetToken[]
-
-  @@index([email])
-  @@index([phone])
-  @@index([id])
   @@map("users")
 }
 
@@ -65,17 +354,914 @@ model PasswordResetToken {
 }
 
 model Document {
-  id         String       @id @default(uuid())
-  user_uuid  String
-  filename   String
-  mimetype   String
-  size       Int
-  url        String
-  path       String
-  type       DocumentType @default(LOGO)
-  created_at DateTime     @default(now())
+  id           String       @id @default(uuid())
+  user_uuid    String
+  company_uuid String?
+  filename     String
+  mimetype     String
+  size         Int
+  url          String
+  path         String
+  type         DocumentType @default(LOGO)
+  created_at   DateTime     @default(now())
+
+  company                   Company?                 @relation(fields: [company_uuid], references: [id], onDelete: SetNull)
+  knowledge_source_versions KnowledgeSourceVersion[]
 
   @@index([user_uuid])
-  @@index([id])
+  @@index([company_uuid])
   @@map("documents")
+}
+
+// ============================================================================
+// COMPANIES & TEAMS
+// ============================================================================
+
+model Company {
+  id                       String    @id @default(uuid())
+  name                     String
+  website                  String?
+  phone                    String?
+  timezone                 String    @default("UTC")
+  // How long call recordings are kept; null = keep until manually deleted.
+  recording_retention_days Int?
+  stripe_customer_id       String?   @unique
+  deletion_requested_at    DateTime?
+  deleted_at               DateTime?
+  created_at               DateTime  @default(now())
+  updated_at               DateTime  @updatedAt
+
+  members            CompanyMember[]
+  invitations        CompanyInvitation[]
+  calling_hours      CompanyCallingHour[]
+  agents             Agent[]
+  integrations       Integration[]
+  crm_field_mappings CrmFieldMapping[]
+  crm_tools          CrmTool[]
+  contacts           Contact[]
+  knowledge_sources  KnowledgeSource[]
+  phone_numbers      PhoneNumber[]
+  calls              Call[]
+  call_actions       CallAction[]
+  scheduled_calls    ScheduledCall[]
+  automation_rules   AutomationRule[]
+  pricing_rates      PricingRate[]
+  activity_logs      ActivityLog[]
+  alerts             Alert[]
+  documents          Document[]
+
+  @@index([deleted_at])
+  @@map("companies")
+}
+
+model CompanyMember {
+  id           String      @id @default(uuid())
+  company_uuid String
+  user_uuid    String
+  role         CompanyRole @default(MEMBER)
+  // Extra fine-grained grants layered on top of the role.
+  permissions  String[]    @default([])
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+
+  company      Company       @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
+  agent_access AgentAccess[]
+
+  @@unique([company_uuid, user_uuid])
+  @@index([user_uuid])
+  @@map("company_members")
+}
+
+model CompanyInvitation {
+  id              String      @id @default(uuid())
+  company_uuid    String
+  email           String
+  role            CompanyRole @default(MEMBER)
+  token_hash      String      @unique
+  invited_by_uuid String?
+  expires_at      DateTime
+  accepted_at     DateTime?
+  revoked_at      DateTime?
+  created_at      DateTime    @default(now())
+
+  company    Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  invited_by User?   @relation(fields: [invited_by_uuid], references: [id], onDelete: SetNull)
+
+  @@index([company_uuid])
+  @@index([email])
+  @@map("company_invitations")
+}
+
+// Allowed calling windows per weekday (0 = Sunday ... 6 = Saturday), in the company timezone.
+// Times are "HH:mm". is_enabled = false means "No calling" that day.
+model CompanyCallingHour {
+  id           String   @id @default(uuid())
+  company_uuid String
+  day_of_week  Int
+  start_time   String   @default("09:00")
+  end_time     String   @default("18:00")
+  is_enabled   Boolean  @default(true)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  company Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+
+  @@unique([company_uuid, day_of_week])
+  @@map("company_calling_hours")
+}
+
+// ============================================================================
+// VOICE AGENTS
+// ============================================================================
+
+model Agent {
+  id              String      @id @default(uuid())
+  company_uuid    String
+  created_by_uuid String?
+  name            String
+  description     String?
+  purpose         String?
+  status          AgentStatus @default(DRAFT)
+
+  voice         String?
+  language      String  @default("en")
+  first_message String?
+
+  // Plain-language behaviour description; compiled to provider config internally.
+  instructions              String  @default("")
+  goal                      String?
+  success_criteria          String?
+  failure_criteria          String?
+  max_call_duration_seconds Int?
+
+  // Integrations
+  crm_integration_uuid String?
+
+  // Personalization: extra context passed to the agent before a call.
+  personalization_config Json?
+
+  // Voicemail handling
+  detect_voicemail  Boolean @default(true)
+  leave_voicemail   Boolean @default(false)
+  voicemail_message String?
+
+  // Human transfer
+  transfer_enabled          Boolean @default(false)
+  transfer_on_request       Boolean @default(true)
+  transfer_on_unresolved    Boolean @default(false)
+  transfer_number           String?
+  transfer_fallback_message String?
+
+  activated_at DateTime?
+  deleted_at   DateTime?
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+
+  company         Company      @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  created_by      User?        @relation(fields: [created_by_uuid], references: [id], onDelete: SetNull)
+  crm_integration Integration? @relation("AgentCrmIntegration", fields: [crm_integration_uuid], references: [id], onDelete: SetNull)
+
+  goal_items         AgentGoalItem[]
+  questions          AgentQuestion[]
+  outcomes           AgentOutcome[]
+  transfer_outcomes  AgentTransferOutcome[]
+  crm_tools          AgentCrmTool[]
+  knowledge_sources  AgentKnowledgeSource[]
+  provider_links     AgentProviderLink[]
+  access             AgentAccess[]
+  crm_field_mappings CrmFieldMapping[]
+  phone_numbers      PhoneNumber[]
+  retry_rule         RetryRule?
+  automation_rules   AutomationRule[]
+  scheduled_calls    ScheduledCall[]
+  calls              Call[]
+  call_actions       CallAction[]
+
+  @@index([company_uuid, status])
+  @@index([company_uuid, deleted_at])
+  @@index([crm_integration_uuid])
+  @@map("agents")
+}
+
+// Structured checklist of information the agent must / should come away with.
+model AgentGoalItem {
+  id          String          @id @default(uuid())
+  agent_uuid  String
+  key         String
+  label       String
+  description String?
+  requirement GoalRequirement @default(REQUIRED)
+  data_type   GoalDataType    @default(STRING)
+  enum_values String[]        @default([])
+  position    Int             @default(0)
+  created_at  DateTime        @default(now())
+  updated_at  DateTime        @updatedAt
+
+  agent Agent @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)
+
+  @@unique([agent_uuid, key])
+  @@index([agent_uuid, position])
+  @@map("agent_goal_items")
+}
+
+// Questions worked naturally into the conversation (not a rigid script).
+model AgentQuestion {
+  id              String   @id @default(uuid())
+  agent_uuid      String
+  question        String
+  is_required     Boolean  @default(true)
+  expected_answer String?
+  position        Int      @default(0)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  agent Agent @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)
+
+  @@index([agent_uuid, position])
+  @@map("agent_questions")
+}
+
+model AgentOutcome {
+  id          String             @id @default(uuid())
+  agent_uuid  String
+  key         String
+  label       String
+  description String?
+  is_success  Boolean            @default(false)
+  system_type OutcomeSystemType?
+  position    Int                @default(0)
+  created_at  DateTime           @default(now())
+  updated_at  DateTime           @updatedAt
+
+  agent             Agent                  @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)
+  automation_rules  AutomationRule[]
+  transfer_triggers AgentTransferOutcome[]
+  calls             Call[]
+
+  @@unique([agent_uuid, key])
+  @@index([agent_uuid, position])
+  @@map("agent_outcomes")
+}
+
+// "Transfer to a human when a specific outcome is reached".
+model AgentTransferOutcome {
+  agent_uuid   String
+  outcome_uuid String
+
+  agent   Agent        @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)
+  outcome AgentOutcome @relation(fields: [outcome_uuid], references: [id], onDelete: Cascade)
+
+  @@id([agent_uuid, outcome_uuid])
+  @@map("agent_transfer_outcomes")
+}
+
+// Members with restricted access only see agents they were granted.
+model AgentAccess {
+  agent_uuid  String
+  member_uuid String
+  created_at  DateTime @default(now())
+
+  agent  Agent         @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)
+  member CompanyMember @relation(fields: [member_uuid], references: [id], onDelete: Cascade)
+
+  @@id([agent_uuid, member_uuid])
+  @@index([member_uuid])
+  @@map("agent_access")
+}
+
+// Internal link to the voice provider's agent. Never exposed to customers.
+// Retell splits an agent into the agent (voice, versioned) and its response-engine
+// LLM (prompt, tools, knowledge_base_ids, versioned); both must be tracked.
+model AgentProviderLink {
+  id                String        @id @default(uuid())
+  agent_uuid        String
+  provider          VoiceProvider
+  external_agent_id String
+  external_llm_id   String?
+  agent_version     Int?
+  llm_version       Int?
+  is_published      Boolean       @default(false)
+  config_hash       String?
+  sync_status       SyncStatus    @default(PENDING)
+  synced_at         DateTime?
+  last_error        String?
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+
+  agent Agent @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)
+
+  @@unique([agent_uuid, provider])
+  @@unique([provider, external_agent_id])
+  @@unique([provider, external_llm_id])
+  @@map("agent_provider_links")
+}
+
+// ============================================================================
+// INTEGRATIONS (CRM, knowledge, calendar, messaging, ...)
+// ============================================================================
+
+model Integration {
+  id              String              @id @default(uuid())
+  company_uuid    String
+  created_by_uuid String?
+  category        IntegrationCategory
+  provider        IntegrationProvider
+  name            String
+  status          IntegrationStatus   @default(PENDING)
+
+  // Custom / generic API connection details
+  base_url     String?
+  api_docs_url String?
+  auth_type    IntegrationAuthType?
+
+  // Encrypted JSON blob (keys, tokens, refresh tokens, basic auth, custom headers).
+  // Never returned by the API; only credentials_hint (e.g. "••••abcd") is shown.
+  credentials_encrypted String?
+  credentials_hint      String?
+  token_expires_at      DateTime?
+
+  config           Json?
+  last_error       String?
+  last_verified_at DateTime?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+
+  company            Company           @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  created_by         User?             @relation(fields: [created_by_uuid], references: [id], onDelete: SetNull)
+  agents             Agent[]           @relation("AgentCrmIntegration")
+  crm_field_mappings CrmFieldMapping[]
+  crm_tools          CrmTool[]
+  contacts           Contact[]
+  knowledge_sources  KnowledgeSource[]
+  call_actions       CallAction[]
+
+  @@index([company_uuid, category])
+  @@index([company_uuid, provider])
+  @@map("integrations")
+}
+
+// Catalogue of actions a CRM offers. integration_uuid = null -> platform catalogue for
+// that provider; set -> tools defined for one custom connection.
+model CrmTool {
+  id               String              @id @default(uuid())
+  company_uuid     String?
+  integration_uuid String?
+  provider         IntegrationProvider
+  key              String
+  name             String
+  description      String?
+  category         String?
+  input_schema     Json?
+  is_active        Boolean             @default(true)
+  created_at       DateTime            @default(now())
+  updated_at       DateTime            @updatedAt
+
+  company      Company?       @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  integration  Integration?   @relation(fields: [integration_uuid], references: [id], onDelete: Cascade)
+  agent_tools  AgentCrmTool[]
+  call_actions CallAction[]
+
+  @@index([provider, key])
+  @@index([integration_uuid])
+  @@index([company_uuid])
+  @@map("crm_tools")
+}
+
+// Which CRM tools a specific agent is explicitly allowed to use.
+model AgentCrmTool {
+  agent_uuid    String
+  crm_tool_uuid String
+  created_at    DateTime @default(now())
+
+  agent    Agent   @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)
+  crm_tool CrmTool @relation(fields: [crm_tool_uuid], references: [id], onDelete: Cascade)
+
+  @@id([agent_uuid, crm_tool_uuid])
+  @@index([crm_tool_uuid])
+  @@map("agent_crm_tools")
+}
+
+// Maps a platform field to a CRM field. Per connection (agent_uuid null) or per agent.
+model CrmFieldMapping {
+  id                      String           @id @default(uuid())
+  company_uuid            String
+  integration_uuid        String
+  agent_uuid              String?
+  internal_field          String
+  external_object         String?
+  external_field          String
+  direction               MappingDirection @default(BOTH)
+  use_for_personalization Boolean          @default(false)
+  transform               Json?
+  created_at              DateTime         @default(now())
+  updated_at              DateTime         @updatedAt
+
+  company     Company     @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  integration Integration @relation(fields: [integration_uuid], references: [id], onDelete: Cascade)
+  agent       Agent?      @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)
+
+  @@index([company_uuid])
+  @@index([integration_uuid, agent_uuid])
+  @@map("crm_field_mappings")
+}
+
+// Lightweight call target; real customer data stays in the CRM.
+model Contact {
+  id               String        @id @default(uuid())
+  company_uuid     String
+  integration_uuid String?
+  external_id      String?
+  record_type      CrmRecordType @default(CONTACT)
+  name             String?
+  phone            String?
+  email            String?
+  external_url     String?
+  do_not_call      Boolean       @default(false)
+  data             Json?
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @updatedAt
+
+  company         Company         @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  integration     Integration?    @relation(fields: [integration_uuid], references: [id], onDelete: SetNull)
+  calls           Call[]
+  scheduled_calls ScheduledCall[]
+
+  @@unique([company_uuid, integration_uuid, record_type, external_id])
+  @@index([company_uuid, phone])
+  @@index([company_uuid, email])
+  @@map("contacts")
+}
+
+// ============================================================================
+// KNOWLEDGE BASE
+// ============================================================================
+
+model KnowledgeSource {
+  id                String              @id @default(uuid())
+  company_uuid      String
+  added_by_uuid     String?
+  integration_uuid  String?
+  name              String
+  type              KnowledgeSourceType
+  status            KnowledgeStatus     @default(PROCESSING)
+  // Turn a source off without deleting it.
+  is_enabled        Boolean             @default(true)
+  // Version number of the currently active KnowledgeSourceVersion.
+  current_version   Int                 @default(1)
+  // Reference inside an external system (Google Doc id, Notion page id, ...).
+  external_ref      String?
+  last_error        String?
+  last_refreshed_at DateTime?
+  deleted_at        DateTime?
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+
+  company     Company                  @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  added_by    User?                    @relation(fields: [added_by_uuid], references: [id], onDelete: SetNull)
+  integration Integration?             @relation(fields: [integration_uuid], references: [id], onDelete: SetNull)
+  versions    KnowledgeSourceVersion[]
+  agents      AgentKnowledgeSource[]
+
+  @@index([company_uuid, status])
+  @@index([company_uuid, deleted_at])
+  @@map("knowledge_sources")
+}
+
+// Immutable history: edits create a new version rather than overwriting.
+model KnowledgeSourceVersion {
+  id                         String          @id @default(uuid())
+  source_uuid                String
+  version                    Int
+  created_by_uuid            String?
+  document_uuid              String?
+  content                    String
+  content_hash               String?
+  status                     KnowledgeStatus @default(PROCESSING)
+  error                      String?
+  // Retell sources can't be edited in place, so each version gets its own knowledge
+  // base (one source inside); agents attach it via the LLM's knowledge_base_ids.
+  external_knowledge_base_id String?
+  external_source_id         String?
+  indexed_at                 DateTime?
+  created_at                 DateTime        @default(now())
+
+  source     KnowledgeSource @relation(fields: [source_uuid], references: [id], onDelete: Cascade)
+  created_by User?           @relation(fields: [created_by_uuid], references: [id], onDelete: SetNull)
+  document   Document?       @relation(fields: [document_uuid], references: [id], onDelete: SetNull)
+
+  @@unique([source_uuid, version])
+  @@index([external_knowledge_base_id])
+  @@map("knowledge_source_versions")
+}
+
+model AgentKnowledgeSource {
+  agent_uuid  String
+  source_uuid String
+  created_at  DateTime @default(now())
+
+  agent  Agent           @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)
+  source KnowledgeSource @relation(fields: [source_uuid], references: [id], onDelete: Cascade)
+
+  @@id([agent_uuid, source_uuid])
+  @@index([source_uuid])
+  @@map("agent_knowledge_sources")
+}
+
+// ============================================================================
+// PHONE NUMBERS
+// ============================================================================
+
+model PhoneNumber {
+  id                   String            @id @default(uuid())
+  company_uuid         String
+  agent_uuid           String?
+  number               String            @unique
+  label                String?
+  source               PhoneNumberSource
+  status               PhoneNumberStatus @default(PENDING)
+  provider             VoiceProvider
+  // Retell identifies numbers by their E.164 value, so this equals `number`.
+  external_id          String?
+  // Retell type: retell-twilio | retell-telnyx | custom (BYO via SIP trunk).
+  provider_number_type String?
+  // Binding an agent sets both inbound and outbound agents (weight 1) on the number.
+  // BYO numbers: SIP termination URI / verification details.
+  byo_config           Json?
+  last_error           String?
+  created_at           DateTime          @default(now())
+  updated_at           DateTime          @updatedAt
+
+  company Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  agent   Agent?  @relation(fields: [agent_uuid], references: [id], onDelete: SetNull)
+  calls   Call[]
+
+  @@index([company_uuid, status])
+  @@index([agent_uuid])
+  @@map("phone_numbers")
+}
+
+// ============================================================================
+// CALLS
+// ============================================================================
+
+model Call {
+  id                  String  @id @default(uuid())
+  // Human-friendly sequential number ("Call #18372").
+  call_number         Int     @unique @default(autoincrement())
+  company_uuid        String
+  agent_uuid          String
+  contact_uuid        String?
+  phone_number_uuid   String?
+  scheduled_call_uuid String? @unique
+  outcome_uuid        String?
+
+  direction      CallDirection
+  status         CallStatus    @default(QUEUED)
+  is_test        Boolean       @default(false)
+  attempt_number Int           @default(1)
+  from_number    String?
+  to_number      String?
+  contact_name   String?
+
+  // Snapshot so history survives later edits to the outcome.
+  outcome_key   String?
+  outcome_label String?
+  is_successful Boolean?
+
+  provider               VoiceProvider
+  external_call_id       String?
+  // Provider agent version the call ran on (Retell agents are versioned).
+  provider_agent_version Int?
+
+  queued_at         DateTime?
+  started_at        DateTime?
+  answered_at       DateTime?
+  ended_at          DateTime?
+  duration_seconds  Int?
+  disconnect_reason String?
+
+  summary         String?
+  transcript      Json?
+  transcript_text String?
+  // Values collected against the agent's goal items / questions.
+  gathered_data   Json?
+  // Voicemail detected by the provider's post-call analysis.
+  in_voicemail    Boolean?
+  analysis_status ProcessingStatus @default(PENDING)
+
+  transferred_to  String?
+  transfer_reason String?
+
+  recording_path             String?
+  recording_duration_seconds Int?
+  recording_expires_at       DateTime?
+  recording_deleted_at       DateTime?
+
+  // What the agent was configured with / had access to at call time.
+  agent_snapshot     Json?
+  knowledge_snapshot Json?
+  // Personalization values passed to the agent before dialing (Retell dynamic variables).
+  dynamic_variables  Json?
+
+  // Raw provider-reported cost (Retell call_cost, in cents) kept for audit;
+  // customer-facing cost is calculated from PricingRate into CallCostItem.
+  provider_cost Json?
+
+  // Denormalised totals; line items live in CallCostItem.
+  ai_cost        Decimal @default(0) @db.Decimal(14, 6)
+  telephony_cost Decimal @default(0) @db.Decimal(14, 6)
+  total_cost     Decimal @default(0) @db.Decimal(14, 6)
+  currency       String  @default("EUR")
+
+  error_code    String?
+  error_message String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  company        Company        @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  agent          Agent          @relation(fields: [agent_uuid], references: [id], onDelete: NoAction)
+  contact        Contact?       @relation(fields: [contact_uuid], references: [id], onDelete: SetNull)
+  phone_number   PhoneNumber?   @relation(fields: [phone_number_uuid], references: [id], onDelete: SetNull)
+  scheduled_call ScheduledCall? @relation(fields: [scheduled_call_uuid], references: [id], onDelete: SetNull)
+  outcome        AgentOutcome?  @relation(fields: [outcome_uuid], references: [id], onDelete: SetNull)
+
+  events          CallEvent[]
+  cost_items      CallCostItem[]
+  actions         CallAction[]
+  provider_events ProviderEvent[]
+  origin_of       ScheduledCall[] @relation("ScheduledCallOrigin")
+
+  @@unique([provider, external_call_id])
+  @@index([company_uuid, started_at])
+  @@index([company_uuid, agent_uuid, started_at])
+  @@index([company_uuid, status])
+  @@index([company_uuid, outcome_key])
+  @@index([company_uuid, direction])
+  @@index([contact_uuid])
+  @@map("calls")
+}
+
+// Behind-the-scenes activity trail for troubleshooting.
+model CallEvent {
+  id          String   @id @default(uuid())
+  call_uuid   String
+  type        String
+  message     String?
+  data        Json?
+  occurred_at DateTime @default(now())
+
+  call Call @relation(fields: [call_uuid], references: [id], onDelete: Cascade)
+
+  @@index([call_uuid, occurred_at])
+  @@map("call_events")
+}
+
+// Versioned, never hard-coded pricing. company_uuid set = company-specific override.
+model PricingRate {
+  id             String         @id @default(uuid())
+  company_uuid   String?
+  key            String
+  category       CostCategory
+  provider       VoiceProvider?
+  unit           CostUnit
+  unit_price     Decimal        @db.Decimal(14, 8)
+  currency       String         @default("EUR")
+  effective_from DateTime       @default(now())
+  effective_to   DateTime?
+  created_at     DateTime       @default(now())
+
+  company    Company?       @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  cost_items CallCostItem[]
+
+  @@index([key, effective_from])
+  @@index([company_uuid])
+  @@map("pricing_rates")
+}
+
+// Cost actually calculated for a call; values are snapshotted so later price
+// changes never alter past calls.
+model CallCostItem {
+  id                String       @id @default(uuid())
+  call_uuid         String
+  pricing_rate_uuid String?
+  category          CostCategory
+  description       String
+  quantity          Decimal      @db.Decimal(14, 4)
+  unit              CostUnit
+  unit_price        Decimal      @db.Decimal(14, 8)
+  amount            Decimal      @db.Decimal(14, 6)
+  currency          String       @default("EUR")
+  created_at        DateTime     @default(now())
+
+  call         Call         @relation(fields: [call_uuid], references: [id], onDelete: Cascade)
+  pricing_rate PricingRate? @relation(fields: [pricing_rate_uuid], references: [id], onDelete: SetNull)
+
+  @@index([call_uuid])
+  @@map("call_cost_items")
+}
+
+// An action the AI *requested* during/after a call. The platform validates it
+// (agent permission, company, connection, payload) before executing. Also drives
+// automatic retries of failed CRM updates.
+model CallAction {
+  id                     String       @id @default(uuid())
+  company_uuid           String
+  call_uuid              String
+  agent_uuid             String?
+  integration_uuid       String?
+  crm_tool_uuid          String?
+  automation_action_uuid String?
+  kind                   ActionKind   @default(CRM)
+  tool_key               String
+  status                 ActionStatus @default(REQUESTED)
+  request_payload        Json?
+  result                 Json?
+  rejection_reason       String?
+  attempt_count          Int          @default(0)
+  max_attempts           Int          @default(5)
+  next_retry_at          DateTime?
+  last_error             String?
+  executed_at            DateTime?
+  created_at             DateTime     @default(now())
+  updated_at             DateTime     @updatedAt
+
+  company           Company           @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  call              Call              @relation(fields: [call_uuid], references: [id], onDelete: Cascade)
+  agent             Agent?            @relation(fields: [agent_uuid], references: [id], onDelete: SetNull)
+  integration       Integration?      @relation(fields: [integration_uuid], references: [id], onDelete: SetNull)
+  crm_tool          CrmTool?          @relation(fields: [crm_tool_uuid], references: [id], onDelete: SetNull)
+  automation_action AutomationAction? @relation(fields: [automation_action_uuid], references: [id], onDelete: SetNull)
+
+  @@index([call_uuid])
+  @@index([company_uuid, status])
+  @@index([status, next_retry_at])
+  @@map("call_actions")
+}
+
+// Inbox of verified provider webhooks; processed idempotently and retried.
+// Retell events carry no event id, so dedupe_key = `${event}:${call_id}`
+// (call_started | call_ended | call_analyzed | transfer_* ...).
+model ProviderEvent {
+  id                 String              @id @default(uuid())
+  provider           VoiceProvider
+  event_type         String
+  dedupe_key         String?
+  external_call_id   String?
+  call_uuid          String?
+  payload            Json
+  signature_verified Boolean             @default(false)
+  status             ProviderEventStatus @default(RECEIVED)
+  attempts           Int                 @default(0)
+  error              String?
+  received_at        DateTime            @default(now())
+  processed_at       DateTime?
+
+  call Call? @relation(fields: [call_uuid], references: [id], onDelete: SetNull)
+
+  @@unique([provider, dedupe_key])
+  @@index([status, received_at])
+  @@index([external_call_id])
+  @@index([call_uuid])
+  @@map("provider_events")
+}
+
+// ============================================================================
+// SCHEDULING, RETRIES & AUTOMATION
+// ============================================================================
+
+model ScheduledCall {
+  id               String              @id @default(uuid())
+  company_uuid     String
+  agent_uuid       String
+  contact_uuid     String
+  origin_call_uuid String?
+  source           ScheduledCallSource @default(MANUAL)
+  status           ScheduledCallStatus @default(PENDING)
+  scheduled_for    DateTime
+  attempt_number   Int                 @default(1)
+  closed_reason    String?
+  created_at       DateTime            @default(now())
+  updated_at       DateTime            @updatedAt
+
+  company     Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  agent       Agent   @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)
+  contact     Contact @relation(fields: [contact_uuid], references: [id], onDelete: Cascade)
+  origin_call Call?   @relation("ScheduledCallOrigin", fields: [origin_call_uuid], references: [id], onDelete: SetNull)
+  call        Call?
+
+  @@index([status, scheduled_for])
+  @@index([company_uuid, status])
+  @@index([agent_uuid])
+  @@index([contact_uuid])
+  @@map("scheduled_calls")
+}
+
+// Per-agent retry policy. delays_minutes[n] is the wait before attempt n+2
+// (e.g. [120, 1440] = 2h then 24h).
+model RetryRule {
+  id                     String         @id @default(uuid())
+  agent_uuid             String         @unique
+  is_enabled             Boolean        @default(true)
+  max_attempts           Int            @default(3)
+  delays_minutes         Int[]          @default([120, 1440])
+  retry_on               RetryTrigger[] @default([NO_ANSWER, BUSY, FAILED])
+  // null = use the company's calling hours.
+  calling_hours_override Json?
+  created_at             DateTime       @default(now())
+  updated_at             DateTime       @updatedAt
+
+  agent Agent @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)
+
+  @@map("retry_rules")
+}
+
+// "WHEN <trigger> [outcome] THEN <actions>". agent_uuid null = applies company-wide.
+model AutomationRule {
+  id           String            @id @default(uuid())
+  company_uuid String
+  agent_uuid   String?
+  outcome_uuid String?
+  name         String
+  trigger      AutomationTrigger
+  conditions   Json?
+  is_enabled   Boolean           @default(true)
+  position     Int               @default(0)
+  created_at   DateTime          @default(now())
+  updated_at   DateTime          @updatedAt
+
+  company Company            @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  agent   Agent?             @relation(fields: [agent_uuid], references: [id], onDelete: Cascade)
+  outcome AgentOutcome?      @relation(fields: [outcome_uuid], references: [id], onDelete: Cascade)
+  actions AutomationAction[]
+
+  @@index([company_uuid, trigger, is_enabled])
+  @@index([agent_uuid])
+  @@index([outcome_uuid])
+  @@map("automation_rules")
+}
+
+model AutomationAction {
+  id            String               @id @default(uuid())
+  rule_uuid     String
+  type          AutomationActionType
+  config        Json?
+  delay_minutes Int                  @default(0)
+  position      Int                  @default(0)
+  created_at    DateTime             @default(now())
+  updated_at    DateTime             @updatedAt
+
+  rule         AutomationRule @relation(fields: [rule_uuid], references: [id], onDelete: Cascade)
+  call_actions CallAction[]
+
+  @@index([rule_uuid, position])
+  @@map("automation_actions")
+}
+
+// ============================================================================
+// AUDIT & ERROR SURFACING
+// ============================================================================
+
+model ActivityLog {
+  id           String    @id @default(uuid())
+  company_uuid String
+  user_uuid    String?
+  actor_type   ActorType @default(USER)
+  action       String
+  entity_type  String?
+  entity_uuid  String?
+  metadata     Json?
+  ip_address   String?
+  created_at   DateTime  @default(now())
+
+  company Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+  user    User?   @relation(fields: [user_uuid], references: [id], onDelete: SetNull)
+
+  @@index([company_uuid, created_at])
+  @@index([company_uuid, entity_type, entity_uuid])
+  @@index([user_uuid])
+  @@map("activity_logs")
+}
+
+// User-visible problems ("CRM update failed", "Invalid phone number", ...).
+model Alert {
+  id           String        @id @default(uuid())
+  company_uuid String
+  type         AlertType
+  severity     AlertSeverity @default(ERROR)
+  status       AlertStatus   @default(OPEN)
+  title        String
+  message      String?
+  entity_type  String?
+  entity_uuid  String?
+  metadata     Json?
+  resolved_at  DateTime?
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+
+  company Company @relation(fields: [company_uuid], references: [id], onDelete: Cascade)
+
+  @@index([company_uuid, status, created_at])
+  @@index([company_uuid, entity_type, entity_uuid])
+  @@map("alerts")
 }
