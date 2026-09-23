@@ -11,10 +11,11 @@ const inter = Inter({
 });
 
 // Open-source substitute for the licensed Waldenburg Light display serif —
-// DESIGN.MD "Note on Font Substitutes". Weight stays at 300 for display use.
+// DESIGN.MD "Note on Font Substitutes". EB Garamond ships no 300 weight, so 400
+// is the lightest face available; display classes still request font-light.
 const ebGaramond = EB_Garamond({
   variable: "--font-eb-garamond",
-  weight: ["300", "400", "500"],
+  weight: ["400"],
   subsets: ["latin"],
 });
 
