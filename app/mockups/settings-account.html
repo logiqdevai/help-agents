@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account settings · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .narrow { max-width: 760px; }
+    .profile-head { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    @media (max-width: 639px) { .list-row { flex-wrap: wrap; } }
+  </style>
+</head>
+<body data-nav="settings" data-crumbs='[["Settings","settings-organization.html"],["Account"]]'>
+<div id="content">
+
+  <div class="page-head">
+    <div>
+      <h1>Settings</h1>
+      <p>Manage your company account, team and how agents are allowed to call.</p>
+    </div>
+  </div>
+
+  <nav class="subnav" aria-label="Settings">
+    <a href="settings-organization.html">Organization</a>
+    <a href="settings-team.html">Team</a>
+    <a href="settings-security.html">Security</a>
+    <a href="settings-account.html" class="active">Account</a>
+    <a href="activity-log.html">Activity log</a>
+  </nav>
+
+  <div class="stack-lg narrow">
+
+    <section class="card">
+      <div class="card-head"><div><div class="title">Profile</div><p>Your personal details. They apply to you in every company you belong to.</p></div></div>
+      <div class="card-body stack-lg">
+        <div class="profile-head">
+          <span class="avatar avatar-xl a-lavender">PR</span>
+          <div><div class="strong">Petros Rodinos</div><div class="small muted">Initials are used until you upload a photo.</div>
+            <div class="row-sm mt-2"><button class="btn btn-sm btn-outline" data-toast="Photo upload is a mockup" type="button"><i data-icon="upload" data-size="sm"></i>Upload photo</button></div></div>
+        </div>
+        <div class="form-grid">
+          <div class="field full"><label class="label" for="pname">Name</label><input class="input" id="pname" value="Petros Rodinos"></div>
+          <div class="field full"><label class="label" for="pemail">Email</label>
+            <div class="input-suffix"><input class="input" id="pemail" value="petros@hosperly.com" disabled><span class="suffix"><span class="badge b-success">Verified</span></span></div>
+            <span class="hint">Contact support to change the email on your account.</span></div>
+          <div class="field"><label class="label" for="pphone">Phone <span class="opt">Optional</span></label><input class="input" id="pphone" value="+30 697 555 0100"></div>
+          <div class="field"><label class="label" for="plang">Language</label>
+            <select class="select" id="plang"><option selected>English</option><option>Ελληνικά (Greek)</option><option>Deutsch</option><option>Français</option></select></div>
+          <div class="field full"><label class="label" for="ptz">Timezone</label>
+            <select class="select" id="ptz"><option selected>Europe/Athens (GMT+3)</option><option>Europe/London (GMT+1)</option><option>UTC</option></select>
+            <span class="hint">Dates and times across the platform are shown in this timezone.</span></div>
+        </div>
+      </div>
+      <div class="card-foot"><span class="small muted">Signed up 2 Sep 2026</span><button class="btn btn-primary" data-toast="Profile saved" type="button">Save profile</button></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><div><div class="title">Companies</div><p>Companies you are a member of.</p></div></div>
+      <div class="list-row">
+        <span class="avatar avatar-lg a-mint"><i data-icon="building-2"></i></span>
+        <div class="grow"><b>Aegean Homes <span class="badge b-live" style="margin-left:6px">Current</span></b><span>Owner · Europe/Athens · 4 members</span></div>
+        <a class="btn btn-sm btn-outline" href="settings-organization.html">Open settings</a>
+      </div>
+    </section>
+
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

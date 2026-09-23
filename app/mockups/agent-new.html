@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create agent · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .wiz-head { padding: 16px 24px; border-bottom: 1px solid var(--hairline); }
+    .step-panel > .card-body { padding: 32px 32px 40px; max-width: 880px; }
+    .step-title { font-family: var(--font-display); font-weight: 300; font-size: 28px; line-height: 1.15; letter-spacing: -0.2px; color: var(--ink); }
+    .step-lede { color: var(--muted); margin-top: 6px; max-width: 620px; }
+    .sub-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .sub-head .title { font-size: 17px; }
+    .voice-list { border: 1px solid var(--hairline-strong); border-radius: 12px; padding: 0 16px; background: var(--card); }
+    .voice-row { position: relative; }
+    .voice-row:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 8px; }
+    .editor-row { display: grid; grid-template-columns: 20px minmax(0, 1fr) 170px 32px; gap: 10px; align-items: center; }
+    .editor-row.q { grid-template-columns: 24px minmax(0, 1fr) 230px 32px; }
+    .editor-row.o { grid-template-columns: minmax(0, 1fr) auto 32px; }
+    .reorder-row .input, .reorder-row .select { height: 38px; font-size: 14px; }
+    .group-label { display: flex; align-items: center; gap: 8px; margin: 4px 0 8px; }
+    .sect { display: flex; flex-direction: column; gap: 16px; }
+    .sect + .sect { padding-top: 32px; border-top: 1px solid var(--hairline); }
+    .toggle-line { display: flex; gap: 14px; align-items: flex-start; }
+    .toggle-line .grow b { display: block; color: var(--ink); font-weight: 500; }
+    .toggle-line .grow span { font-size: 14px; color: var(--muted); letter-spacing: 0; }
+    .indent { margin-left: 54px; }
+    .map-table td { padding: 8px 12px; }
+    .map-table .select, .map-table .input { height: 36px; font-size: 14px; }
+    .phone-pick .phone-detail { display: none; }
+    .phone-pick:has(#ph1:checked) #phd1, .phone-pick:has(#ph2:checked) #phd2, .phone-pick:has(#ph3:checked) #phd3 { display: block; }
+    .number-opt { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--hairline-strong); border-radius: 12px; background: var(--card); cursor: pointer; }
+    .number-opt:has(input:checked) { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+    .placeholder-box { border: 1px dashed var(--hairline-strong); border-radius: 16px; padding: 40px 24px; text-align: center; background: var(--canvas-soft); }
+    .placeholder-box .empty-orb { width: 56px; height: 56px; margin: 0 auto 12px; border-radius: 9999px; background: radial-gradient(circle at 30% 30%, var(--mint), var(--lavender) 60%, var(--peach)); opacity: .8; }
+    #activateBtn { display: none; }
+    [data-wizard]:has(.step-panel.last.on) #activateBtn { display: inline-flex; }
+    .review-list .kv-list > div { align-items: flex-start; }
+    .tool-check { display: flex; align-items: center; gap: 12px; }
+    @media (max-width: 767px) {
+      .step-panel > .card-body { padding: 24px 20px 32px; }
+      .editor-row, .editor-row.q { grid-template-columns: minmax(0, 1fr) 32px; }
+      .editor-row > .sortable, .editor-row > .num-dot { display: none; }
+      .editor-row > .select { grid-column: 1 / 2; }
+      .editor-row > .btn-icon { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+      .editor-row.o > .btn-icon, .editor-row.q > .btn-icon { grid-row: auto; }
+      .editor-row.o { grid-template-columns: minmax(0, 1fr) 32px; }
+      .editor-row.o > .row-sm { grid-column: 1 / -1; }
+      .indent { margin-left: 0; }
+      .choice { flex-wrap: wrap; }
+      .choice .choice-body { flex: 1 1 calc(100% - 110px); }
+      .choice .badge { order: 9; margin-left: 50px; }
+      .wiz-head { padding: 12px 16px; }
+      .wizard-foot { padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body data-nav="agents" data-crumbs='[["Agents","agents.html"],["New agent"]]'>
+<div id="content">
+
+  <div>
+    <a class="back" href="agents.html"><i data-icon="arrow-left" data-size="sm"></i>All agents</a>
+    <div class="page-head">
+      <div>
+        <h1>Create an agent</h1>
+        <p>Seven short steps from an idea to a live agent. Your progress is saved as a draft along the way.</p>
+      </div>
+      <div class="actions"><span class="badge b-outline">Draft · saved just now</span></div>
+    </div>
+  </div>
+
+  <div class="card" data-wizard>
+    <div class="wiz-head">
+      <div class="stepper" role="tablist" aria-label="Steps">
+        <button class="st" type="button"><span class="n">1</span>Basics</button>
+        <button class="st" type="button"><span class="n">2</span>Behavior</button>
+        <button class="st" type="button"><span class="n">3</span>Knowledge</button>
+        <button class="st" type="button"><span class="n">4</span>CRM</button>
+        <button class="st" type="button"><span class="n">5</span>Phone</button>
+        <button class="st" type="button"><span class="n">6</span>Test</button>
+        <button class="st" type="button"><span class="n">7</span>Activate</button>
+      </div>
+    </div>
+
+    <!-- ========== Step 1 · Basics ========== -->
+    <div class="step-panel">
+      <div class="card-body stack-lg">
+        <div><h2 class="step-title">Basics</h2><p class="step-lede">Give the agent a name and tell us what it is for. Keep it about the job, not the industry — the same agent type works for sales, support, recruitment, appointments or reservations.</p></div>
+        <div class="form-grid">
+          <div class="field full"><label class="label" for="aName">Agent name</label><input class="input" id="aName" value="Lead Follow-up Agent"></div>
+          <div class="field full"><label class="label" for="aDesc">Description</label><textarea class="textarea" id="aDesc" style="min-height:80px">Follows up with new leads and finds out whether they are still interested.</textarea><span class="hint">Shown to your team. Callers never see it.</span></div>
+          <div class="field full"><label class="label" for="aPurpose">Purpose</label><input class="input" id="aPurpose" value="Follow up with new leads"><span class="hint">What is this agent for? For example “Confirm appointments”, “Collect candidate availability” or “Follow up after a support request”.</span></div>
+          <div class="field"><label class="label" for="aLang">Language</label>
+            <select class="select" id="aLang"><option selected>Greek</option><option>English (UK)</option><option>English (US)</option><option>German</option><option>French</option></select>
+          </div>
+          <div class="field"><label class="label" for="aDir">Typical use</label>
+            <select class="select" id="aDir"><option selected>Outbound calls (agent calls people)</option><option>Inbound calls (people call the agent)</option><option>Both</option></select>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="sub-head"><div class="title">Voice</div><span class="small muted">Showing Greek voices</span></div>
+          <div class="voice-list" role="radiogroup" aria-label="Voice">
+            <label class="voice-row"><input type="radio" name="voice" checked><span class="voice-icon">EL</span><div class="voice-meta"><b>Elena</b><span>Greek · Female · Warm and calm</span></div><button class="play sm outline" type="button" data-toast="Playing a preview of Elena" aria-label="Preview Elena"><i data-icon="play" data-size="sm"></i></button></label>
+            <label class="voice-row"><input type="radio" name="voice"><span class="voice-icon">SO</span><div class="voice-meta"><b>Sofia</b><span>Greek · Female · Bright and upbeat</span></div><button class="play sm outline" type="button" data-toast="Playing a preview of Sofia" aria-label="Preview Sofia"><i data-icon="play" data-size="sm"></i></button></label>
+            <label class="voice-row"><input type="radio" name="voice"><span class="voice-icon">NI</span><div class="voice-meta"><b>Nikos</b><span>Greek · Male · Steady and professional</span></div><button class="play sm outline" type="button" data-toast="Playing a preview of Nikos" aria-label="Preview Nikos"><i data-icon="play" data-size="sm"></i></button></label>
+            <label class="voice-row"><input type="radio" name="voice"><span class="voice-icon">MA</span><div class="voice-meta"><b>Marcus</b><span>English (UK) · Male · Friendly and clear</span></div><button class="play sm outline" type="button" data-toast="Playing a preview of Marcus" aria-label="Preview Marcus"><i data-icon="play" data-size="sm"></i></button></label>
+            <label class="voice-row"><input type="radio" name="voice"><span class="voice-icon">AV</span><div class="voice-meta"><b>Ava</b><span>English (US) · Female · Crisp and confident</span></div><button class="play sm outline" type="button" data-toast="Playing a preview of Ava" aria-label="Preview Ava"><i data-icon="play" data-size="sm"></i></button></label>
+          </div>
+        </div>
+
+        <div class="field"><label class="label" for="aFirst">First message</label>
+          <textarea class="textarea" id="aFirst" style="min-height:88px">Hello {{customer name}}, this is Elena calling from Aegean Homes. Is now an okay moment for a quick chat about your recent enquiry?</textarea>
+          <span class="hint">The first thing the agent says when the call is answered. Details in double braces are filled in from your CRM.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== Step 2 · Behavior ========== -->
+    <div class="step-panel">
+      <div class="card-body stack-lg" style="gap:32px">
+        <div><h2 class="step-title">Behavior</h2><p class="step-lede">Describe how the agent should act, then add structure — goals, questions and outcomes — so results are predictable.</p></div>
+
+        <div class="sect">
+          <div class="sub-head"><div class="title">Instructions</div><span class="small muted">Plain language</span></div>
+          <div class="field">
+            <label class="sr-only" for="aInstr">Instructions</label>
+            <textarea class="textarea textarea-lg" id="aInstr">You are a customer follow-up assistant.
+
+Your goal is to find out whether the customer is still interested in our product or service.
+
+Be polite and concise.
+
+Ask the following questions naturally, in conversation — not like a script.
+
+Never make up information you don't have.
+
+If the customer asks something you can't answer, explain that a member of the team will get back to them.
+
+End the call once you've achieved the goal.</textarea>
+            <span class="hint">Write it the way you would brief a new colleague. We take care of the technical side.</span>
+          </div>
+        </div>
+
+        <div class="sect">
+          <div class="sub-head"><div class="title">Goal</div><span class="small muted">A checklist of what the agent must come away with</span></div>
+          <div class="field"><label class="label" for="aGoal">Goal</label><input class="input" id="aGoal" value="Determine customer interest"></div>
+          <div>
+            <div class="group-label"><span class="eyebrow">Must find out</span></div>
+            <div>
+              <div class="reorder-row editor-row"><span class="sortable"><i data-icon="grip-vertical" data-size="sm"></i></span><input class="input" value="Are they interested?" aria-label="Item"><select class="select" aria-label="Answer type"><option selected>Yes / No</option><option>Text</option><option>Number</option><option>Date</option><option>Choice</option></select><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+              <div class="reorder-row editor-row"><span class="sortable"><i data-icon="grip-vertical" data-size="sm"></i></span><input class="input" value="If not, why not?" aria-label="Item"><select class="select" aria-label="Answer type"><option>Yes / No</option><option selected>Text</option><option>Number</option><option>Date</option><option>Choice</option></select><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+              <div class="reorder-row editor-row"><span class="sortable"><i data-icon="grip-vertical" data-size="sm"></i></span><input class="input" value="Do they want a callback?" aria-label="Item"><select class="select" aria-label="Answer type"><option selected>Yes / No</option><option>Text</option><option>Number</option><option>Date</option><option>Choice</option></select><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+              <div class="reorder-row editor-row"><span class="sortable"><i data-icon="grip-vertical" data-size="sm"></i></span><input class="input" value="Do they want an appointment?" aria-label="Item"><select class="select" aria-label="Answer type"><option selected>Yes / No</option><option>Text</option><option>Number</option><option>Date</option><option>Choice</option></select><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+            </div>
+            <button class="btn btn-outline btn-sm mt-2" type="button"><i data-icon="plus" data-size="sm"></i>Add item</button>
+          </div>
+          <div>
+            <div class="group-label"><span class="eyebrow">Nice to know</span></div>
+            <div>
+              <div class="reorder-row editor-row"><span class="sortable"><i data-icon="grip-vertical" data-size="sm"></i></span><input class="input" value="Preferred date" aria-label="Item"><select class="select" aria-label="Answer type"><option>Yes / No</option><option>Text</option><option>Number</option><option selected>Date</option><option>Choice</option></select><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+              <div class="reorder-row editor-row"><span class="sortable"><i data-icon="grip-vertical" data-size="sm"></i></span><input class="input" value="Preferred time" aria-label="Item"><select class="select" aria-label="Answer type"><option>Yes / No</option><option>Text</option><option>Number</option><option>Date</option><option selected>Choice</option></select><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+              <div class="reorder-row editor-row"><span class="sortable"><i data-icon="grip-vertical" data-size="sm"></i></span><input class="input" value="Any questions they had" aria-label="Item"><select class="select" aria-label="Answer type"><option>Yes / No</option><option selected>Text</option><option>Number</option><option>Date</option><option>Choice</option></select><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+              <div class="reorder-row editor-row"><span class="sortable"><i data-icon="grip-vertical" data-size="sm"></i></span><input class="input" value="Any objections raised" aria-label="Item"><select class="select" aria-label="Answer type"><option>Yes / No</option><option selected>Text</option><option>Number</option><option>Date</option><option>Choice</option></select><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+            </div>
+            <button class="btn btn-outline btn-sm mt-2" type="button"><i data-icon="plus" data-size="sm"></i>Add item</button>
+          </div>
+        </div>
+
+        <div class="sect">
+          <div class="sub-head"><div class="title">Questions</div><span class="small muted">Worked into the conversation, not asked in rigid order</span></div>
+          <div>
+            <div class="reorder-row editor-row q"><span class="num-dot">1</span><input class="input" value="Are you still interested?" aria-label="Question"><select class="select" aria-label="Must be answered"><option>Any answer</option><option selected>Must be answered: Yes</option><option>Must be answered: No</option></select><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+            <div class="reorder-row editor-row q"><span class="num-dot">2</span><input class="input" value="Do you have any questions?" aria-label="Question"><select class="select" aria-label="Must be answered"><option>Any answer</option><option>Must be answered: Yes</option><option selected>Must be answered: No</option></select><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+            <div class="reorder-row editor-row q"><span class="num-dot">3</span><input class="input" value="Would you like someone from our team to contact you?" aria-label="Question"><select class="select" aria-label="Must be answered"><option>Any answer</option><option selected>Must be answered: Yes</option><option>Must be answered: No</option></select><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+          </div>
+          <div><button class="btn btn-outline btn-sm" type="button"><i data-icon="plus" data-size="sm"></i>Add question</button></div>
+        </div>
+
+        <div class="sect">
+          <div class="sub-head"><div class="title">Possible outcomes</div><span class="small muted">Every call ends with exactly one</span></div>
+          <div>
+            <div class="reorder-row editor-row o"><input class="input" value="Interested" aria-label="Outcome"><label class="row-sm small"><span class="switch"><input type="checkbox" checked aria-label="Counts as success"><i></i></span>Success</label><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+            <div class="reorder-row editor-row o"><input class="input" value="Not Interested" aria-label="Outcome"><label class="row-sm small"><span class="switch"><input type="checkbox" aria-label="Counts as success"><i></i></span>Success</label><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+            <div class="reorder-row editor-row o"><input class="input" value="Call Back Later" aria-label="Outcome"><label class="row-sm small"><span class="switch"><input type="checkbox" aria-label="Counts as success"><i></i></span>Success</label><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+            <div class="reorder-row editor-row o"><input class="input" value="Appointment Requested" aria-label="Outcome"><label class="row-sm small"><span class="switch"><input type="checkbox" checked aria-label="Counts as success"><i></i></span>Success</label><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="trash-2" data-size="sm"></i></button></div>
+          </div>
+          <div><button class="btn btn-outline btn-sm" type="button"><i data-icon="plus" data-size="sm"></i>Add outcome</button></div>
+          <div class="notice n-soft"><i data-icon="voicemail"></i><div class="grow"><b>Detected automatically.</b> Voicemail, Wrong number, No answer and Unknown are recognised by the platform and logged as their own outcomes, so they are never mistaken for “Interested”.
+            <div class="row wrap mt-2" style="gap:8px"><span class="chip">Voicemail</span><span class="chip">Wrong number</span><span class="chip">No answer</span><span class="chip">Unknown</span></div></div></div>
+          <div class="form-grid">
+            <div class="field"><label class="label" for="aSucc">What counts as a successful call?</label><textarea class="textarea" id="aSucc" style="min-height:80px">Customer confirms they are still interested.</textarea></div>
+            <div class="field"><label class="label" for="aFail">What counts as an unsuccessful call?</label><textarea class="textarea" id="aFail" style="min-height:80px">Customer declines, or the call ends without a clear answer.</textarea></div>
+            <div class="field"><label class="label" for="aMax">Maximum call length</label><div class="input-suffix"><input class="input" id="aMax" value="6"><span class="suffix">minutes</span></div><span class="hint">The agent wraps up politely before this limit.</span></div>
+          </div>
+        </div>
+
+        <div class="sect">
+          <div class="sub-head"><div class="title">Voicemail</div></div>
+          <div class="toggle-line"><span class="switch"><input type="checkbox" checked aria-label="Detect voicemail"><i></i></span><div class="grow"><b>Detect voicemail</b><span>Recognise answering machines and log them as their own outcome.</span></div></div>
+          <div class="toggle-line"><span class="switch"><input type="checkbox" checked aria-label="Leave a message"><i></i></span><div class="grow"><b>Leave a short message</b><span>Say a pre-approved message before hanging up.</span></div></div>
+          <div class="field indent"><label class="label" for="aVm">Voicemail message</label><textarea class="textarea" id="aVm" style="min-height:80px">Hello, this is Aegean Homes calling about your recent enquiry. We'll try you again soon, or you can call us back on 21 5550 1001. Thank you.</textarea></div>
+        </div>
+
+        <div class="sect">
+          <div class="sub-head"><div class="title">Talking to a human</div></div>
+          <div class="toggle-line"><span class="switch"><input type="checkbox" checked aria-label="Allow transfer"><i></i></span><div class="grow"><b>Allow transfer to a team member</b><span>Hand a live call to a real person when needed.</span></div></div>
+          <div class="stack indent">
+            <div class="label">Transfer this call to a real person when:</div>
+            <label class="check"><input type="checkbox" checked><i></i>The customer explicitly asks for a human</label>
+            <label class="check"><input type="checkbox"><i></i>The agent can't resolve the conversation</label>
+            <label class="check"><input type="checkbox"><i></i>A specific outcome is reached</label>
+            <div class="form-grid">
+              <div class="field"><label class="label" for="aTOut">Outcome that triggers a transfer</label><select class="select" id="aTOut"><option>Choose an outcome…</option><option>Interested</option><option>Not Interested</option><option>Call Back Later</option><option>Appointment Requested</option></select></div>
+              <div class="field"><label class="label" for="aTNum">Transfer to</label><input class="input" id="aTNum" type="tel" value="+30 21 5550 1010"><span class="hint">A phone number or team extension.</span></div>
+              <div class="field full"><label class="label" for="aTFb">If nobody is available</label><textarea class="textarea" id="aTFb" style="min-height:80px">Thanks for your patience. Nobody is free right now, so I've noted your details and a colleague will call you back today.</textarea><span class="hint">The agent takes a message and logs a follow-up instead of leaving the customer stuck.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== Step 3 · Knowledge ========== -->
+    <div class="step-panel">
+      <div class="card-body stack-lg">
+        <div><h2 class="step-title">Knowledge</h2><p class="step-lede">Choose which sources this agent can search live during calls, such as pricing, policies and FAQs.</p></div>
+        <div class="stack" style="gap:12px">
+          <label class="choice choice-check"><input type="checkbox" checked><span class="choice-icon"><i data-icon="file-text"></i></span><span class="choice-body"><b>Property FAQ.md</b><span>Uploaded file · version 3 · updated 18 Sep</span></span><span class="badge b-success">Ready</span><span class="choice-mark"></span></label>
+          <label class="choice choice-check"><input type="checkbox" checked><span class="choice-icon"><i data-icon="type"></i></span><span class="choice-body"><b>Pricing &amp; Payment Policy</b><span>Typed text · version 2 · updated 10 Sep</span></span><span class="badge b-success">Ready</span><span class="choice-mark"></span></label>
+          <label class="choice choice-check"><input type="checkbox" checked><span class="choice-icon"><i data-icon="file-text"></i></span><span class="choice-body"><b>Viewing Policy.docx</b><span>Uploaded file · version 1 · updated 2 Sep</span></span><span class="badge b-success">Ready</span><span class="choice-mark"></span></label>
+          <label class="choice choice-check"><input type="checkbox"><span class="choice-icon"><i data-icon="type"></i></span><span class="choice-body"><b>Table Booking Policy</b><span>Typed text · version 1 · used by Reservation Confirmation Agent</span></span><span class="badge b-success">Ready</span><span class="choice-mark"></span></label>
+          <label class="choice choice-check" style="opacity:.7"><input type="checkbox" disabled><span class="choice-icon"><i data-icon="file-text"></i></span><span class="choice-body"><b>Fee Schedule 2026.docx</b><span>Uploaded file · still being processed — available once ready</span></span><span class="badge b-live">Processing</span><span class="choice-mark"></span></label>
+        </div>
+        <div class="row between wrap">
+          <span class="small muted">3 of 5 sources selected</span>
+          <a class="btn btn-outline btn-sm" href="knowledge-new.html"><i data-icon="plus" data-size="sm"></i>Add knowledge</a>
+        </div>
+        <div class="notice n-soft"><i data-icon="info"></i><div class="grow">Agents never invent answers. If something isn't in the selected sources or the instructions, the agent says a team member will get back to the customer.</div></div>
+      </div>
+    </div>
+
+    <!-- ========== Step 4 · CRM ========== -->
+    <div class="step-panel">
+      <div class="card-body stack-lg" style="gap:32px">
+        <div><h2 class="step-title">CRM</h2><p class="step-lede">Connect the agent to your customer database, then choose exactly which actions it is allowed to take there. Nothing else is ever touched.</p></div>
+
+        <div class="sect">
+          <div class="sub-head"><div class="title">Connection</div><a class="link small" href="integration-new.html">Connect a new CRM</a></div>
+          <div class="stack" style="gap:12px">
+            <label class="choice"><input type="radio" name="crm" checked><span class="logo-tile">H</span><span class="choice-body"><b>HubSpot</b><span>Connected · last verified 2 minutes ago</span></span><span class="badge b-success">Connected</span><span class="choice-mark"></span></label>
+            <label class="choice"><input type="radio" name="crm"><span class="logo-tile">A</span><span class="choice-body"><b>Aegean CRM</b><span>Custom CRM · authentication was rejected — fix the connection before using it</span></span><span class="badge b-error">Error</span><span class="choice-mark"></span></label>
+            <label class="choice"><input type="radio" name="crm"><span class="choice-icon"><i data-icon="ban"></i></span><span class="choice-body"><b>No CRM for this agent</b><span>The agent won't read or write customer records.</span></span><span class="choice-mark"></span></label>
+          </div>
+        </div>
+
+        <div class="sect">
+          <div class="sub-head"><div class="title">What this agent can do in HubSpot</div><span class="small muted">3 of 8 allowed</span></div>
+          <p class="small muted" style="margin-top:-8px">This list comes from HubSpot itself. Switch on only what the agent needs.</p>
+          <div class="card card-flush" style="padding:0 20px">
+            <div class="perm-row"><span class="switch"><input type="checkbox" checked aria-label="Look up a contact"><i></i></span><div class="grow"><b>Look up a contact</b><span>Find the person before the call</span></div></div>
+            <div class="perm-row"><span class="switch"><input type="checkbox" aria-label="Look up a deal"><i></i></span><div class="grow"><b>Look up a deal</b><span>Read the status of an open deal</span></div></div>
+            <div class="perm-row"><span class="switch"><input type="checkbox" checked aria-label="Update a contact"><i></i></span><div class="grow"><b>Update a contact</b><span>Write the call outcome and lead status</span></div></div>
+            <div class="perm-row"><span class="switch"><input type="checkbox" aria-label="Update a deal stage"><i></i></span><div class="grow"><b>Update a deal stage</b><span>Move a deal forward or back</span></div></div>
+            <div class="perm-row"><span class="switch"><input type="checkbox" checked aria-label="Add a note to a contact"><i></i></span><div class="grow"><b>Add a note to a contact</b><span>Save the call summary on the record</span></div></div>
+            <div class="perm-row"><span class="switch"><input type="checkbox" aria-label="Log an activity"><i></i></span><div class="grow"><b>Log an activity</b><span>Record a call in the activity timeline</span></div></div>
+            <div class="perm-row"><span class="switch"><input type="checkbox" aria-label="Update a custom property"><i></i></span><div class="grow"><b>Update a custom property</b><span>Write to your own custom fields</span></div></div>
+            <div class="perm-row"><span class="switch"><input type="checkbox" aria-label="Create a task"><i></i></span><div class="grow"><b>Create a task</b><span>Create a to-do for your team</span></div></div>
+          </div>
+        </div>
+
+        <div class="sect">
+          <div class="sub-head"><div class="title">Match fields</div><span class="small muted">Saved per connection, so you set it up once</span></div>
+          <div class="table-wrap"><div class="table-scroll">
+            <table class="table map-table">
+              <thead><tr><th>Our field</th><th>HubSpot field</th><th>Direction</th><th>Use for personalization</th></tr></thead>
+              <tbody>
+                <tr><td><b>Customer name</b></td><td><select class="select" aria-label="HubSpot field"><option>Contact Name</option></select></td><td><select class="select" aria-label="Direction"><option>Read</option><option>Write</option><option>Both</option></select></td><td><label class="check"><input type="checkbox" checked><i></i><span class="sr-only">Use</span></label></td></tr>
+                <tr><td><b>Phone</b></td><td><select class="select" aria-label="HubSpot field"><option>Phone Number</option></select></td><td><select class="select" aria-label="Direction"><option>Read</option><option>Write</option><option>Both</option></select></td><td><label class="check"><input type="checkbox"><i></i><span class="sr-only">Use</span></label></td></tr>
+                <tr><td><b>Call outcome</b></td><td><select class="select" aria-label="HubSpot field"><option>Lead Status</option></select></td><td><select class="select" aria-label="Direction"><option>Read</option><option selected>Write</option><option>Both</option></select></td><td><label class="check"><input type="checkbox"><i></i><span class="sr-only">Use</span></label></td></tr>
+                <tr><td><b>Call summary</b></td><td><select class="select" aria-label="HubSpot field"><option>Activity Note</option></select></td><td><select class="select" aria-label="Direction"><option>Read</option><option selected>Write</option><option>Both</option></select></td><td><label class="check"><input type="checkbox"><i></i><span class="sr-only">Use</span></label></td></tr>
+                <tr><td><b>Interest level</b></td><td><select class="select" aria-label="HubSpot field"><option>Custom Field: Interest</option></select></td><td><select class="select" aria-label="Direction"><option>Read</option><option>Write</option><option selected>Both</option></select></td><td><label class="check"><input type="checkbox" checked><i></i><span class="sr-only">Use</span></label></td></tr>
+                <tr><td><b>Next follow-up date</b></td><td><select class="select" aria-label="HubSpot field"><option>Next Follow-up</option></select></td><td><select class="select" aria-label="Direction"><option>Read</option><option selected>Write</option><option>Both</option></select></td><td><label class="check"><input type="checkbox"><i></i><span class="sr-only">Use</span></label></td></tr>
+              </tbody>
+            </table>
+          </div></div>
+        </div>
+
+        <div class="sect">
+          <div class="sub-head"><div class="title">Personalize each call</div></div>
+          <p class="small muted" style="margin-top:-8px">Before dialing, we pull these details from the CRM and hand them to the agent, so it never starts a call blind.</p>
+          <div class="grid-2">
+            <label class="choice choice-check"><input type="checkbox" checked><span class="choice-body"><b>Customer name</b><span>Contact Name</span></span><span class="choice-mark"></span></label>
+            <label class="choice choice-check"><input type="checkbox" checked><span class="choice-body"><b>Last contact</b><span>Last Contacted Date</span></span><span class="choice-mark"></span></label>
+            <label class="choice choice-check"><input type="checkbox" checked><span class="choice-body"><b>Interested in</b><span>Custom Field: Interest</span></span><span class="choice-mark"></span></label>
+            <label class="choice choice-check"><input type="checkbox" checked><span class="choice-body"><b>Previous notes</b><span>Latest Notes</span></span><span class="choice-mark"></span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== Step 5 · Phone ========== -->
+    <div class="step-panel">
+      <div class="card-body stack-lg phone-pick">
+        <div><h2 class="step-title">Phone number</h2><p class="step-lede">Choose the number this agent calls from and answers on.</p></div>
+        <div class="stack" style="gap:12px" role="radiogroup" aria-label="Phone number source">
+          <label class="choice"><input type="radio" name="ph" id="ph1" checked><span class="choice-icon"><i data-icon="sparkles"></i></span><span class="choice-body"><b>Get a new number from us</b><span>We set up a number for you. It's ready to use right away.</span></span><span class="choice-mark"></span></label>
+          <label class="choice"><input type="radio" name="ph" id="ph2"><span class="choice-icon"><i data-icon="smartphone"></i></span><span class="choice-body"><b>Bring my own number</b><span>Keep using a number your customers already recognise.</span></span><span class="choice-mark"></span></label>
+          <label class="choice"><input type="radio" name="ph" id="ph3"><span class="choice-icon"><i data-icon="phone"></i></span><span class="choice-body"><b>Use a number I already have here</b><span>Pick a number in your account that isn't assigned to an agent.</span></span><span class="choice-mark"></span></label>
+        </div>
+
+        <div class="phone-detail" id="phd1">
+          <div class="form-grid">
+            <div class="field"><label class="label" for="pCountry">Country</label><select class="select" id="pCountry"><option selected>Greece (+30)</option><option>United Kingdom (+44)</option><option>Germany (+49)</option></select></div>
+            <div class="field"><label class="label" for="pArea">Area</label><select class="select" id="pArea"><option selected>Athens (21)</option><option>Thessaloniki (231)</option><option>Mobile</option></select></div>
+          </div>
+          <div class="eyebrow" style="margin:20px 0 10px">Available numbers</div>
+          <div class="stack" style="gap:10px">
+            <label class="number-opt"><span class="radio"><input type="radio" name="pn" checked><i></i></span><b class="ink num">+30 21 5550 1101</b><span class="small muted">Athens</span></label>
+            <label class="number-opt"><span class="radio"><input type="radio" name="pn"><i></i></span><b class="ink num">+30 21 5550 1102</b><span class="small muted">Athens</span></label>
+            <label class="number-opt"><span class="radio"><input type="radio" name="pn"><i></i></span><b class="ink num">+30 21 5550 1103</b><span class="small muted">Athens</span></label>
+          </div>
+        </div>
+
+        <div class="phone-detail" id="phd2">
+          <div class="form-grid">
+            <div class="field"><label class="label" for="pByo">Your phone number</label><input class="input" id="pByo" type="tel" placeholder="+30 21 XXXX XXXX"></div>
+            <div class="field"><label class="label" for="pLabel">Label <span class="opt">Optional</span></label><input class="input" id="pLabel" placeholder="e.g. Main office line"></div>
+          </div>
+          <div class="notice n-soft mt-3"><i data-icon="info"></i><div class="grow">After you save, we show a short set of steps to connect the number with your phone provider. Until it's verified the number stays <b>Pending</b> and the agent can't use it.</div></div>
+        </div>
+
+        <div class="phone-detail" id="phd3">
+          <div class="field"><label class="label" for="pFree">Unassigned numbers</label>
+            <select class="select" id="pFree"><option>+30 21 5550 1004 · Provisioned · Active</option></select>
+            <span class="hint">Only numbers that aren't currently assigned to another agent are listed.</span>
+          </div>
+        </div>
+
+        <div class="notice n-soft"><i data-icon="phone-forwarded"></i><div class="grow">The number is used for both inbound and outbound calls for this agent. You can change it later from Phone Numbers.</div></div>
+      </div>
+    </div>
+
+    <!-- ========== Step 6 · Test ========== -->
+    <div class="step-panel">
+      <div class="card-body stack-lg">
+        <div><h2 class="step-title">Test</h2><p class="step-lede">Try the agent out before going live. It's the fastest way to hear how it sounds and check what it does in your CRM.</p></div>
+        <div class="segmented" aria-label="Test type">
+          <button type="button" class="active"><i data-icon="phone-call" data-size="sm"></i>Live test call</button>
+          <button type="button" disabled style="opacity:.55;cursor:not-allowed"><i data-icon="message-square" data-size="sm"></i>Text simulator · coming later</button>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label class="label" for="tsName">Name</label><input class="input" id="tsName" value="Petros Rodinos"></div>
+          <div class="field"><label class="label" for="tsPhone">Phone number</label><input class="input" id="tsPhone" type="tel" placeholder="+30 69X XXX XXXX"></div>
+          <div class="field full"><label class="label" for="tsContact">Link to an existing CRM contact <span class="opt">Optional</span></label>
+            <select class="select" id="tsContact"><option>Don't link — use the name above</option><option>Maria Papadopoulou · HubSpot contact</option><option>Dimitris Kostas · HubSpot contact</option><option>Eleni Vasileiou · HubSpot contact</option></select>
+            <span class="hint">Linking a contact lets the agent open the call with the details it would have on a real call.</span>
+          </div>
+        </div>
+        <div><button class="btn btn-outline" type="button" data-toast="Test call started — your phone should ring shortly"><i data-icon="phone-call" data-size="sm"></i>Place test call</button></div>
+        <div class="placeholder-box">
+          <div class="empty-orb"></div>
+          <div class="title">Your test call result will appear here</div>
+          <p class="small muted mt-1" style="max-width:420px;margin-inline:auto">Transcript, summary, the information gathered, and the CRM actions the agent requested.</p>
+        </div>
+        <p class="small muted">You can skip this step, but we recommend at least one test call before activating.</p>
+      </div>
+    </div>
+
+    <!-- ========== Step 7 · Activate ========== -->
+    <div class="step-panel last">
+      <div class="card-body stack-lg">
+        <div><h2 class="step-title">Review and activate</h2><p class="step-lede">Everything below is ready. Activating turns the agent on so it can make and receive calls.</p></div>
+        <div class="grid-2" style="align-items:start">
+          <div class="card review-list">
+            <div class="card-head"><div class="title">Summary</div></div>
+            <div class="card-body" style="padding-top:8px;padding-bottom:8px">
+              <div class="kv-list">
+                <div><span>Name</span><b>Lead Follow-up Agent</b></div>
+                <div><span>Purpose</span><span>Follow up with new leads</span></div>
+                <div><span>Voice</span><span>Elena · Greek · Female</span></div>
+                <div><span>Goal</span><span>Determine customer interest · 4 must, 4 nice to know</span></div>
+                <div><span>Questions</span><span>3</span></div>
+                <div><span>Outcomes</span><span>4 defined + 4 detected automatically</span></div>
+                <div><span>Human transfer</span><span>On · +30 21 5550 1010</span></div>
+                <div><span>Knowledge</span><span>3 sources</span></div>
+                <div><span>CRM</span><span>HubSpot · 3 actions allowed</span></div>
+                <div><span>Phone</span><span class="num">+30 21 5550 1101</span></div>
+                <div><span>Test call</span><span class="row-sm"><span class="dot"></span>Not run yet</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="stack-lg">
+            <div class="card">
+              <div class="card-head"><div class="title">Calling hours</div><a class="btn btn-sm btn-text" href="settings-organization.html">Change</a></div>
+              <div class="card-body stack-sm">
+                <dl class="kv" style="grid-template-columns:140px 1fr">
+                  <dt>Monday–Saturday</dt><dd>09:00–18:00</dd>
+                  <dt>Sunday</dt><dd>No calling</dd>
+                  <dt>Timezone</dt><dd>Europe/Athens</dd>
+                </dl>
+                <p class="small muted mt-2">Automated calls are never placed outside these hours.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="title">Ready to go live</div></div>
+              <div class="card-body stack-sm" style="gap:10px">
+                <div class="row-sm small"><i data-icon="circle-check" class="ok"></i>Basics and voice</div>
+                <div class="row-sm small"><i data-icon="circle-check" class="ok"></i>Behavior, goals and outcomes</div>
+                <div class="row-sm small"><i data-icon="circle-check" class="ok"></i>Knowledge attached</div>
+                <div class="row-sm small"><i data-icon="circle-check" class="ok"></i>CRM connected with 3 allowed actions</div>
+                <div class="row-sm small"><i data-icon="circle-check" class="ok"></i>Phone number assigned</div>
+                <div class="row-sm small muted"><i data-icon="circle"></i>Test call (recommended)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wizard-foot">
+      <button class="btn btn-outline" type="button" data-prev><i data-icon="arrow-left" data-size="sm"></i>Back</button>
+      <div class="row-sm">
+        <button class="btn btn-text" type="button" data-toast="Draft saved">Save draft</button>
+        <button class="btn btn-primary" type="button" data-next>Continue<i data-icon="arrow-right" data-size="sm"></i></button>
+        <a class="btn btn-primary" id="activateBtn" href="agent-detail.html"><i data-icon="rocket" data-size="sm"></i>Activate agent</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Integrations · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .conn { display: flex; align-items: center; gap: 16px; padding: 18px 24px; border-bottom: 1px solid var(--hairline-soft); flex-wrap: wrap; }
+    .conn:last-child { border-bottom: 0; }
+    .conn .grow { min-width: 200px; }
+    .conn .grow b { display: block; color: var(--ink); font-weight: 500; font-size: 16px; }
+    .conn .grow span { font-size: 14px; color: var(--muted); letter-spacing: 0; }
+    .conn .meta { font-size: 13px; color: var(--muted); min-width: 150px; }
+    .conn .err { margin-top: 6px; display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--error); }
+    .cat-card { display: flex; flex-direction: column; gap: 14px; padding: 20px; }
+    .cat-card .top { display: flex; gap: 14px; align-items: center; }
+    .cat-card .top b { display: block; color: var(--ink); font-weight: 500; }
+    .cat-card .top span.s { font-size: 13px; color: var(--muted); }
+    .cat-card p { font-size: 14px; color: var(--body); letter-spacing: 0; flex: 1; }
+    .cat-card.soon { background: var(--canvas-soft); }
+    .cat-card.soon .logo-tile { opacity: .7; }
+    .cat-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    [data-panel].stack-lg:not(.on) { display: none; }
+    [data-panel].stack-lg.on { display: flex; flex-direction: column; gap: 24px; }
+    .group-title { display: flex; align-items: center; gap: 12px; margin: 8px 0 12px; }
+  </style>
+</head>
+<body data-nav="integrations" data-crumbs='[["Integrations"]]'>
+<div id="content">
+
+  <div class="page-head">
+    <div>
+      <h1>Integrations</h1>
+      <p>Connect the CRM you already use, and over time the other tools your business runs on. Agents only get the actions you allow, per agent.</p>
+    </div>
+    <div class="actions">
+      <a class="btn btn-primary" href="integration-new.html"><i data-icon="plus" data-size="sm"></i>Connect a CRM</a>
+    </div>
+  </div>
+
+  <div data-tabs>
+    <div class="tabs" role="tablist">
+      <button class="tab active" type="button" data-tab="all">All</button>
+      <button class="tab" type="button" data-tab="crm">CRM <span class="pill-count">2</span></button>
+      <button class="tab" type="button" data-tab="google">Google <span class="pill-count">1</span></button>
+      <button class="tab" type="button" data-tab="notion">Notion</button>
+      <button class="tab" type="button" data-tab="other">Other apps</button>
+    </div>
+
+    <!-- ALL -->
+    <div data-panel="all" class="stack-lg" style="padding-top:24px">
+      <section>
+        <div class="section-head"><h2>Connected</h2><span class="small muted">3 connections · 1 needs attention</span></div>
+        <div class="card">
+          <div class="conn" data-href="integration-detail.html" style="cursor:pointer">
+            <span class="logo-tile lg">Hu</span>
+            <div class="grow"><b>HubSpot</b><span>CRM · OAuth2</span></div>
+            <span class="badge b-success">Active</span>
+            <div class="meta">Verified 2 minutes ago<br>Used by 2 agents</div>
+            <a class="btn btn-sm btn-outline" href="integration-detail.html">Manage</a>
+          </div>
+          <div class="conn" data-href="integration-detail.html" style="cursor:pointer">
+            <span class="logo-tile lg">Ae</span>
+            <div class="grow"><b>Aegean CRM</b><span>Custom CRM · API key</span><div class="err"><i data-icon="circle-alert" data-size="sm"></i>Authentication was rejected (401)</div></div>
+            <span class="badge b-error">Error</span>
+            <div class="meta">Last verified 3 hours ago<br>Used by 1 agent</div>
+            <a class="btn btn-sm btn-outline" href="integration-detail.html">Fix connection</a>
+          </div>
+          <div class="conn" data-href="integrations.html" style="cursor:pointer">
+            <span class="logo-tile lg"><i data-icon="calendar"></i></span>
+            <div class="grow"><b>Google Calendar</b><span>Calendar · OAuth2</span></div>
+            <span class="badge b-success">Active</span>
+            <div class="meta">Verified 1 hour ago<br>Used by 1 automation</div>
+            <button class="btn btn-sm btn-outline" type="button" data-toast="Calendar settings would open here">Manage</button>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>Available</h2><span class="small muted">Add more over time — no rebuild needed</span></div>
+
+        <div class="group-title"><span class="eyebrow">CRM</span><hr class="grow"></div>
+        <div class="grid-3">
+          <div class="card cat-card hover"><div class="top"><span class="logo-tile">Hu</span><div><b>HubSpot</b><span class="s">CRM</span></div></div><p>Contacts, deals, notes and tasks.</p><div class="cat-foot"><span class="badge b-success b-soft">Connected</span><a class="btn btn-sm btn-outline" href="integration-detail.html">Manage</a></div></div>
+          <div class="card cat-card hover"><div class="top"><span class="logo-tile">Sf</span><div><b>Salesforce</b><span class="s">CRM</span></div></div><p>Leads, opportunities, notes and follow-up tasks.</p><div class="cat-foot"><span></span><a class="btn btn-sm btn-outline" href="integration-new.html">Connect</a></div></div>
+          <div class="card cat-card hover"><div class="top"><span class="logo-tile">Pd</span><div><b>Pipedrive</b><span class="s">CRM</span></div></div><p>People, deals and activities.</p><div class="cat-foot"><span></span><a class="btn btn-sm btn-outline" href="integration-new.html">Connect</a></div></div>
+          <div class="card cat-card hover"><div class="top"><span class="logo-tile">Zo</span><div><b>Zoho</b><span class="s">CRM</span></div></div><p>Contacts, leads and deals.</p><div class="cat-foot"><span></span><a class="btn btn-sm btn-outline" href="integration-new.html">Connect</a></div></div>
+          <div class="card cat-card hover"><div class="top"><span class="logo-tile"><i data-icon="database"></i></span><div><b>Custom CRM</b><span class="s">In-house system</span></div></div><p>Connect your own CRM with a base URL and an API key or token.</p><div class="cat-foot"><span></span><a class="btn btn-sm btn-outline" href="integration-new.html">Connect</a></div></div>
+          <div class="card cat-card hover"><div class="top"><span class="logo-tile"><i data-icon="terminal"></i></span><div><b>Any system with an API</b><span class="s">General-purpose API</span></div></div><p>Anything with a REST-style API and documentation.</p><div class="cat-foot"><span></span><a class="btn btn-sm btn-outline" href="integration-new.html">Connect</a></div></div>
+        </div>
+
+        <div class="group-title" style="margin-top:28px"><span class="eyebrow">Google</span><hr class="grow"></div>
+        <div class="grid-3">
+          <div class="card cat-card hover"><div class="top"><span class="logo-tile"><i data-icon="calendar"></i></span><div><b>Google Calendar</b><span class="s">Calendar</span></div></div><p>Create calendar events when a call books an appointment.</p><div class="cat-foot"><span class="badge b-success b-soft">Connected</span><button class="btn btn-sm btn-outline" type="button" data-toast="Calendar settings would open here">Manage</button></div></div>
+          <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="file-text"></i></span><div><b>Google Docs</b><span class="s">Knowledge</span></div></div><p>Let agents draw on documents you keep in Docs.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+          <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="hard-drive"></i></span><div><b>Google Drive</b><span class="s">Knowledge</span></div></div><p>Pull knowledge straight from shared folders.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+          <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="mail"></i></span><div><b>Gmail</b><span class="s">Email</span></div></div><p>Send confirmations and follow-ups by email.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+        </div>
+
+        <div class="group-title" style="margin-top:28px"><span class="eyebrow">Notion and other apps</span><hr class="grow"></div>
+        <div class="grid-3">
+          <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="notebook-pen"></i></span><div><b>Notion</b><span class="s">Knowledge</span></div></div><p>Use your Notion pages as agent knowledge.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+          <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="folder"></i></span><div><b>Dropbox</b><span class="s">Storage</span></div></div><p>Connect files stored in Dropbox.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+          <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="cloud"></i></span><div><b>SharePoint</b><span class="s">Storage</span></div></div><p>Connect documents from SharePoint sites.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+          <div class="card cat-card soon"><div class="top"><span class="logo-tile">Sl</span><div><b>Slack</b><span class="s">Messaging</span></div></div><p>Get notified in a channel when something needs attention.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+          <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="puzzle"></i></span><div><b>Other business apps</b><span class="s">More to come</span></div></div><p>Tell us which tool you’d like agents to work with next.</p><div class="cat-foot"><button class="btn btn-sm btn-outline" type="button" data-toast="Thanks — request noted">Suggest an app</button></div></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- CRM -->
+    <div data-panel="crm" class="stack-lg" style="padding-top:24px">
+      <div class="card">
+        <div class="conn" data-href="integration-detail.html" style="cursor:pointer"><span class="logo-tile lg">Hu</span><div class="grow"><b>HubSpot</b><span>OAuth2 · 8 tools available</span></div><span class="badge b-success">Active</span><div class="meta">Verified 2 minutes ago<br>Used by 2 agents</div><a class="btn btn-sm btn-outline" href="integration-detail.html">Manage</a></div>
+        <div class="conn" data-href="integration-detail.html" style="cursor:pointer"><span class="logo-tile lg">Ae</span><div class="grow"><b>Aegean CRM</b><span>Custom CRM · API key</span><div class="err"><i data-icon="circle-alert" data-size="sm"></i>Authentication was rejected (401)</div></div><span class="badge b-error">Error</span><div class="meta">Last verified 3 hours ago<br>Used by 1 agent</div><a class="btn btn-sm btn-outline" href="integration-detail.html">Fix connection</a></div>
+      </div>
+      <div class="notice n-soft"><i data-icon="info"></i><div class="grow">Each CRM has its own list of tools. When you set up an agent, you choose <b>only</b> the actions from that CRM it is allowed to use. <a class="link" href="integration-new.html">Connect another CRM</a></div></div>
+    </div>
+
+    <!-- GOOGLE -->
+    <div data-panel="google" class="stack-lg" style="padding-top:24px">
+      <div class="card">
+        <div class="conn"><span class="logo-tile lg"><i data-icon="calendar"></i></span><div class="grow"><b>Google Calendar</b><span>Calendar · OAuth2</span></div><span class="badge b-success">Active</span><div class="meta">Verified 1 hour ago<br>Used by 1 automation</div><button class="btn btn-sm btn-outline" type="button" data-toast="Calendar settings would open here">Manage</button></div>
+      </div>
+      <div class="grid-3">
+        <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="file-text"></i></span><div><b>Google Docs</b><span class="s">Knowledge</span></div></div><p>Let agents draw on documents you keep in Docs.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+        <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="hard-drive"></i></span><div><b>Google Drive</b><span class="s">Knowledge</span></div></div><p>Pull knowledge straight from shared folders.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+        <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="mail"></i></span><div><b>Gmail</b><span class="s">Email</span></div></div><p>Send confirmations and follow-ups by email.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+      </div>
+    </div>
+
+    <!-- NOTION -->
+    <div data-panel="notion" style="padding-top:24px">
+      <div class="card"><div class="empty">
+        <span class="empty-orb"></span>
+        <div class="display-sm">Notion is coming soon</div>
+        <p>Soon you’ll be able to connect Notion pages and let agents use them as knowledge. For now, add content by typing it in or uploading a file.</p>
+        <a class="btn btn-outline" href="knowledge-new.html">Add knowledge instead</a>
+      </div></div>
+    </div>
+
+    <!-- OTHER -->
+    <div data-panel="other" style="padding-top:24px">
+      <div class="grid-3">
+        <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="folder"></i></span><div><b>Dropbox</b><span class="s">Storage</span></div></div><p>Connect files stored in Dropbox.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+        <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="cloud"></i></span><div><b>SharePoint</b><span class="s">Storage</span></div></div><p>Connect documents from SharePoint sites.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+        <div class="card cat-card soon"><div class="top"><span class="logo-tile">Sl</span><div><b>Slack</b><span class="s">Messaging</span></div></div><p>Get notified in a channel when something needs attention.</p><div class="cat-foot"><span class="badge b-outline">Coming soon</span></div></div>
+        <div class="card cat-card soon"><div class="top"><span class="logo-tile"><i data-icon="puzzle"></i></span><div><b>Other business apps</b><span class="s">More to come</span></div></div><p>Tell us which tool you’d like agents to work with next.</p><div class="cat-foot"><button class="btn btn-sm btn-outline" type="button" data-toast="Thanks — request noted">Suggest an app</button></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

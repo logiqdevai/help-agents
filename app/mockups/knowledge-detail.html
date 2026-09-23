@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Property FAQ.md · Knowledge · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    dl.kv { margin: 0; }
+    .doc { font-family: var(--font-mono); font-size: 13.5px; line-height: 1.7; color: var(--ink); white-space: pre-wrap; padding: 24px; background: var(--canvas-soft); border-radius: 12px; border: 1px solid var(--hairline); max-height: 460px; overflow: auto; letter-spacing: 0; }
+    .doc-edit { font-family: var(--font-mono); font-size: 13.5px; line-height: 1.7; min-height: 360px; }
+    .ver-row { display: flex; align-items: flex-start; gap: 14px; padding: 16px 24px; border-bottom: 1px solid var(--hairline-soft); flex-wrap: wrap; }
+    .ver-row:last-child { border-bottom: 0; }
+    .ver-num { width: 40px; height: 40px; border-radius: 9999px; background: var(--strong); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: var(--ink); flex: none; }
+    .ver-row.current .ver-num { background: var(--primary); color: #fff; }
+    .ver-row .grow b { color: var(--ink); font-weight: 500; }
+    .ver-row .grow .sub { font-size: 14px; color: var(--muted); display: block; }
+    .ver-row .grow { flex: 1 1 200px; min-width: 0; }
+    .ver-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    @media (max-width: 639px) { .ver-actions { width: 100%; padding-left: 54px; } }
+    .diff-add { display: block; background: #e8f7ee; color: #14532d; padding: 0 8px; border-radius: 4px; }
+    .diff-del { display: block; background: var(--error-soft); color: #7f1d1d; padding: 0 8px; border-radius: 4px; text-decoration: line-through; text-decoration-color: rgba(220,38,38,.5); }
+    .call-row { display: flex; align-items: center; gap: 12px; padding: 12px 24px; border-bottom: 1px solid var(--hairline-soft); cursor: pointer; }
+    .call-row:last-child { border-bottom: 0; }
+    .call-row:hover { background: var(--canvas-soft); }
+    .call-row .grow b { display: block; color: var(--ink); font-weight: 500; }
+    .call-row .grow span { font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body data-nav="knowledge" data-crumbs='[["Knowledge","knowledge.html"],["Property FAQ.md"]]'>
+<div id="content">
+
+  <div>
+    <a class="back" href="knowledge.html"><i data-icon="arrow-left" data-size="sm"></i>Knowledge</a>
+    <div class="page-head">
+      <div class="row-top" style="gap:16px">
+        <span class="logo-tile lg"><i data-icon="file-text"></i></span>
+        <div>
+          <h1>Property FAQ.md</h1>
+          <p class="row wrap" style="gap:10px;margin-top:8px"><span class="badge b-success">Ready</span><span class="badge b-outline plain">Uploaded file</span><span class="badge b-outline plain">Version 3</span><span class="small muted">Refreshed for the AI 19 Sep, 11:22</span></p>
+        </div>
+      </div>
+      <div class="actions">
+        <label class="row-sm small strong" style="margin-right:8px"><span class="switch"><input type="checkbox" checked aria-label="Agents can use this source"><i></i></span>Agents can use this</label>
+        <button class="btn btn-outline" type="button" data-toast="Refreshing — the AI will use the latest version shortly"><i data-icon="refresh-cw" data-size="sm"></i>Refresh for the AI</button>
+        <button class="btn btn-primary" type="button" data-open="editModal"><i data-icon="pencil" data-size="sm"></i>Edit content</button>
+        <button class="btn btn-danger btn-icon" type="button" data-open="deleteModal" aria-label="Delete source"><i data-icon="trash-2" data-size="sm"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="split-wide">
+    <div class="stack-lg">
+
+      <div class="card">
+        <div class="card-head">
+          <div><div class="title">Current content</div><p>Version 3 · what agents can look up right now</p></div>
+          <button class="btn btn-sm btn-outline" type="button" data-copy="Property FAQ v3"><i data-icon="copy" data-size="sm"></i>Copy text</button>
+        </div>
+        <div class="card-body">
+<div class="doc"># Frequently asked questions
+
+## Viewings
+Viewings are available Monday to Saturday, 10:00–19:00.
+Each viewing lasts about 30 minutes. Please bring photo ID.
+Viewings can be rescheduled free of charge up to 4 hours before.
+
+## Deposit and contract
+The deposit is two months' rent, held for the length of the contract.
+Standard contracts run for 12 months. Shorter terms are possible
+for furnished apartments — ask a member of the team.
+
+## Pricing
+Listed prices exclude utilities and building maintenance fees.
+We can share the full cost breakdown after the first viewing.
+Negotiation on price is handled by the sales team, not by the agent.
+
+## What we don't do
+We don't give legal or tax advice. If the customer asks, explain that
+a member of the team will get back to them.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div><div class="title">Version history</div><p>Editing creates a new version. Older versions are kept so you can see exactly what an agent knew at the time of a past call.</p></div>
+        </div>
+        <div class="ver-row current">
+          <span class="ver-num">v3</span>
+          <div class="grow"><b>Current version</b> <span class="badge b-success" style="margin-left:6px">Ready</span><span class="sub">Petros Rodinos · 19 Sep 2026, 11:20 · Added deposit and contract section</span></div>
+          <div class="ver-actions"><button class="btn btn-sm btn-outline" type="button" data-open="viewV3">View</button></div>
+        </div>
+        <div class="ver-row">
+          <span class="ver-num">v2</span>
+          <div class="grow"><b>Version 2</b> <span class="badge b-soft">Ready</span><span class="sub">Maria Kanellou · 12 Sep 2026, 15:02 · Updated viewing hours</span></div>
+          <div class="ver-actions"><button class="btn btn-sm btn-outline" type="button" data-open="viewV2">View</button><button class="btn btn-sm btn-outline" type="button" data-open="restoreModal">Restore this version</button></div>
+        </div>
+        <div class="ver-row">
+          <span class="ver-num">v1</span>
+          <div class="grow"><b>Version 1</b> <span class="badge b-soft">Ready</span><span class="sub">Petros Rodinos · 2 Sep 2026, 10:48 · Original upload</span></div>
+          <div class="ver-actions"><button class="btn btn-sm btn-outline" type="button" data-open="viewV2">View</button><button class="btn btn-sm btn-outline" type="button" data-open="restoreModal">Restore this version</button></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="stack-lg">
+
+      <div class="card">
+        <div class="card-head"><div class="title">Details</div></div>
+        <div class="card-body">
+          <dl class="kv">
+            <dt>Type</dt><dd>Uploaded file (.md)</dd>
+            <dt>Status</dt><dd>Ready</dd>
+            <dt>Added by</dt><dd>Petros Rodinos</dd>
+            <dt>Added</dt><dd>2 Sep 2026, 10:48</dd>
+            <dt>Last updated</dt><dd>19 Sep 2026, 11:20</dd>
+            <dt>Refreshed for the AI</dt><dd>19 Sep 2026, 11:22</dd>
+            <dt>Current version</dt><dd>3</dd>
+            <dt>Size</dt><dd>14 KB · 1,180 words</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="title">Used by</div><button class="btn btn-sm btn-text" type="button" data-toast="Agent access updated">Manage</button></div>
+        <div class="list-row" data-href="agent-detail.html" style="cursor:pointer"><span class="agent-mark m-mint"><i data-icon="bot"></i></span><div class="grow"><b>Lead Follow-up Agent</b><span>Active · 3 knowledge sources</span></div><i data-icon="chevron-right" data-size="sm"></i></div>
+        <div class="list-row" data-href="agent-detail.html" style="cursor:pointer"><span class="agent-mark m-lavender"><i data-icon="bot"></i></span><div class="grow"><b>Sales Agent</b><span>Active · 1 knowledge source</span></div><i data-icon="chevron-right" data-size="sm"></i></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><div class="title">Calls that used this version</div><p>Version 3 · since 19 Sep</p></div></div>
+        <div class="call-row" data-href="call-detail.html"><span class="avatar a-mint">JS</span><div class="grow"><b>John Smith · Call #18372</b><span>Today 14:31 · Lead Follow-up · Interested</span></div><i data-icon="chevron-right" data-size="sm"></i></div>
+        <div class="call-row" data-href="call-detail.html"><span class="avatar a-peach">SN</span><div class="grow"><b>Sofia Nikolaou · Call #18368</b><span>Today 14:02 · Lead Follow-up · Call back later</span></div><i data-icon="chevron-right" data-size="sm"></i></div>
+        <div class="call-row" data-href="call-detail.html"><span class="avatar a-lavender">AL</span><div class="grow"><b>Anna Lambrou · Call #18371</b><span>Today 14:24 · Sales Agent · Appointment requested</span></div><i data-icon="chevron-right" data-size="sm"></i></div>
+        <div class="card-foot"><span class="small muted">Showing 3 of 212</span><a class="link small" href="calls.html">See all in Calls</a></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Edit content -->
+  <div class="modal-backdrop" id="editModal">
+    <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+      <div class="modal-head"><div><h3 id="editTitle">Edit content</h3><p>Saving creates version 4. Version 3 stays in the history.</p></div><button class="btn btn-icon btn-text" data-close aria-label="Close"><i data-icon="x"></i></button></div>
+      <div class="modal-body stack">
+        <div class="field"><label class="label" for="editText">Content</label><textarea class="textarea doc-edit" id="editText">## Viewings
+Viewings are available Monday to Saturday, 10:00–19:00.
+Each viewing lasts about 30 minutes. Please bring photo ID.
+Viewings can be rescheduled free of charge up to 4 hours before.
+
+## Deposit and contract
+The deposit is two months' rent, held for the length of the contract.</textarea></div>
+        <div class="field"><label class="label" for="changeNote">What changed? <span class="opt">Optional</span></label><input class="input" id="changeNote" type="text" placeholder="e.g. Updated deposit terms"></div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close>Cancel</button><button class="btn btn-primary" data-close data-toast="Saved as version 4 — processing">Save as new version</button></div>
+    </div>
+  </div>
+
+  <!-- View v3 -->
+  <div class="modal-backdrop" id="viewV3">
+    <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="v3Title">
+      <div class="modal-head"><div><h3 id="v3Title">Version 3 <span class="badge b-success" style="vertical-align:middle;margin-left:8px">Current</span></h3><p>Petros Rodinos · 19 Sep 2026, 11:20</p></div><button class="btn btn-icon btn-text" data-close aria-label="Close"><i data-icon="x"></i></button></div>
+      <div class="modal-body"><div class="doc">## Deposit and contract
+The deposit is two months' rent, held for the length of the contract.
+Standard contracts run for 12 months. Shorter terms are possible
+for furnished apartments — ask a member of the team.
+
+(…rest of the current content shown above)</div></div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close>Close</button></div>
+    </div>
+  </div>
+
+  <!-- View older version with diff -->
+  <div class="modal-backdrop" id="viewV2">
+    <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="v2Title">
+      <div class="modal-head"><div><h3 id="v2Title">Version 2</h3><p>Maria Kanellou · 12 Sep 2026, 15:02 · read-only</p></div><button class="btn btn-icon btn-text" data-close aria-label="Close"><i data-icon="x"></i></button></div>
+      <div class="modal-body stack">
+        <div class="notice n-soft"><i data-icon="info"></i><div class="grow">Compared with the current version: <b>1 section added</b>, <b>1 line changed</b>. Calls made between 12 and 19 Sep used this version.</div></div>
+        <div class="doc"><span class="diff-del">Viewings are available Monday to Friday, 10:00–18:00.</span><span class="diff-add">Viewings are available Monday to Saturday, 10:00–19:00.</span>Each viewing lasts about 30 minutes. Please bring photo ID.
+Viewings can be rescheduled free of charge up to 4 hours before.
+
+<span class="diff-add">## Deposit and contract</span><span class="diff-add">The deposit is two months' rent, held for the length of the contract.</span></div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close>Close</button><button class="btn btn-primary" data-close data-toast="Restored as version 4">Restore this version</button></div>
+    </div>
+  </div>
+
+  <!-- Restore confirm -->
+  <div class="modal-backdrop" id="restoreModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="restoreTitle">
+      <div class="modal-head"><div><h3 id="restoreTitle">Restore this version?</h3><p>The old content becomes a new version (v4) and agents start using it once it’s refreshed. Nothing is deleted.</p></div></div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close>Cancel</button><button class="btn btn-primary" data-close data-toast="Restored as version 4">Restore</button></div>
+    </div>
+  </div>
+
+  <!-- Delete -->
+  <div class="modal-backdrop" id="deleteModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="delTitle">
+      <div class="modal-head"><div><h3 id="delTitle">Delete Property FAQ.md?</h3><p>2 agents use this source. They’ll stop using it right away. Past calls keep a record of what they knew. To pause it instead, turn it off.</p></div></div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close>Keep it</button><a class="btn btn-danger-fill" href="knowledge.html">Delete source</a></div>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

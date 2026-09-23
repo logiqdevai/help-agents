@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scheduled calls · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .hours-note { display: flex; gap: 12px; align-items: flex-start; }
+    .inline-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+    .row-actions { display: flex; gap: 6px; justify-content: flex-end; }
+    .reason { font-size: 13px; color: var(--muted); display: block; }
+    .table th, .table td { padding-left: 10px; padding-right: 10px; }
+    .table td:first-child b, .table td:first-child .sub { white-space: nowrap; }
+    .table td:nth-child(2) { min-width: 120px; }
+    .table .badge { padding: 4px 8px; }
+    .table td:nth-child(5) .sub { white-space: normal; max-width: 150px; }
+  </style>
+</head>
+<body data-nav="calls" data-crumbs='[["Calls","calls.html"],["Scheduled"]]'>
+<div id="content">
+
+  <div class="page-head">
+    <div>
+      <h1>Scheduled calls</h1>
+      <p>Who your agents will call next and when. Calls are only placed within your company's calling hours.</p>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" type="button" data-open="scheduleModal"><i data-icon="plus" data-size="sm"></i>Schedule call</button>
+    </div>
+  </div>
+
+  <div class="stack">
+    <nav class="subnav" aria-label="Calls sections">
+      <a href="calls.html">All calls</a>
+      <a class="active" href="scheduled-calls.html">Scheduled <span class="pill-count">14</span></a>
+    </nav>
+
+    <div class="notice n-soft">
+      <i data-icon="clock"></i>
+      <div class="grow"><b>Calling hours:</b> Monday–Saturday 09:00–18:00, Sunday no calling · Europe/Athens. Calls that fall outside these hours are moved to the next allowed time automatically. <a class="link" href="settings-organization.html">Change calling hours</a></div>
+    </div>
+
+    <div data-tabs class="stack">
+      <div class="tabs" role="tablist">
+        <button class="tab" type="button" data-tab="pending">Pending <span class="pill-count">14</span></button>
+        <button class="tab" type="button" data-tab="completed">Completed <span class="pill-count">212</span></button>
+        <button class="tab" type="button" data-tab="canceled">Canceled &amp; skipped <span class="pill-count">9</span></button>
+      </div>
+
+      <div class="toolbar">
+        <div class="input-icon grow"><i data-icon="search" data-size="sm"></i><input class="input" type="search" placeholder="Search contact" aria-label="Search contact"></div>
+        <select class="select" aria-label="Agent"><option>All agents</option><option>Lead Follow-up Agent</option><option>Appointment Confirmation Agent</option></select>
+        <select class="select" aria-label="Source"><option>Any source</option><option>Manual</option><option>Retry</option><option>Automation</option><option>Follow-up</option></select>
+      </div>
+
+      <!-- Pending -->
+      <div data-panel="pending">
+        <div class="table-wrap"><div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>Contact</th><th>Agent</th><th>Scheduled for</th><th>Source</th><th>Attempt</th><th>Status</th><th class="r">Actions</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="row-sm"><span class="avatar avatar-sm a-mint">MP</span><span><b>Maria Papadopoulou</b><span class="sub">+30 697 555 0114</span></span></div></td>
+                <td>Lead Follow-up</td>
+                <td class="nowrap"><b>Today 17:45</b><span class="sub">in 48 min</span></td>
+                <td><span class="badge plain b-outline">Retry</span></td>
+                <td class="nowrap">Attempt 2 of 3<span class="sub">After no answer</span></td>
+                <td><span class="badge">Pending</span></td>
+                <td><div class="row-actions"><button class="btn btn-sm btn-outline" type="button" data-toast="Calling Maria Papadopoulou now…">Call now</button><button class="btn btn-sm btn-text" type="button" data-toast="Scheduled call canceled">Cancel</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="row-sm"><span class="avatar avatar-sm a-peach">TM</span><span><b>Thanos Marinos</b><span class="sub">+30 697 555 0129</span></span></div></td>
+                <td>Lead Follow-up</td>
+                <td class="nowrap"><b>Now</b><span class="sub">Dialing</span></td>
+                <td><span class="badge plain b-outline">Manual</span></td>
+                <td class="nowrap">Attempt 1 of 3</td>
+                <td><span class="badge b-live">In progress</span></td>
+                <td><div class="row-actions"><a class="btn btn-sm btn-outline" href="call-detail.html">View call</a></div></td>
+              </tr>
+              <tr>
+                <td><div class="row-sm"><span class="avatar avatar-sm a-lavender">DK</span><span><b>Dimitris Kostas</b><span class="sub">+30 695 555 0108</span></span></div></td>
+                <td>Lead Follow-up</td>
+                <td class="nowrap"><b>Tomorrow 10:00</b><span class="sub">Wed 24 Sep</span></td>
+                <td><span class="badge plain b-outline">Follow-up</span></td>
+                <td class="nowrap">Attempt 1 of 3<span class="sub">Callback requested</span></td>
+                <td><span class="badge">Pending</span></td>
+                <td><div class="row-actions"><button class="btn btn-sm btn-outline" type="button" data-toast="Calling Dimitris Kostas now…">Call now</button><button class="btn btn-sm btn-text" type="button" data-toast="Scheduled call canceled">Cancel</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="row-sm"><span class="avatar avatar-sm a-sky">EV</span><span><b>Eleni Vasileiou</b><span class="sub">+30 698 555 0190</span></span></div></td>
+                <td>Appointment Confirmation</td>
+                <td class="nowrap"><b>Tomorrow 11:30</b><span class="sub">Wed 24 Sep</span></td>
+                <td><span class="badge plain b-outline">Automation</span></td>
+                <td class="nowrap">Attempt 1 of 3<span class="sub">Rule: Appt. requested</span></td>
+                <td><span class="badge">Pending</span></td>
+                <td><div class="row-actions"><button class="btn btn-sm btn-outline" type="button" data-toast="Calling Eleni Vasileiou now…">Call now</button><button class="btn btn-sm btn-text" type="button" data-toast="Scheduled call canceled">Cancel</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="row-sm"><span class="avatar avatar-sm a-rose">GA</span><span><b>Giorgos Alexiou</b><span class="sub">+30 693 555 0121</span></span></div></td>
+                <td>Lead Follow-up</td>
+                <td style="max-width:200px"><b class="nowrap">Wed 24 Sep, 09:00</b><span class="reason">Moved from 21:15 (outside calling hours)</span></td>
+                <td><span class="badge plain b-outline">Retry</span></td>
+                <td class="nowrap">Attempt 2 of 3<span class="sub">After voicemail</span></td>
+                <td><span class="badge">Pending</span></td>
+                <td><div class="row-actions"><button class="btn btn-sm btn-outline" type="button" data-toast="Calling Giorgos Alexiou now…">Call now</button><button class="btn btn-sm btn-text" type="button" data-toast="Scheduled call canceled">Cancel</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="row-sm"><span class="avatar avatar-sm a-mint">SN</span><span><b>Sofia Nikolaou</b><span class="sub">+30 697 555 0163</span></span></div></td>
+                <td>Lead Follow-up</td>
+                <td class="nowrap"><b>Thu 25 Sep, 14:00</b><span class="sub">In 2 days</span></td>
+                <td><span class="badge plain b-outline">Follow-up</span></td>
+                <td class="nowrap">Attempt 1 of 3<span class="sub">Call back later</span></td>
+                <td><span class="badge">Pending</span></td>
+                <td><div class="row-actions"><button class="btn btn-sm btn-outline" type="button" data-toast="Calling Sofia Nikolaou now…">Call now</button><button class="btn btn-sm btn-text" type="button" data-toast="Scheduled call canceled">Cancel</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="row-sm"><span class="avatar avatar-sm a-peach">JS</span><span><b>John Smith</b><span class="sub">+30 697 555 0142</span></span></div></td>
+                <td>Lead Follow-up</td>
+                <td class="nowrap"><b>Wed 24 Sep, 15:00</b><span class="sub">Afternoon requested</span></td>
+                <td><span class="badge plain b-outline">Automation</span></td>
+                <td class="nowrap">Attempt 1 of 3<span class="sub">Rule: Interested</span></td>
+                <td><span class="badge">Pending</span></td>
+                <td><div class="row-actions"><button class="btn btn-sm btn-outline" type="button" data-toast="Calling John Smith now…">Call now</button><button class="btn btn-sm btn-text" type="button" data-toast="Scheduled call canceled">Cancel</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-foot"><span>Showing 1–7 of 14</span><div class="pager"><button class="btn btn-sm btn-outline btn-icon" type="button" disabled aria-label="Previous"><i data-icon="chevron-left" data-size="sm"></i></button><button class="btn btn-sm btn-outline btn-icon" type="button" aria-label="Next"><i data-icon="chevron-right" data-size="sm"></i></button></div></div>
+        </div>
+      </div>
+
+      <!-- Completed -->
+      <div data-panel="completed">
+        <div class="table-wrap"><div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>Contact</th><th>Agent</th><th>Was scheduled for</th><th>Source</th><th>Attempt</th><th>Status</th><th class="r">Call</th></tr></thead>
+            <tbody>
+              <tr data-href="call-detail.html"><td><b>John Smith</b><span class="sub">+30 697 555 0142</span></td><td>Lead Follow-up</td><td class="nowrap">Today 14:31</td><td><span class="badge plain b-outline">Manual</span></td><td class="nowrap">Attempt 1 of 3</td><td><span class="badge b-success">Completed</span></td><td class="r"><span class="link">#18372</span></td></tr>
+              <tr data-href="call-detail.html"><td><b>Eleni Vasileiou</b><span class="sub">+30 698 555 0190</span></td><td>Appointment Confirmation</td><td class="nowrap">Today 14:18</td><td><span class="badge plain b-outline">Automation</span></td><td class="nowrap">Attempt 1 of 3</td><td><span class="badge b-success">Completed</span></td><td class="r"><span class="link">#18370</span></td></tr>
+              <tr data-href="call-detail.html"><td><b>Sofia Nikolaou</b><span class="sub">+30 697 555 0163</span></td><td>Lead Follow-up</td><td class="nowrap">Today 14:02</td><td><span class="badge plain b-outline">Retry</span></td><td class="nowrap">Attempt 2 of 3</td><td><span class="badge b-success">Completed</span></td><td class="r"><span class="link">#18368</span></td></tr>
+              <tr data-href="call-detail.html"><td><b>Nikos Georgiou</b><span class="sub">+30 69 555 01</span></td><td>Lead Follow-up</td><td class="nowrap">Today 12:04</td><td><span class="badge plain b-outline">Manual</span></td><td class="nowrap">Attempt 1 of 3</td><td><span class="badge b-error">Failed</span><span class="reason">Invalid phone number</span></td><td class="r"><span class="link">#18359</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-foot"><span>Showing 1–4 of 212</span><div class="pager"><button class="btn btn-sm btn-outline btn-icon" type="button" disabled aria-label="Previous"><i data-icon="chevron-left" data-size="sm"></i></button><button class="btn btn-sm btn-outline btn-icon" type="button" aria-label="Next"><i data-icon="chevron-right" data-size="sm"></i></button></div></div>
+        </div>
+      </div>
+
+      <!-- Canceled / skipped -->
+      <div data-panel="canceled">
+        <div class="table-wrap"><div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>Contact</th><th>Agent</th><th>Was scheduled for</th><th>Source</th><th>Attempt</th><th>Status</th><th>Reason</th></tr></thead>
+            <tbody>
+              <tr><td><b>Vasilis Panagos</b><span class="sub">+30 698 555 0117</span></td><td>Lead Follow-up</td><td class="nowrap">Today 12:15</td><td><span class="badge plain b-outline">Manual</span></td><td class="nowrap">Attempt 1 of 3</td><td><span class="badge b-outline">Canceled</span></td><td class="small">Canceled by Maria Kanellou</td></tr>
+              <tr><td><b>Katerina Ioannou</b><span class="sub">+30 699 555 0182</span></td><td>Lead Follow-up</td><td class="nowrap">Today 13:30</td><td><span class="badge plain b-outline">Retry</span></td><td class="nowrap">Attempt 3 of 3</td><td><span class="badge b-outline">Skipped</span></td><td class="small">Maximum attempts reached — no more retries</td></tr>
+              <tr><td><b>Anna Lambrou</b><span class="sub">+30 694 555 0177</span></td><td>Appointment Confirmation</td><td class="nowrap">Mon 22 Sep, 18:20</td><td><span class="badge plain b-outline">Automation</span></td><td class="nowrap">Attempt 1 of 3</td><td><span class="badge b-outline">Skipped</span></td><td class="small">Outside calling hours — moved to 09:00</td></tr>
+              <tr><td><b>Petra Lekka</b><span class="sub">+30 697 555 0188</span></td><td>Lead Follow-up</td><td class="nowrap">Mon 22 Sep, 11:00</td><td><span class="badge plain b-outline">Follow-up</span></td><td class="nowrap">Attempt 1 of 3</td><td><span class="badge b-outline">Skipped</span></td><td class="small">Contact is marked “Do not call”</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-foot"><span>Showing 1–4 of 9</span><div class="pager"><button class="btn btn-sm btn-outline btn-icon" type="button" disabled aria-label="Previous"><i data-icon="chevron-left" data-size="sm"></i></button><button class="btn btn-sm btn-outline btn-icon" type="button" aria-label="Next"><i data-icon="chevron-right" data-size="sm"></i></button></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schedule a call -->
+  <div class="modal-backdrop" id="scheduleModal" role="dialog" aria-modal="true" aria-labelledby="scheduleTitle">
+    <div class="modal modal-lg">
+      <div class="modal-head">
+        <div><h3 id="scheduleTitle">Schedule a call</h3><p>Choose who to call, with which agent, and when.</p></div>
+        <button class="icon-btn" type="button" data-close aria-label="Close"><i data-icon="x"></i></button>
+      </div>
+      <div class="modal-body stack-lg">
+        <div class="form-grid">
+          <div class="field">
+            <label class="label" for="sc-contact">Contact</label>
+            <div class="input-icon"><i data-icon="search" data-size="sm"></i><input class="input" id="sc-contact" placeholder="Search contacts or CRM records" value="Maria Papadopoulou"></div>
+            <span class="hint">+30 697 555 0114 · HubSpot contact. <a class="link" href="#">Add a new number</a></span>
+          </div>
+          <div class="field">
+            <label class="label" for="sc-agent">Agent</label>
+            <select class="select" id="sc-agent"><option>Lead Follow-up Agent</option><option>Appointment Confirmation Agent</option></select>
+            <span class="hint">Outbound from +30 21 5550 1001</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="label">When should it be called?</span>
+          <div class="grid-2">
+            <label class="choice"><input type="radio" name="when" checked><span class="choice-mark"></span><span class="choice-body"><b>Call immediately</b><span>Placed as soon as the contact is eligible.</span></span></label>
+            <label class="choice"><input type="radio" name="when"><span class="choice-mark"></span><span class="choice-body"><b>After a set number of minutes</b><span>For example, in 30 minutes.</span></span></label>
+            <label class="choice"><input type="radio" name="when"><span class="choice-mark"></span><span class="choice-body"><b>Tomorrow</b><span>Same time as now, or the first allowed time.</span></span></label>
+            <label class="choice"><input type="radio" name="when"><span class="choice-mark"></span><span class="choice-body"><b>On a specific date</b><span>Pick a day and time.</span></span></label>
+            <label class="choice" style="grid-column:1/-1"><input type="radio" name="when"><span class="choice-mark"></span><span class="choice-body"><b>Retry automatically if there's no answer</b><span>Follows this agent's retry rules: 3 attempts, waiting 2 hours, then 24 hours.</span></span></label>
+          </div>
+          <div class="inline-fields">
+            <div class="field"><label class="label" for="sc-min">Minutes from now</label><input class="input" id="sc-min" type="number" value="30" min="1"></div>
+            <div class="field"><label class="label" for="sc-date">Date and time</label><input class="input" id="sc-date" type="datetime-local" value="2026-09-24T10:00"></div>
+          </div>
+        </div>
+
+        <div class="notice n-soft hours-note">
+          <i data-icon="clock"></i>
+          <div class="grow">Calls are only placed within your calling hours: <b>Mon–Sat 09:00–18:00</b> — Sunday no calling. A call scheduled outside these hours is moved to the next allowed time.</div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-outline" type="button" data-close>Cancel</button>
+        <button class="btn btn-primary" type="button" data-close data-toast="Call scheduled for Maria Papadopoulou">Schedule call</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

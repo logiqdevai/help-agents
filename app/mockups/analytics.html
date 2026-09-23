@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analytics · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .range-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .range-row .input { width: 160px; height: 40px; border-radius: 9999px; padding: 0 14px; }
+    .agent-cell { display: flex; align-items: center; gap: 12px; }
+    .agent-cell .agent-mark { width: 32px; height: 32px; }
+    .agent-cell .agent-mark .ic { width: 15px; height: 15px; }
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+    .table-view { max-height: 360px; overflow: auto; }
+    .table-view .table th { position: sticky; top: 0; z-index: 1; }
+    .caption { font-size: 13px; color: var(--muted); letter-spacing: 0; }
+    .segmented button { white-space: nowrap; }
+    @media (max-width: 639px) {
+      .range-row, .range-row .input { width: 100%; }
+      .toolbar > .segmented { max-width: 100%; overflow-x: auto; }
+      .card-head { flex-wrap: wrap; }
+      .chart-wrap { overflow-x: auto; }
+      .chart-wrap svg { min-width: 560px; }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .stat { padding: 16px; }
+      .stat .stat-value { font-size: 28px; }
+    }
+  </style>
+</head>
+<body data-nav="analytics" data-crumbs='[["Analytics"]]'>
+<div id="content">
+
+  <div class="page-head">
+    <div>
+      <h1>Usage reports</h1>
+      <p>How many calls your agents handled, what came out of them and what they cost.</p>
+    </div>
+    <div class="actions"><button class="btn btn-outline" data-toast="Exported analytics-2026-08-25_2026-09-23.csv" type="button"><i data-icon="download" data-size="sm"></i>Export CSV</button></div>
+  </div>
+
+  <!-- Period selector -->
+  <div class="toolbar">
+    <div class="segmented" data-tabs role="group" aria-label="Time period">
+      <button data-tab="today" type="button">Today</button>
+      <button data-tab="7" type="button">Last 7 days</button>
+      <button class="active" data-tab="30" type="button">Last 30 days</button>
+      <button data-tab="custom" type="button">Custom range</button>
+    </div>
+    <div class="range-row">
+      <input class="input" type="date" value="2026-08-25" aria-label="From date">
+      <span class="muted">to</span>
+      <input class="input" type="date" value="2026-09-23" aria-label="To date">
+    </div>
+    <span class="grow"></span>
+    <select class="select" aria-label="Agent filter"><option>All agents</option><option>Lead Follow-up Agent</option><option>Appointment Confirmation Agent</option><option>Sales Agent</option><option>Reservation Confirmation Agent</option></select>
+  </div>
+
+  <!-- Company-wide totals -->
+  <section class="grid-4" aria-label="Company totals, last 30 days">
+    <div class="card stat"><div class="stat-label">Total calls</div><div class="stat-value">1,115</div><div class="stat-note">25 Aug – 23 Sep</div></div>
+    <div class="card stat"><div class="stat-label">Total minutes</div><div class="stat-value">2,442</div><div class="stat-note">Talk time across all calls</div></div>
+    <div class="card stat"><div class="stat-label">Completed calls</div><div class="stat-value">1,034</div><div class="stat-note">93% of all calls</div></div>
+    <div class="card stat"><div class="stat-label">Failed calls</div><div class="stat-value">12</div><div class="stat-note"><a class="link" href="calls.html">Review failed calls</a></div></div>
+    <div class="card stat"><div class="stat-label">Average call duration</div><div class="stat-value">2m 11s</div><div class="stat-note">Per call, all agents</div></div>
+    <div class="card stat"><div class="stat-label">Total cost</div><div class="stat-value">€431.34</div><div class="stat-note">AI €318.66 · telephony €112.68</div></div>
+    <div class="card stat"><div class="stat-label">Average cost per call</div><div class="stat-value">€0.39</div><div class="stat-note">€431.34 ÷ 1,115 calls</div></div>
+    <div class="card stat"><div class="stat-label">Cost per successful outcome</div><div class="stat-value">€0.49</div><div class="stat-note">882 successful calls</div></div>
+  </section>
+
+  <!-- Calls per day -->
+  <section class="card" data-tabs>
+    <div class="card-head">
+      <div><div class="title">Calls per day</div><p>Successful and unsuccessful calls, 25 Aug – 23 Sep</p></div>
+      <div class="row wrap">
+        <div class="legend"><span><i></i>Successful</span><span><i class="light"></i>Unsuccessful</span></div>
+        <div class="segmented"><button class="active" data-tab="chart" type="button"><i data-icon="chart-column" data-size="sm"></i>Chart</button><button data-tab="table" type="button"><i data-icon="list-checks" data-size="sm"></i>Table</button></div>
+      </div>
+    </div>
+    <div data-panel="chart" class="card-body chart-wrap"><svg id="callsChart" role="img" aria-label="Stacked bars of successful and unsuccessful calls per day for the last 30 days"></svg></div>
+    <div data-panel="table" class="table-view"><table class="table" id="callsTable"><thead><tr><th>Date</th><th class="r">Successful</th><th class="r">Unsuccessful</th><th class="r">Total</th></tr></thead><tbody></tbody></table></div>
+    <div class="card-foot"><span class="caption">Calling hours apply, so Sundays show no calls. Success is decided by each agent’s own success outcomes.</span></div>
+  </section>
+
+  <!-- Cost per day -->
+  <section class="card" data-tabs>
+    <div class="card-head">
+      <div><div class="title">Cost per day</div><p>AI cost and telephony cost, in euros</p></div>
+      <div class="row wrap">
+        <div class="legend"><span><i></i>AI</span><span><i class="light"></i>Telephony</span></div>
+        <div class="segmented"><button class="active" data-tab="chart" type="button"><i data-icon="chart-column" data-size="sm"></i>Chart</button><button data-tab="table" type="button"><i data-icon="list-checks" data-size="sm"></i>Table</button></div>
+      </div>
+    </div>
+    <div data-panel="chart" class="card-body chart-wrap"><svg id="costChart" role="img" aria-label="Stacked bars of AI and telephony cost per day for the last 30 days"></svg></div>
+    <div data-panel="table" class="table-view"><table class="table" id="costTable"><thead><tr><th>Date</th><th class="r">AI</th><th class="r">Telephony</th><th class="r">Total</th></tr></thead><tbody></tbody></table></div>
+    <div class="card-foot"><span class="caption">A call always keeps the cost that was calculated when it happened, even if prices change later.</span></div>
+  </section>
+
+  <!-- Outcomes -->
+  <section class="split-wide">
+    <div class="card">
+      <div class="card-head"><div class="title">Outcomes</div><span class="small muted">1,115 calls</span></div>
+      <div class="card-body stack">
+        <div class="bar-row"><span class="name">Confirmed</span><span class="track"><span style="width:100%"></span></span><span class="val">414</span></div>
+        <div class="bar-row"><span class="name">Interested</span><span class="track"><span style="width:47%"></span></span><span class="val">196</span></div>
+        <div class="bar-row"><span class="name">Appointment requested</span><span class="track"><span style="width:36%"></span></span><span class="val">151</span></div>
+        <div class="bar-row"><span class="name">Rescheduled</span><span class="track"><span style="width:29%"></span></span><span class="val">121</span></div>
+        <div class="bar-row"><span class="name">Voicemail</span><span class="track"><span class="light" style="width:21%"></span></span><span class="val">87</span></div>
+        <div class="bar-row"><span class="name">No answer</span><span class="track"><span class="light" style="width:13%"></span></span><span class="val">54</span></div>
+        <div class="bar-row"><span class="name">Not interested</span><span class="track"><span class="light" style="width:10%"></span></span><span class="val">41</span></div>
+        <div class="bar-row"><span class="name">Call back later</span><span class="track"><span class="light" style="width:5%"></span></span><span class="val">22</span></div>
+        <div class="bar-row"><span class="name">Unknown</span><span class="track"><span class="light" style="width:5%"></span></span><span class="val">21</span></div>
+        <div class="bar-row"><span class="name">Wrong number</span><span class="track"><span class="light" style="width:2%"></span></span><span class="val">8</span></div>
+        <div class="legend"><span><i></i>Success outcome (882)</span><span><i class="light"></i>Other outcome (233)</span></div>
+      </div>
+    </div>
+    <div class="orb-card" style="padding:28px">
+      <span class="orb orb-peach" style="width:260px;height:260px;right:-70px;top:-70px"></span>
+      <span class="orb orb-sky" style="width:220px;height:220px;left:-70px;bottom:-110px"></span>
+      <div class="eyebrow">Success rate</div>
+      <div class="display-lg num mt-2">79%</div>
+      <p class="small muted mt-1">882 of 1,115 calls reached an outcome marked as successful.</p>
+      <hr style="margin:20px 0">
+      <div class="kv-list">
+        <div><span>Answered or voicemail</span><b>1,046</b></div>
+        <div><span>No answer / busy</span><b>69</b></div>
+        <div><span>Transferred to a person</span><b>38</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Per-agent breakdown -->
+  <section>
+    <div class="section-head"><h2>By agent</h2><span class="small muted">Last 30 days</span></div>
+    <div class="table-wrap"><div class="table-scroll">
+      <table class="table">
+        <thead><tr><th>Agent</th><th class="r">Calls made</th><th class="r">Success rate</th><th class="r">Avg. duration</th><th class="r">Avg. cost</th><th>Top outcomes</th></tr></thead>
+        <tbody>
+          <tr data-href="agent-detail.html"><td><div class="agent-cell"><span class="agent-mark m-mint"><i data-icon="bot" data-size="sm"></i></span><div><b>Lead Follow-up Agent</b><span class="sub">Active · outbound</span></div></div></td><td class="r num">342</td><td class="r num">68%</td><td class="r num">2m 52s</td><td class="r num">€0.34</td><td><div class="chips"><span class="chip">Interested 57%</span><span class="chip">Voicemail 14%</span><span class="chip">Not interested 12%</span></div></td></tr>
+          <tr data-href="agent-detail.html"><td><div class="agent-cell"><span class="agent-mark m-peach"><i data-icon="bot" data-size="sm"></i></span><div><b>Appointment Confirmation Agent</b><span class="sub">Active · outbound</span></div></div></td><td class="r num">512</td><td class="r num">96%</td><td class="r num">1m 04s</td><td class="r num">€0.36</td><td><div class="chips"><span class="chip">Confirmed 72%</span><span class="chip">Rescheduled 24%</span><span class="chip">No answer 3%</span></div></td></tr>
+          <tr data-href="agent-detail.html"><td><div class="agent-cell"><span class="agent-mark m-lavender"><i data-icon="bot" data-size="sm"></i></span><div><b>Sales Agent</b><span class="sub">Active · inbound</span></div></div></td><td class="r num">187</td><td class="r num">61%</td><td class="r num">4m 18s</td><td class="r num">€0.62</td><td><div class="chips"><span class="chip">Appt. requested 61%</span><span class="chip">Call back later 12%</span><span class="chip">Unknown 11%</span></div></td></tr>
+          <tr data-href="agent-detail.html"><td><div class="agent-cell"><span class="agent-mark m-sky"><i data-icon="bot" data-size="sm"></i></span><div><b>Reservation Confirmation Agent</b><span class="sub">Inactive</span></div></div></td><td class="r num">74</td><td class="r num">58%</td><td class="r num">1m 30s</td><td class="r num">€0.20</td><td><div class="chips"><span class="chip">Confirmed 58%</span><span class="chip">Voicemail 27%</span></div></td></tr>
+          <tr data-href="agent-detail.html"><td><div class="agent-cell"><span class="agent-mark m-rose"><i data-icon="bot" data-size="sm"></i></span><div><b>Candidate Availability Agent</b><span class="sub">Draft</span></div></div></td><td class="r num soft">0</td><td class="r soft">—</td><td class="r soft">—</td><td class="r soft">—</td><td><span class="small muted">Not live yet</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-foot"><span>Test calls placed from the agent editor are included in company totals.</span></div></div>
+  </section>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+<script>
+  (function () {
+    var D = {
+      lab: ["25 Aug","26 Aug","27 Aug","28 Aug","29 Aug","30 Aug","31 Aug","1 Sep","2 Sep","3 Sep","4 Sep","5 Sep","6 Sep","7 Sep","8 Sep","9 Sep","10 Sep","11 Sep","12 Sep","13 Sep","14 Sep","15 Sep","16 Sep","17 Sep","18 Sep","19 Sep","20 Sep","21 Sep","22 Sep","23 Sep"],
+      s: [1,2,1,2,2,0,8,4,10,17,22,29,0,8,42,46,51,55,58,0,8,63,66,71,60,76,0,8,78,94],
+      u: [0,0,0,1,0,0,2,1,2,4,6,7,0,2,10,12,13,14,15,0,2,16,17,18,15,19,0,2,21,34],
+      ai: [0.3,0.61,0.3,0.91,0.61,0,3.04,1.52,3.65,6.39,8.52,10.95,0,3.04,15.82,17.64,19.47,20.99,22.21,0,3.04,24.03,25.25,27.07,22.81,28.9,0,3.04,30.13,18.42],
+      tel: [0.11,0.22,0.11,0.32,0.22,0,1.08,0.54,1.3,2.27,3.03,3.89,0,1.08,5.63,6.27,6.92,7.46,7.9,0,1.08,8.55,8.98,9.63,8.11,10.28,0,1.08,10.71,5.91]
+    };
+    var eur = function (v, axis) { return axis ? "€" + v : "€" + v.toFixed(2); };
+    window.mockChart(document.getElementById("callsChart"), { labels: D.lab, bars: [D.s, D.u], stacked: true, names: ["Successful", "Unsuccessful"], height: 260, xEvery: 4, yStep: 40 });
+    window.mockChart(document.getElementById("costChart"), { labels: D.lab, bars: [D.ai, D.tel], stacked: true, names: ["AI", "Telephony"], height: 260, xEvery: 4, yStep: 10, fmt: eur, left: 48 });
+    var t1 = "", t2 = "";
+    D.lab.forEach(function (l, i) {
+      t1 += "<tr><td>" + l + " 2026</td><td class='r num'>" + D.s[i] + "</td><td class='r num'>" + D.u[i] + "</td><td class='r num'><b>" + (D.s[i] + D.u[i]) + "</b></td></tr>";
+      t2 += "<tr><td>" + l + " 2026</td><td class='r num'>" + eur(D.ai[i]) + "</td><td class='r num'>" + eur(D.tel[i]) + "</td><td class='r num'><b>" + eur(D.ai[i] + D.tel[i]) + "</b></td></tr>";
+    });
+    document.querySelector("#callsTable tbody").innerHTML = t1;
+    document.querySelector("#costTable tbody").innerHTML = t2;
+  })();
+</script>
+</body>
+</html>

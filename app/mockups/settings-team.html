@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Team settings · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .role-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+    .role-grid .role { padding: 20px; border: 1px solid var(--hairline); border-radius: 12px; background: var(--card); }
+    .role-grid .role ul { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; letter-spacing: 0; }
+    .role-grid .role li { display: flex; gap: 8px; align-items: flex-start; }
+    .role-grid .role li .ic { width: 14px; height: 14px; margin-top: 4px; color: var(--muted); }
+    .member-cell { display: flex; align-items: center; gap: 12px; }
+    .access-list { display: flex; flex-direction: column; }
+    .access-list .perm-row { cursor: pointer; }
+    @media (max-width: 1100px) { .role-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 639px) { .role-grid { grid-template-columns: minmax(0, 1fr); } .list-row { flex-wrap: wrap; } .list-row .grow { flex: 1 1 calc(100% - 60px); } }
+  </style>
+</head>
+<body data-nav="settings" data-crumbs='[["Settings","settings-organization.html"],["Team"]]'>
+<div id="content">
+
+  <div class="page-head">
+    <div>
+      <h1>Settings</h1>
+      <p>Manage your company account, team and how agents are allowed to call.</p>
+    </div>
+    <div class="actions"><button class="btn btn-primary" data-open="inviteModal" type="button"><i data-icon="user-plus" data-size="sm"></i>Invite member</button></div>
+  </div>
+
+  <nav class="subnav" aria-label="Settings">
+    <a href="settings-organization.html">Organization</a>
+    <a href="settings-team.html" class="active">Team</a>
+    <a href="settings-security.html">Security</a>
+    <a href="settings-account.html">Account</a>
+    <a href="activity-log.html">Activity log</a>
+  </nav>
+
+  <!-- Members (CompanyMember + AgentAccess) -->
+  <section>
+    <div class="section-head"><h2>Members <span class="small muted">· 4</span></h2></div>
+    <div class="table-wrap"><div class="table-scroll">
+      <table class="table">
+        <thead><tr><th>Member</th><th>Role</th><th>Agent access</th><th>Last active</th><th class="r"><span class="sr-only">Actions</span></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="member-cell"><span class="avatar a-lavender">PR</span><div><b>Petros Rodinos</b> <span class="badge plain b-soft" style="padding:1px 8px">You</span><span class="sub">petros@hosperly.com</span></div></div></td>
+            <td><span class="badge b-dark">Owner</span></td>
+            <td>All agents</td>
+            <td class="nowrap">Now</td>
+            <td class="r"><span class="soft small">Cannot be changed</span></td>
+          </tr>
+          <tr>
+            <td><div class="member-cell"><span class="avatar a-mint">MK</span><div><b>Maria Kanellou</b><span class="sub">maria@aegeanhomes.example</span></div></div></td>
+            <td><span class="badge b-outline">Admin</span></td>
+            <td>All agents</td>
+            <td class="nowrap">Today, 13:52</td>
+            <td class="r pos-rel"><button class="btn btn-sm btn-icon btn-text" data-menu="menuMaria" aria-label="Actions for Maria Kanellou" type="button"><i data-icon="ellipsis"></i></button>
+              <div class="menu" id="menuMaria" style="right:12px;top:44px;text-align:left">
+                <button data-open="roleModal" type="button"><i data-icon="shield-check" data-size="sm"></i>Change role</button>
+                <hr><button class="danger" type="button"><i data-icon="user" data-size="sm"></i>Remove from company</button>
+              </div></td>
+          </tr>
+          <tr>
+            <td><div class="member-cell"><span class="avatar a-peach">NP</span><div><b>Nikos Petrou</b><span class="sub">nikos@aegeanhomes.example</span></div></div></td>
+            <td><span class="badge">Member</span></td>
+            <td><span class="strong">Access to 2 of 5 agents</span><span class="sub">Lead Follow-up, Appointment Confirmation</span></td>
+            <td class="nowrap">Yesterday, 17:20</td>
+            <td class="r pos-rel"><button class="btn btn-sm btn-outline" data-open="accessModal" type="button">Edit access</button>
+              <button class="btn btn-sm btn-icon btn-text" data-menu="menuNikos" aria-label="Actions for Nikos Petrou" type="button"><i data-icon="ellipsis"></i></button>
+              <div class="menu" id="menuNikos" style="right:12px;top:44px;text-align:left">
+                <button data-open="roleModal" type="button"><i data-icon="shield-check" data-size="sm"></i>Change role</button>
+                <button data-open="accessModal" type="button"><i data-icon="bot" data-size="sm"></i>Edit agent access</button>
+                <hr><button class="danger" type="button"><i data-icon="user" data-size="sm"></i>Remove from company</button>
+              </div></td>
+          </tr>
+          <tr>
+            <td><div class="member-cell"><span class="avatar a-sky">ES</span><div><b>Elena Sotiriou</b><span class="sub">elena@aegeanhomes.example</span></div></div></td>
+            <td><span class="badge b-outline">Viewer</span></td>
+            <td>All agents <span class="small muted">· read-only</span></td>
+            <td class="nowrap">19 Sep, 09:14</td>
+            <td class="r pos-rel"><button class="btn btn-sm btn-icon btn-text" data-menu="menuElena" aria-label="Actions for Elena Sotiriou" type="button"><i data-icon="ellipsis"></i></button>
+              <div class="menu" id="menuElena" style="right:12px;top:44px;text-align:left">
+                <button data-open="roleModal" type="button"><i data-icon="shield-check" data-size="sm"></i>Change role</button>
+                <hr><button class="danger" type="button"><i data-icon="user" data-size="sm"></i>Remove from company</button>
+              </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div></div>
+  </section>
+
+  <!-- Pending invitations (CompanyInvitation) -->
+  <section>
+    <div class="section-head"><h2>Pending invitations</h2></div>
+    <div class="card">
+      <div class="list-row">
+        <span class="avatar"><i data-icon="mail" data-size="sm"></i></span>
+        <div class="grow"><b>giorgos@aegeanhomes.example</b><span>Member · invited by Petros Rodinos · expires in 5 days</span></div>
+        <button class="btn btn-sm btn-outline" data-toast="Invitation resent to giorgos@aegeanhomes.example" type="button">Resend</button>
+        <button class="btn btn-sm btn-text" data-toast="Invitation revoked" type="button">Revoke</button>
+      </div>
+      <div class="list-row">
+        <span class="avatar"><i data-icon="mail" data-size="sm"></i></span>
+        <div class="grow"><b>recruiting@aegeanhomes.example</b><span>Viewer · invited by Maria Kanellou · expires in 2 days</span></div>
+        <button class="btn btn-sm btn-outline" data-toast="Invitation resent to recruiting@aegeanhomes.example" type="button">Resend</button>
+        <button class="btn btn-sm btn-text" data-toast="Invitation revoked" type="button">Revoke</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Role explainer (spec §3) -->
+  <section>
+    <div class="section-head"><h2>What each role can do</h2></div>
+    <div class="role-grid">
+      <div class="role"><span class="badge b-dark">Owner</span><ul>
+        <li><i data-icon="check"></i>Full access to everything</li><li><i data-icon="check"></i>Billing and usage</li><li><i data-icon="check"></i>Delete the company account</li></ul></div>
+      <div class="role"><span class="badge b-outline">Admin</span><ul>
+        <li><i data-icon="check"></i>Manage agents and integrations</li><li><i data-icon="check"></i>Manage knowledge</li><li><i data-icon="check"></i>Manage team members and settings</li></ul></div>
+      <div class="role"><span class="badge">Member</span><ul>
+        <li><i data-icon="check"></i>Use and view the agents and calls they have been given access to</li><li><i data-icon="check"></i>Can be limited to specific agents</li></ul></div>
+      <div class="role"><span class="badge b-outline">Viewer</span><ul>
+        <li><i data-icon="eye"></i>Read-only: can look, cannot change anything</li></ul></div>
+    </div>
+    <div class="notice n-soft mt-3"><i data-icon="info"></i><div class="grow">Permissions will become more fine-grained over time, so you are not limited to these four roles.</div></div>
+  </section>
+
+  <!-- Invite modal -->
+  <div class="modal-backdrop" id="inviteModal" role="dialog" aria-modal="true" aria-labelledby="inviteTitle">
+    <div class="modal">
+      <div class="modal-head"><div><h3 id="inviteTitle">Invite a team member</h3><p>They get an email with a link to join Aegean Homes.</p></div><button class="btn btn-sm btn-icon btn-text" data-close aria-label="Close" type="button"><i data-icon="x"></i></button></div>
+      <div class="modal-body stack">
+        <div class="field"><label class="label" for="invEmail">Email</label><input class="input" id="invEmail" type="email" placeholder="colleague@company.com"></div>
+        <div class="field"><label class="label" for="invRole">Role</label>
+          <select class="select" id="invRole"><option>Admin</option><option selected>Member</option><option>Viewer</option></select></div>
+        <div class="stack-sm">
+          <div class="label">Agent access <span class="opt">Members only</span></div>
+          <label class="choice"><input type="radio" name="inv-scope" checked><span class="choice-mark"></span><span class="choice-body"><b>All agents</b><span>Can use every current and future agent.</span></span></label>
+          <label class="choice"><input type="radio" name="inv-scope"><span class="choice-mark"></span><span class="choice-body"><b>Only selected agents</b><span>Choose which agents this member can see.</span></span></label>
+          <div class="access-list" style="padding:0 4px">
+            <label class="perm-row"><span class="check"><input type="checkbox" checked><i></i></span><span class="grow"><b>Lead Follow-up Agent</b></span></label>
+            <label class="perm-row"><span class="check"><input type="checkbox"><i></i></span><span class="grow"><b>Appointment Confirmation Agent</b></span></label>
+            <label class="perm-row"><span class="check"><input type="checkbox"><i></i></span><span class="grow"><b>Sales Agent</b></span></label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close type="button">Cancel</button><button class="btn btn-primary" data-close type="button">Send invitation</button></div>
+    </div>
+  </div>
+
+  <!-- Edit access modal (AgentAccess) -->
+  <div class="modal-backdrop" id="accessModal" role="dialog" aria-modal="true" aria-labelledby="accessTitle">
+    <div class="modal">
+      <div class="modal-head"><div><h3 id="accessTitle">Agent access for Nikos</h3><p>Members only see the agents they have been granted.</p></div><button class="btn btn-sm btn-icon btn-text" data-close aria-label="Close" type="button"><i data-icon="x"></i></button></div>
+      <div class="modal-body access-list">
+        <label class="perm-row"><span class="check"><input type="checkbox" checked><i></i></span><span class="grow"><b>Lead Follow-up Agent</b><span>Active · outbound</span></span></label>
+        <label class="perm-row"><span class="check"><input type="checkbox" checked><i></i></span><span class="grow"><b>Appointment Confirmation Agent</b><span>Active · outbound</span></span></label>
+        <label class="perm-row"><span class="check"><input type="checkbox"><i></i></span><span class="grow"><b>Sales Agent</b><span>Active · inbound</span></span></label>
+        <label class="perm-row"><span class="check"><input type="checkbox"><i></i></span><span class="grow"><b>Candidate Availability Agent</b><span>Draft</span></span></label>
+        <label class="perm-row"><span class="check"><input type="checkbox"><i></i></span><span class="grow"><b>Reservation Confirmation Agent</b><span>Inactive</span></span></label>
+      </div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close type="button">Cancel</button><button class="btn btn-primary" data-close type="button">Save access</button></div>
+    </div>
+  </div>
+
+  <!-- Change role modal -->
+  <div class="modal-backdrop" id="roleModal" role="dialog" aria-modal="true" aria-labelledby="roleTitle">
+    <div class="modal">
+      <div class="modal-head"><div><h3 id="roleTitle">Change role</h3><p>The new role applies the next time they open the platform.</p></div><button class="btn btn-sm btn-icon btn-text" data-close aria-label="Close" type="button"><i data-icon="x"></i></button></div>
+      <div class="modal-body stack-sm">
+        <label class="choice"><input type="radio" name="role"><span class="choice-mark"></span><span class="choice-body"><b>Admin</b><span>Manage agents, integrations, knowledge, team and settings.</span></span></label>
+        <label class="choice"><input type="radio" name="role" checked><span class="choice-mark"></span><span class="choice-body"><b>Member</b><span>Use and view the agents and calls they have access to.</span></span></label>
+        <label class="choice"><input type="radio" name="role"><span class="choice-mark"></span><span class="choice-body"><b>Viewer</b><span>Read-only access.</span></span></label>
+      </div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close type="button">Cancel</button><button class="btn btn-primary" data-close type="button">Update role</button></div>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

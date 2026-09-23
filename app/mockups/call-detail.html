@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Call #18372 · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .call-meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px 24px; }
+    .call-meta .k { font-size: 12px; font-weight: 600; letter-spacing: .96px; text-transform: uppercase; color: var(--muted); }
+    .call-meta .v { margin-top: 4px; color: var(--ink); font-weight: 500; letter-spacing: 0; }
+    .call-meta .v span { display: block; font-weight: 400; font-size: 13px; color: var(--muted); }
+    .gathered { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; }
+    .gathered > div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--hairline-soft); font-size: 14px; letter-spacing: 0; }
+    .gathered > div span:first-child { color: var(--muted); }
+    .gathered > div span:last-child { color: var(--ink); text-align: right; }
+    .action { padding: 14px 0; border-bottom: 1px solid var(--hairline-soft); }
+    .action:last-child { border-bottom: 0; padding-bottom: 0; }
+    .action:first-child { padding-top: 0; }
+    .action .a-head { display: flex; gap: 10px; align-items: flex-start; }
+    .action .a-head b { color: var(--ink); font-weight: 500; display: block; font-size: 14px; }
+    .action .a-head span.s { font-size: 13px; color: var(--muted); }
+    .life { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 10px 0 0 28px; font-size: 12px; color: var(--muted); }
+    .life .st { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 9999px; background: var(--strong); color: var(--ink); font-weight: 500; }
+    .life .st.ok { background: #dcfce7; color: #166534; }
+    .life .st.bad { background: var(--error-soft); color: var(--error); }
+    .life .arrow { color: var(--muted-soft); }
+    .attempts { margin: 12px 0 0 28px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+    .attempts div { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); }
+    .attempts div b { color: var(--ink); font-weight: 500; }
+    .ck { color: var(--success); margin-top: 1px; }
+    .wa { color: var(--error); margin-top: 1px; }
+    .summary-text { font-size: 15.5px; line-height: 1.6; color: var(--body); }
+    .sum-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 14.5px; }
+    .sum-list li { display: flex; gap: 10px; }
+    .sum-list li::before { content: ""; width: 5px; height: 5px; border-radius: 9999px; background: var(--muted-soft); margin-top: 9px; flex: none; }
+    .bubble-row > div { max-width: 78%; min-width: 0; }
+    .bubble-row .bubble { max-width: none; }
+    @media (max-width: 639px) { .wave-card { flex-wrap: wrap; } .wave-card .grow { flex-basis: 100%; order: 3; } }
+    @media (max-width: 767px) { .call-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); } .gathered { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body data-nav="calls" data-crumbs='[["Calls","calls.html"],["Call #18372"]]'>
+<div id="content">
+
+  <div>
+    <a class="back" href="calls.html"><i data-icon="arrow-left" data-size="sm"></i>All calls</a>
+    <div class="page-head">
+      <div>
+        <div class="row wrap" style="gap:12px">
+          <h1>Call #18372</h1>
+          <span class="badge b-success">Completed</span>
+          <span class="badge b-outline">Interested</span>
+        </div>
+        <p>Outbound call to John Smith · Tuesday 23 September, 14:31</p>
+      </div>
+      <div class="actions">
+        <button class="btn btn-outline" type="button" data-toast="Transcript copied"><i data-icon="copy" data-size="sm"></i>Copy transcript</button>
+        <a class="btn btn-outline" href="scheduled-calls.html"><i data-icon="calendar-clock" data-size="sm"></i>Schedule follow-up</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRM attention notice (spec §33): call saved, CRM step failed -->
+  <div class="notice n-error">
+    <i data-icon="triangle-alert"></i>
+    <div class="grow"><b>Call completed — 1 CRM update needs attention.</b> The call, its transcript and results are saved. The platform retried the update 4 times; it can be retried manually.</div>
+    <button class="btn btn-sm btn-outline" type="button" data-toast="Retrying CRM update…">Retry CRM update</button>
+  </div>
+
+  <div class="card">
+    <div class="card-body call-meta">
+      <div><div class="k">Agent</div><div class="v"><a class="link" href="agent-detail.html">Lead Follow-up Agent</a><span>Outbound</span></div></div>
+      <div><div class="k">Contact</div><div class="v">John Smith<span>HubSpot · Contact</span></div></div>
+      <div><div class="k">Phone</div><div class="v num">+30 697 555 0142<span>From +30 21 5550 1001</span></div></div>
+      <div><div class="k">Started</div><div class="v">14:31<span>Answered 14:31:06</span></div></div>
+      <div><div class="k">Duration</div><div class="v num">02:43</div></div>
+      <div><div class="k">Status</div><div class="v">Completed</div></div>
+      <div><div class="k">Outcome</div><div class="v">Interested<span>Success outcome</span></div></div>
+      <div><div class="k">Cost</div><div class="v num">€0.36</div></div>
+    </div>
+  </div>
+
+  <div class="split">
+    <!-- Main column -->
+    <div class="stack-lg">
+
+      <div class="card">
+        <div class="card-head"><div class="title">Summary</div><span class="badge b-outline plain b-soft"><i data-icon="sparkles" data-size="sm"></i>AI-generated</span></div>
+        <div class="card-body">
+          <p class="summary-text">John confirmed he is still interested in the 2-bedroom apartment in central Athens he enquired about two weeks ago. His budget is around €180,000. He asked about pricing and the payment options, which the agent answered from the Pricing &amp; Payment Policy. He would like someone from the team to call him back, preferably in the afternoon.</p>
+          <ul class="sum-list">
+            <li>Still interested in the apartment — confirmed.</li>
+            <li>Wants a callback from the team; prefers afternoons.</li>
+            <li>Question raised: pricing and payment schedule.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="wave-card">
+        <button class="play" type="button" data-wave="#rec-wave" aria-label="Play recording"><i data-icon="play" data-size="sm"></i></button>
+        <div class="grow">
+          <div class="row between small" style="margin-bottom:6px"><span class="strong">Recording (02:43)</span><span class="muted">Kept until 21 Dec 2026 · your retention setting is 90 days</span></div>
+          <div class="wave" id="rec-wave" data-bars="72"></div>
+        </div>
+        <button class="btn btn-sm btn-outline" type="button" data-toast="Downloading recording…"><i data-icon="download" data-size="sm"></i>Download</button>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="title">Transcript</div><span class="small muted">02:43 · 14 turns</span></div>
+        <div class="card-body">
+          <div class="transcript">
+            <div class="bubble-mark"><i data-icon="database" data-size="sm"></i>Looked up contact in HubSpot · John Smith</div>
+            <div class="bubble-row agent"><span class="avatar avatar-sm a-mint">AI</span><div><div class="bubble">Hello, may I speak with John Smith? This is Elena from Aegean Homes.</div><span class="bubble-time">00:02</span></div></div>
+            <div class="bubble-row caller"><span class="avatar avatar-sm">JS</span><div><div class="bubble">Yes, speaking.</div><span class="bubble-time">00:06</span></div></div>
+            <div class="bubble-row agent"><span class="avatar avatar-sm a-mint">AI</span><div><div class="bubble">Hi John, I'm following up about the 2-bedroom apartment in central Athens you enquired about a couple of weeks ago. Are you still interested?</div><span class="bubble-time">00:08</span></div></div>
+            <div class="bubble-row caller"><span class="avatar avatar-sm">JS</span><div><div class="bubble">Yes, I am. I've actually been meaning to call you back.</div><span class="bubble-time">00:17</span></div></div>
+            <div class="bubble-row agent"><span class="avatar avatar-sm a-mint">AI</span><div><div class="bubble">That's great to hear. Do you have any questions I can help with?</div><span class="bubble-time">00:22</span></div></div>
+            <div class="bubble-row caller"><span class="avatar avatar-sm">JS</span><div><div class="bubble">Mostly about the price. My budget is around one hundred and eighty thousand — is there any flexibility on payment?</div><span class="bubble-time">00:29</span></div></div>
+            <div class="bubble-mark"><i data-icon="book-open" data-size="sm"></i>Used knowledge · Pricing &amp; Payment Policy (v2)</div>
+            <div class="bubble-row agent"><span class="avatar avatar-sm a-mint">AI</span><div><div class="bubble">Payments can be split into a deposit and instalments, and a member of the team can go through the exact terms with you. I don't want to promise figures I can't confirm.</div><span class="bubble-time">00:41</span></div></div>
+            <div class="bubble-row caller"><span class="avatar avatar-sm">JS</span><div><div class="bubble">That makes sense. Could someone from your team call me back to talk it through?</div><span class="bubble-time">01:06</span></div></div>
+            <div class="bubble-row agent"><span class="avatar avatar-sm a-mint">AI</span><div><div class="bubble">Of course. Is there a time that suits you best — morning or afternoon?</div><span class="bubble-time">01:12</span></div></div>
+            <div class="bubble-row caller"><span class="avatar avatar-sm">JS</span><div><div class="bubble">Afternoon works better, after three if possible.</div><span class="bubble-time">01:19</span></div></div>
+            <div class="bubble-mark"><i data-icon="zap" data-size="sm"></i>Requested action · Add a note to a contact</div>
+            <div class="bubble-row agent"><span class="avatar avatar-sm a-mint">AI</span><div><div class="bubble">Perfect, I'll note that you'd like a call back tomorrow afternoon after 15:00. Is this the best number to reach you on?</div><span class="bubble-time">01:38</span></div></div>
+            <div class="bubble-row caller"><span class="avatar avatar-sm">JS</span><div><div class="bubble">Yes, this one is fine. Thank you.</div><span class="bubble-time">02:14</span></div></div>
+            <div class="bubble-row agent"><span class="avatar avatar-sm a-mint">AI</span><div><div class="bubble">Thank you, John. Someone will call you tomorrow afternoon. Have a lovely day!</div><span class="bubble-time">02:26</span></div></div>
+            <div class="bubble-mark">Call ended · 02:43</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="title">Information gathered</div><span class="small muted">From this agent's goal items</span></div>
+        <div class="card-body">
+          <div class="gathered">
+            <div><span>Interested</span><span>Yes</span></div>
+            <div><span>Wants callback</span><span>Yes</span></div>
+            <div><span>Wants appointment</span><span>Not yet</span></div>
+            <div><span>Question asked</span><span>Pricing</span></div>
+            <div><span>Preferred time</span><span>Afternoon (after 15:00)</span></div>
+            <div><span>Preferred date</span><span>Tomorrow</span></div>
+            <div><span>Budget</span><span>~€180,000</span></div>
+            <div><span>Objections raised</span><span class="muted">None</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Side column -->
+    <div class="stack-lg">
+
+      <div class="card">
+        <div class="card-head"><div class="title">Cost</div><span class="num strong">€0.36</span></div>
+        <div class="card-body">
+          <div class="kv-list">
+            <div><span>AI<span class="sub small muted" style="display:block">2.72 min × €0.0993/min</span></span><b class="num">€0.27</b></div>
+            <div><span>Phone / telephony<span class="sub small muted" style="display:block">2.72 min × €0.0331/min</span></span><b class="num">€0.09</b></div>
+            <div style="border-top:1px solid var(--hairline);border-bottom:0"><span class="strong">Total</span><b class="num">€0.36</b></div>
+          </div>
+          <p class="hint mt-2">Prices at the time of the call — they never change retroactively when rates change.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="title">CRM actions</div><span class="small muted">HubSpot</span></div>
+        <div class="card-body">
+          <div class="action">
+            <div class="a-head"><span class="ck"><i data-icon="circle-check" data-size="sm"></i></span><div><b>Lead updated</b><span class="s">Update a contact · status → Interested</span></div></div>
+            <div class="life"><span class="st">Requested</span><span class="arrow">→</span><span class="st">Validated</span><span class="arrow">→</span><span class="st ok">Executed 14:34</span></div>
+          </div>
+          <div class="action">
+            <div class="a-head"><span class="ck"><i data-icon="circle-check" data-size="sm"></i></span><div><b>Note created</b><span class="s">Add a note to a contact</span></div></div>
+            <div class="life"><span class="st">Requested</span><span class="arrow">→</span><span class="st">Validated</span><span class="arrow">→</span><span class="st ok">Executed 14:34</span></div>
+          </div>
+          <div class="action">
+            <div class="a-head"><span class="ck"><i data-icon="circle-check" data-size="sm"></i></span><div><b>Follow-up created</b><span class="s">Create a task · Call back tomorrow 15:00</span></div></div>
+            <div class="life"><span class="st">Requested</span><span class="arrow">→</span><span class="st">Validated</span><span class="arrow">→</span><span class="st ok">Executed 14:34</span></div>
+          </div>
+          <div class="action">
+            <div class="a-head"><span class="wa"><i data-icon="triangle-alert" data-size="sm"></i></span><div><b>CRM update failed</b><span class="s">Update a custom property · Interest level</span></div></div>
+            <div style="margin:8px 0 0 28px"><span class="badge b-error">Needs attention</span></div>
+            <div class="life"><span class="st">Requested</span><span class="arrow">→</span><span class="st">Validated</span><span class="arrow">→</span><span class="st bad">Failed</span></div>
+            <div class="attempts">
+              <div><span>Attempt 1 · initial</span><b>14:34</b></div>
+              <div><span>Retry 1 · after 1 min</span><b>14:35</b></div>
+              <div><span>Retry 2 · after 5 min</span><b>14:40</b></div>
+              <div><span>Retry 3 · after 30 min</span><b>15:10</b></div>
+              <div><span>Retry 4 · after 2 h</span><b>17:10</b></div>
+            </div>
+            <p class="hint" style="margin:10px 0 0 28px">HubSpot rejected the value: property “Interest level” does not accept “Interested”. The call and its results are saved regardless.</p>
+            <div style="margin:12px 0 0 28px"><button class="btn btn-sm btn-outline" type="button" data-toast="Retrying CRM update…"><i data-icon="refresh-cw" data-size="sm"></i>Retry CRM update</button></div>
+          </div>
+          <p class="hint mt-3">The AI can only <em>request</em> an action. The platform checks the agent's permission, the company, the connection and the payload before anything is carried out.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="title">Personalization</div></div>
+        <div class="card-body">
+          <p class="small muted" style="margin-bottom:12px">Details pulled from the CRM and given to the agent before dialing.</p>
+          <dl class="kv">
+            <dt>Customer name</dt><dd>John Smith</dd>
+            <dt>Last contact</dt><dd>14 days ago</dd>
+            <dt>Interested in</dt><dd>2-bedroom apartment, Athens center</dd>
+            <dt>Previous notes</dt><dd>Asked about pricing, budget ~€180,000</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="title">What the agent had</div></div>
+        <div class="card-body stack">
+          <p class="small muted">A snapshot of the agent and its knowledge at the time of this call.</p>
+          <div class="kv-list">
+            <div><span>Agent configuration</span><b>Version 12</b></div>
+            <div><span>Voice</span><b>Elena · Greek</b></div>
+          </div>
+          <div class="stack-sm">
+            <div class="row between small"><span class="strong">Property FAQ.md</span><span class="badge b-soft plain">v3</span></div>
+            <div class="row between small"><span class="strong">Pricing &amp; Payment Policy</span><span class="badge b-soft plain">v2</span></div>
+            <div class="row between small"><span class="strong">Viewing Policy.docx</span><span class="badge b-soft plain">v1</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Activity log -->
+  <div class="card">
+    <div class="card-head"><div><div class="title">Behind-the-scenes activity</div><p>A technical trail for troubleshooting.</p></div><button class="btn btn-sm btn-text" type="button" data-toggle="#eventLog">Show / hide</button></div>
+    <div class="card-body" id="eventLog">
+      <ul class="timeline">
+        <li><span class="tl-dot ok"><i data-icon="check"></i></span><div class="tl-body"><b>Agent started</b> · Lead Follow-up Agent, configuration v12<div class="tl-time">14:30:58</div></div></li>
+        <li><span class="tl-dot ok"><i data-icon="check"></i></span><div class="tl-body"><b>CRM contact looked up</b> · John Smith found in HubSpot<div class="tl-time">14:30:59</div></div></li>
+        <li><span class="tl-dot ok"><i data-icon="check"></i></span><div class="tl-body"><b>Call started</b> · answered after 6 s<div class="tl-time">14:31:06</div></div></li>
+        <li><span class="tl-dot ok"><i data-icon="check"></i></span><div class="tl-body"><b>Action requested</b> · Add a note to a contact — validated and allowed for this agent<div class="tl-time">14:32:24</div></div></li>
+        <li><span class="tl-dot ok"><i data-icon="check"></i></span><div class="tl-body"><b>Call ended</b> · Duration 02:43, caller hung up after goodbye<div class="tl-time">14:33:49</div></div></li>
+        <li><span class="tl-dot ok"><i data-icon="check"></i></span><div class="tl-body"><b>Call analysed</b> · Outcome “Interested”, 8 data points collected<div class="tl-time">14:34:02</div></div></li>
+        <li><span class="tl-dot ok"><i data-icon="check"></i></span><div class="tl-body"><b>CRM updated</b> · Contact, note and task written<div class="tl-time">14:34:10</div></div></li>
+        <li><span class="tl-dot bad"><i data-icon="x"></i></span><div class="tl-body"><b>CRM update failed</b> · Custom property “Interest level” rejected. Retried at 14:35, 14:40, 15:10 and 17:10 — marked <b>Needs attention</b><div class="tl-time">14:34:11 – 17:10</div></div></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

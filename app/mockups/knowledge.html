@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Knowledge · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .spin { width: 14px; height: 14px; border-radius: 9999px; border: 2px solid var(--hairline-strong); border-top-color: var(--ink); animation: kspin .8s linear infinite; display: inline-block; flex: none; }
+    @keyframes kspin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+    .src-name { display: flex; align-items: center; gap: 12px; min-width: 200px; }
+    .src-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--strong); display: inline-flex; align-items: center; justify-content: center; flex: none; color: var(--ink); }
+    .row-disabled td { opacity: .6; }
+    .row-disabled td:nth-child(3) { opacity: 1; }
+    .err-line { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 13px; color: var(--error); }
+    .soon-strip { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .kpi-mini { display: flex; gap: 24px; flex-wrap: wrap; }
+    .kpi-mini b { color: var(--ink); font-weight: 500; }
+  </style>
+</head>
+<body data-nav="knowledge" data-crumbs='[["Knowledge"]]'>
+<div id="content">
+
+  <div class="page-head">
+    <div>
+      <h1>Knowledge</h1>
+      <p>Everything your agents can draw on to answer questions correctly: pricing, policies, FAQs, product details and scripts. Add it once, share it with any agent.</p>
+    </div>
+    <div class="actions">
+      <a class="btn btn-primary" href="knowledge-new.html"><i data-icon="plus" data-size="sm"></i>Add knowledge</a>
+    </div>
+  </div>
+
+  <div class="kpi-mini small muted">
+    <span><b>6</b> sources</span>
+    <span><b>3</b> ready and in use</span>
+    <span><b>1</b> processing</span>
+    <span><b>1</b> failed</span>
+    <span><b>1</b> turned off</span>
+  </div>
+
+  <div class="toolbar">
+    <div class="input-icon grow"><i data-icon="search" data-size="sm"></i><input class="input" type="search" placeholder="Search knowledge sources" aria-label="Search knowledge sources"></div>
+    <select class="select" aria-label="Status">
+      <option>All statuses</option><option>Ready</option><option>Processing</option><option>Failed</option><option>Turned off</option>
+    </select>
+    <select class="select" aria-label="Type">
+      <option>All types</option><option>Typed text</option><option>Uploaded file</option><option>Connected tool</option>
+    </select>
+    <select class="select" aria-label="Agent">
+      <option>All agents</option><option>Lead Follow-up Agent</option><option>Sales Agent</option><option>Appointment Confirmation Agent</option>
+    </select>
+  </div>
+
+  <div class="table-wrap"><div class="table-scroll">
+    <table class="table">
+      <thead>
+        <tr><th>Name</th><th>Status</th><th>In use</th><th>Used by</th><th>Added</th><th>Last updated</th><th>Refreshed</th><th class="r">Version</th></tr>
+      </thead>
+      <tbody>
+        <tr data-href="knowledge-detail.html">
+          <td><div class="src-name"><span class="src-icon"><i data-icon="file-text"></i></span><div><b>Property FAQ.md</b><span class="sub">Uploaded file · 14 KB</span></div></div></td>
+          <td><span class="badge b-success">Ready</span></td>
+          <td><label class="switch"><input type="checkbox" checked aria-label="Use Property FAQ.md"><i></i></label></td>
+          <td><div class="row-sm nowrap"><span class="avatar-stack"><span class="agent-mark m-mint" style="width:28px;height:28px;box-shadow:0 0 0 2px var(--card)"><i data-icon="bot" data-size="sm"></i></span><span class="agent-mark m-lavender" style="width:28px;height:28px;box-shadow:0 0 0 2px var(--card);margin-left:-8px"><i data-icon="bot" data-size="sm"></i></span></span><span class="small">2 agents</span></div></td>
+          <td class="nowrap">2 Sep 2026<span class="sub">Petros Rodinos</span></td>
+          <td class="nowrap">19 Sep, 11:20</td>
+          <td class="nowrap">19 Sep, 11:22</td>
+          <td class="r num">v3</td>
+        </tr>
+        <tr data-href="knowledge-detail.html">
+          <td><div class="src-name"><span class="src-icon"><i data-icon="type"></i></span><div><b>Pricing &amp; Payment Policy</b><span class="sub">Typed text · 1,240 words</span></div></div></td>
+          <td><span class="badge b-success">Ready</span></td>
+          <td><label class="switch"><input type="checkbox" checked aria-label="Use Pricing and Payment Policy"><i></i></label></td>
+          <td><div class="row-sm nowrap"><span class="agent-mark m-mint" style="width:28px;height:28px"><i data-icon="bot" data-size="sm"></i></span><span class="small">Lead Follow-up</span></div></td>
+          <td class="nowrap">4 Sep 2026<span class="sub">Maria Kanellou</span></td>
+          <td class="nowrap">15 Sep, 16:05</td>
+          <td class="nowrap">15 Sep, 16:06</td>
+          <td class="r num">v2</td>
+        </tr>
+        <tr data-href="knowledge-detail.html">
+          <td><div class="src-name"><span class="src-icon"><i data-icon="file-text"></i></span><div><b>Viewing Policy.docx</b><span class="sub">Uploaded file · 38 KB</span></div></div></td>
+          <td><span class="badge b-success">Ready</span></td>
+          <td><label class="switch"><input type="checkbox" checked aria-label="Use Viewing Policy.docx"><i></i></label></td>
+          <td><div class="row-sm nowrap"><span class="agent-mark m-mint" style="width:28px;height:28px"><i data-icon="bot" data-size="sm"></i></span><span class="small">Lead Follow-up</span></div></td>
+          <td class="nowrap">8 Sep 2026<span class="sub">Petros Rodinos</span></td>
+          <td class="nowrap">8 Sep, 09:40</td>
+          <td class="nowrap">8 Sep, 09:41</td>
+          <td class="r num">v1</td>
+        </tr>
+        <tr data-href="knowledge-detail.html">
+          <td><div class="src-name"><span class="src-icon"><i data-icon="type"></i></span><div><b>Company Overview</b><span class="sub">Typed text · 620 words</span></div></div></td>
+          <td><span class="badge b-live plain"><span class="spin" style="width:10px;height:10px;border-width:1.5px"></span>Processing</span></td>
+          <td><label class="switch"><input type="checkbox" checked aria-label="Use Company Overview"><i></i></label></td>
+          <td class="muted small">Not used yet</td>
+          <td class="nowrap">23 Sep 2026<span class="sub">Nikos Petrou</span></td>
+          <td class="nowrap">23 Sep, 14:38</td>
+          <td class="nowrap muted">In progress…</td>
+          <td class="r num">v1</td>
+        </tr>
+        <tr data-href="knowledge-detail.html">
+          <td><div class="src-name"><span class="src-icon"><i data-icon="file-text"></i></span><div><b>Neighborhood Guide.md</b><span class="sub">Uploaded file · 92 KB</span><div class="err-line"><i data-icon="circle-alert" data-size="sm"></i>Couldn’t extract the text</div></div></div></td>
+          <td><span class="badge b-error">Failed</span><div style="margin-top:8px"><button class="btn btn-sm btn-outline" type="button" data-toast="Retrying — we’ll process it again now">Retry</button></div></td>
+          <td><label class="switch"><input type="checkbox" checked aria-label="Use Neighborhood Guide.md"><i></i></label></td>
+          <td class="muted small">Not used yet</td>
+          <td class="nowrap">22 Sep 2026<span class="sub">Maria Kanellou</span></td>
+          <td class="nowrap">22 Sep, 17:12</td>
+          <td class="nowrap muted">Never</td>
+          <td class="r num">v1</td>
+        </tr>
+        <tr data-href="knowledge-detail.html" class="row-disabled">
+          <td><div class="src-name"><span class="src-icon"><i data-icon="type"></i></span><div><b>Appointment Scripts</b><span class="sub">Typed text · 480 words · turned off</span></div></div></td>
+          <td><span class="badge b-success">Ready</span></td>
+          <td><label class="switch"><input type="checkbox" aria-label="Use Appointment Scripts"><i></i></label></td>
+          <td class="muted small nowrap">Appointment Conf. (paused)</td>
+          <td class="nowrap">10 Sep 2026<span class="sub">Petros Rodinos</span></td>
+          <td class="nowrap">12 Sep, 10:15</td>
+          <td class="nowrap">12 Sep, 10:16</td>
+          <td class="r num">v2</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-foot"><span>Showing 6 of 6 sources</span><span class="small">Turning a source off keeps it, but agents stop using it.</span></div>
+  </div>
+
+  <section>
+    <div class="orb-card" style="padding:28px 32px">
+      <span class="orb orb-sky" style="width:260px;height:260px;right:-40px;top:-90px"></span>
+      <span class="orb orb-peach" style="width:220px;height:220px;right:180px;bottom:-130px"></span>
+      <div class="row between wrap" style="gap:20px">
+        <div style="max-width:520px">
+          <span class="badge b-outline">Coming soon</span>
+          <div class="display-sm" style="margin-top:10px">Connect the tools you already write in</div>
+          <p class="small muted mt-1">Soon your agents will be able to pull knowledge straight from your documents, so it stays up to date without uploading files.</p>
+        </div>
+        <div class="row wrap" style="gap:8px;max-width:460px;justify-content:flex-end">
+          <span class="chip"><i data-icon="file-text"></i>Google Docs</span>
+          <span class="chip"><i data-icon="notebook-pen"></i>Notion</span>
+          <span class="chip"><i data-icon="hard-drive"></i>Google Drive</span>
+          <span class="chip"><i data-icon="folder"></i>Dropbox</span>
+          <span class="chip"><i data-icon="cloud"></i>SharePoint</span>
+          <a class="btn btn-sm btn-outline" href="integrations.html">See integrations</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accept invitation · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .brand-inline .brand-name { font-family: var(--font-display); font-weight: 300; font-size: 22px; color: var(--ink); }
+    .auth-foot a:hover { color: var(--ink); }
+  </style>
+</head>
+<body class="auth">
+<div class="auth-shell">
+  <div class="auth-form-side">
+    <a class="brand-inline" href="login.html"><span class="brand-orb"></span><span class="brand-name">Voice Agent</span></a>
+    <div class="auth-form-wrap">
+      <form class="auth-form" onsubmit="return false">
+        <div>
+          <div class="row" style="margin-bottom:20px"><span class="avatar avatar-lg a-lavender">PR</span><span class="badge b-outline">Admin</span></div>
+          <h1>Join Aegean Homes</h1>
+          <p class="lede"><b class="ink">Petros Rodinos</b> invited you to join <b class="ink">Aegean Homes</b> as an <b class="ink">Admin</b>. Admins can manage agents, integrations, knowledge, team members and settings.</p>
+        </div>
+        <div class="field"><label class="label" for="email">Email</label><input class="input" id="email" type="email" value="maria@aegeanhomes.gr" disabled></div>
+        <div class="field"><label class="label" for="name">Your name</label><input class="input" id="name" placeholder="Maria Kanellou" autocomplete="name"></div>
+        <div class="field">
+          <label class="label" for="pw">Choose a password</label>
+          <div class="input-suffix">
+            <input class="input" id="pw" type="password" data-reveal placeholder="At least 12 characters" autocomplete="new-password">
+            <button class="btn btn-sm btn-text" type="button" data-reveal-btn>Show</button>
+          </div>
+          <div class="pw-meter" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="location.href='dashboard.html'">Accept and join</button>
+        <p class="small muted center">Already have an account? <a class="link" href="login.html">Log in to accept</a></p>
+        <p class="xs muted center">This invitation expires on 30 Sep 2026.</p>
+      </form>
+    </div>
+    <div class="auth-foot"><span>© 2026 Voice Agent</span><a href="#">Privacy</a><a href="#">Terms</a></div>
+  </div>
+
+  <aside class="auth-art" aria-hidden="true">
+    <span class="orb orb-lavender" style="width:440px;height:440px;left:-100px;top:-90px"></span>
+    <span class="orb orb-mint" style="width:420px;height:420px;right:-110px;top:30%"></span>
+    <span class="orb orb-rose" style="width:340px;height:340px;left:12%;bottom:-130px"></span>
+    <h2>Better together.</h2>
+    <p>Your team shares the same agents, CRM connections, knowledge and reporting, with access matched to each role.</p>
+  </aside>
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

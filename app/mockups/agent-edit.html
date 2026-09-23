@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edit Lead Follow-up Agent · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .tabs.edit-tabs { margin-bottom: 0; }
+    .edit-tabs .tab { padding: 0 11px; }
+    .panel-stack { display: flex; flex-direction: column; gap: 24px; }
+    .card-body.pad-0 { padding: 0 24px; }
+    .item-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--hairline-soft); }
+    .item-row:last-child { border-bottom: 0; }
+    .item-row .grow b { display: block; color: var(--ink); font-weight: 500; font-size: 15px; }
+    .item-row .grow span.s { display: block; font-size: 13px; color: var(--muted); letter-spacing: 0; }
+    .item-row .grip { color: var(--muted-soft); cursor: grab; }
+    .group-label { padding: 16px 0 4px; }
+    .savebar { position: sticky; bottom: 16px; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 12px 12px 20px; background: var(--card); border: 1px solid var(--hairline-strong); border-radius: 9999px; box-shadow: 0 8px 28px rgba(0,0,0,.1); }
+    .savebar .msg { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink); font-weight: 500; }
+    .savebar .actions { display: flex; gap: 8px; }
+    .tool-count { font-size: 14px; color: var(--muted); }
+    .attempt-flow { display: flex; flex-direction: column; gap: 0; }
+    .attempt-flow .step { display: flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 14px; letter-spacing: 0; }
+    .attempt-flow .step .n { width: 24px; height: 24px; border-radius: 9999px; background: var(--strong); color: var(--ink); font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+    .attempt-flow .wait { margin-left: 11px; padding: 2px 0 2px 22px; border-left: 1px dashed var(--hairline-strong); font-size: 13px; color: var(--muted); }
+    .rule-card .rule-when { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .kw { font-size: 12px; font-weight: 600; letter-spacing: .96px; text-transform: uppercase; color: var(--muted); }
+    .rule-actions { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .rule-actions .a { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1px solid var(--hairline); border-radius: 12px; font-size: 14px; color: var(--ink); letter-spacing: 0; background: var(--canvas-soft); }
+    .rule-actions .a .d { margin-left: auto; font-size: 13px; color: var(--muted); }
+    .map-table td .select { height: 36px; font-size: 14px; }
+    .var-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .danger-card { border-color: var(--error-line); }
+    @media (max-width: 639px) { .savebar { border-radius: 16px; flex-direction: column; align-items: stretch; } .savebar .actions { justify-content: flex-end; } }
+  </style>
+</head>
+<body data-nav="agents" data-crumbs='[["Agents","agents.html"],["Lead Follow-up Agent","agent-detail.html"],["Edit"]]'>
+<div id="content">
+
+  <div>
+    <a class="back" href="agent-detail.html"><i data-icon="arrow-left" data-size="sm"></i>Lead Follow-up Agent</a>
+    <div class="page-head">
+      <div class="row" style="gap:16px">
+        <span class="agent-mark lg m-mint"><i data-icon="bot" data-size="lg"></i></span>
+        <div>
+          <div class="row wrap" style="gap:12px"><h1>Edit agent</h1><span class="badge b-success">Active</span></div>
+          <p>Lead Follow-up Agent · Changes apply to new calls once saved. Calls already made keep the setup they had.</p>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-outline" type="button" data-open="testModal"><i data-icon="flask-conical" data-size="sm"></i>Test agent</button>
+      </div>
+    </div>
+  </div>
+
+  <div data-tabs class="stack-lg">
+    <div class="tabs edit-tabs" role="tablist" aria-label="Agent settings">
+      <button class="tab" type="button" data-tab="general">General</button>
+      <button class="tab" type="button" data-tab="instructions">Instructions</button>
+      <button class="tab" type="button" data-tab="goals">Goals &amp; questions</button>
+      <button class="tab" type="button" data-tab="outcomes">Outcomes &amp; transfer</button>
+      <button class="tab" type="button" data-tab="knowledge">Knowledge</button>
+      <button class="tab" type="button" data-tab="crm">CRM</button>
+      <button class="tab" type="button" data-tab="phone">Phone</button>
+      <button class="tab" type="button" data-tab="retries">Scheduling &amp; retries</button>
+      <button class="tab" type="button" data-tab="automations">Automations</button>
+      <button class="tab" type="button" data-tab="access">Access</button>
+    </div>
+
+    <!-- ================= GENERAL ================= -->
+    <div data-panel="general"><div class="panel-stack">
+      <div class="card">
+        <div class="card-head"><div><div class="title">Basics</div><p>What this agent is called and what it is for.</p></div></div>
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="field"><label class="label" for="g-name">Name</label><input class="input" id="g-name" value="Lead Follow-up Agent"></div>
+            <div class="field"><label class="label" for="g-status">Status</label>
+              <select class="select" id="g-status"><option selected>Active</option><option>Inactive</option><option>Draft</option></select>
+              <span class="hint">Inactive agents don't place or receive calls.</span></div>
+            <div class="field full"><label class="label" for="g-desc">Description</label><textarea class="textarea" id="g-desc" style="min-height:72px">Follows up with new leads and finds out whether they are still interested.</textarea></div>
+            <div class="field full"><label class="label" for="g-purpose">Purpose</label><input class="input" id="g-purpose" value="Lead follow-up"><span class="hint">A short label shown on the agents list.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><div class="title">Voice and language</div><p>How the agent sounds on the phone.</p></div></div>
+        <div class="card-body stack">
+          <div class="form-grid">
+            <div class="field"><label class="label" for="g-lang">Language</label>
+              <select class="select" id="g-lang"><option selected>Greek</option><option>English (UK)</option><option>English (US)</option></select></div>
+            <div class="field"><label class="label" for="g-max">Maximum call length</label>
+              <div class="input-suffix"><input class="input" id="g-max" type="number" value="10" min="1"><span class="suffix">minutes</span></div>
+              <span class="hint">The agent politely wraps up when this is reached.</span></div>
+          </div>
+          <div>
+            <div class="label" style="margin-bottom:4px">Voice</div>
+            <div>
+              <label class="voice-row"><input type="radio" name="voice" checked><span class="voice-icon">E</span><span class="voice-meta"><b>Elena</b><span>Greek · Female · Warm and clear</span></span><button class="play sm outline" type="button" aria-label="Preview Elena" data-toast="Playing preview…"><i data-icon="play" data-size="sm"></i></button></label>
+              <label class="voice-row"><input type="radio" name="voice"><span class="voice-icon">M</span><span class="voice-meta"><b>Markos</b><span>Greek · Male · Calm and steady</span></span><button class="play sm outline" type="button" aria-label="Preview Markos" data-toast="Playing preview…"><i data-icon="play" data-size="sm"></i></button></label>
+              <label class="voice-row"><input type="radio" name="voice"><span class="voice-icon">S</span><span class="voice-meta"><b>Sophie</b><span>English (UK) · Female · Friendly</span></span><button class="play sm outline" type="button" aria-label="Preview Sophie" data-toast="Playing preview…"><i data-icon="play" data-size="sm"></i></button></label>
+              <label class="voice-row"><input type="radio" name="voice"><span class="voice-icon">D</span><span class="voice-meta"><b>Daniel</b><span>English (US) · Male · Professional</span></span><button class="play sm outline" type="button" aria-label="Preview Daniel" data-toast="Playing preview…"><i data-icon="play" data-size="sm"></i></button></label>
+            </div>
+          </div>
+          <div class="field"><label class="label" for="g-first">First message</label>
+            <textarea class="textarea" id="g-first" style="min-height:80px">Hello, may I speak with {{customer_name}}? This is Elena from Aegean Homes.</textarea>
+            <span class="hint">What the agent says as soon as the call is answered. Leave empty to let the agent decide.</span></div>
+        </div>
+      </div>
+
+      <div class="card danger-card">
+        <div class="card-head"><div><div class="title">Delete agent</div><p>Removes this agent from your account. Its past calls and transcripts stay in your call history.</p></div>
+          <button class="btn btn-danger" type="button" data-open="deleteModal"><i data-icon="trash-2" data-size="sm"></i>Delete agent</button></div>
+      </div>
+    </div></div>
+
+    <!-- ================= INSTRUCTIONS ================= -->
+    <div data-panel="instructions"><div class="panel-stack">
+      <div class="split">
+        <div class="card">
+          <div class="card-head"><div><div class="title">Instructions</div><p>Describe in plain language how the agent should behave on a call.</p></div><span class="small muted num">612 / 8,000</span></div>
+          <div class="card-body stack">
+            <textarea class="textarea textarea-lg" aria-label="Instructions" style="min-height:360px">You are a customer follow-up assistant.
+
+Your goal is to find out whether the customer is still interested in our product or service.
+
+Be polite and concise.
+
+Ask the following questions naturally, in conversation — not like a script.
+
+Never make up information you don't have.
+
+If the customer asks something you can't answer, explain that a member of the team will get back to them.
+
+End the call once you've achieved the goal.</textarea>
+            <div>
+              <div class="label" style="margin-bottom:8px">Insert a detail from the CRM</div>
+              <div class="var-chips">
+                <button class="chip chip-x" type="button" data-toast="Inserted {{customer_name}}">{{customer_name}}</button>
+                <button class="chip chip-x" type="button" data-toast="Inserted {{last_contact}}">{{last_contact}}</button>
+                <button class="chip chip-x" type="button" data-toast="Inserted {{interested_in}}">{{interested_in}}</button>
+                <button class="chip chip-x" type="button" data-toast="Inserted {{previous_notes}}">{{previous_notes}}</button>
+              </div>
+              <p class="hint mt-2">These are filled in before each call from the fields marked for personalization on the CRM tab.</p>
+            </div>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="orb-card" style="padding:24px">
+            <span class="orb orb-lavender" style="width:220px;height:220px;right:-50px;top:-60px"></span>
+            <div class="title">The platform does the rest</div>
+            <p class="small muted mt-2">You describe the behaviour once. The platform turns it into everything needed to run the call — you never have to deal with the technical side.</p>
+          </div>
+          <div class="card"><div class="card-body stack-sm">
+            <div class="title">Tips</div>
+            <ul class="stack-sm small muted">
+              <li>Say what the agent should <b class="strong">never</b> do.</li>
+              <li>Use goals and questions for what it must find out — they make results more predictable.</li>
+              <li>Test after each change before going live.</li>
+            </ul>
+          </div></div>
+        </div>
+      </div>
+    </div></div>
+
+    <!-- ================= GOALS & QUESTIONS ================= -->
+    <div data-panel="goals"><div class="panel-stack">
+      <div class="card">
+        <div class="card-head"><div><div class="title">Goal</div><p>What this agent is trying to achieve on every call.</p></div></div>
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="field full"><label class="label" for="go-goal">Goal</label><input class="input" id="go-goal" value="Determine customer interest and next steps"></div>
+            <div class="field"><label class="label" for="go-succ">A call is successful when</label><textarea class="textarea" id="go-succ" style="min-height:88px">Customer confirms they are still interested, or asks for an appointment.</textarea></div>
+            <div class="field"><label class="label" for="go-fail">A call is unsuccessful when</label><textarea class="textarea" id="go-fail" style="min-height:88px">Customer is not interested, the number is wrong, or we only reached voicemail.</textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><div class="title">Information to collect</div><p>A checklist the agent comes away with. Order can be changed by dragging.</p></div>
+          <button class="btn btn-sm btn-outline" type="button" data-open="goalModal"><i data-icon="plus" data-size="sm"></i>Add item</button></div>
+        <div class="card-body pad-0">
+          <div class="eyebrow group-label">Must find out</div>
+          <div class="item-row"><span class="grip"><i data-icon="grip-vertical"></i></span><div class="grow"><b>Are they interested?</b><span class="s mono">interested</span></div><span class="badge plain b-outline">Yes / No</span><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Edit" data-open="goalModal"><i data-icon="pencil" data-size="sm"></i></button></div>
+          <div class="item-row"><span class="grip"><i data-icon="grip-vertical"></i></span><div class="grow"><b>If not, why not?</b><span class="s mono">reason_not_interested</span></div><span class="badge plain b-outline">Text</span><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Edit" data-open="goalModal"><i data-icon="pencil" data-size="sm"></i></button></div>
+          <div class="item-row"><span class="grip"><i data-icon="grip-vertical"></i></span><div class="grow"><b>Do they want a callback?</b><span class="s mono">wants_callback</span></div><span class="badge plain b-outline">Yes / No</span><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Edit" data-open="goalModal"><i data-icon="pencil" data-size="sm"></i></button></div>
+          <div class="item-row"><span class="grip"><i data-icon="grip-vertical"></i></span><div class="grow"><b>Do they want an appointment?</b><span class="s mono">wants_appointment</span></div><span class="badge plain b-outline">Yes / No</span><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Edit" data-open="goalModal"><i data-icon="pencil" data-size="sm"></i></button></div>
+          <div class="eyebrow group-label">Nice to know</div>
+          <div class="item-row"><span class="grip"><i data-icon="grip-vertical"></i></span><div class="grow"><b>Preferred date</b><span class="s mono">preferred_date</span></div><span class="badge plain b-outline">Date</span><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Edit" data-open="goalModal"><i data-icon="pencil" data-size="sm"></i></button></div>
+          <div class="item-row"><span class="grip"><i data-icon="grip-vertical"></i></span><div class="grow"><b>Preferred time</b><span class="s mono">preferred_time</span></div><span class="chip">Morning</span><span class="chip">Afternoon</span><span class="chip">Evening</span><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Edit" data-open="goalModal"><i data-icon="pencil" data-size="sm"></i></button></div>
+          <div class="item-row"><span class="grip"><i data-icon="grip-vertical"></i></span><div class="grow"><b>Any questions they had</b><span class="s mono">question_asked</span></div><span class="badge plain b-outline">Text</span><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Edit" data-open="goalModal"><i data-icon="pencil" data-size="sm"></i></button></div>
+          <div class="item-row"><span class="grip"><i data-icon="grip-vertical"></i></span><div class="grow"><b>Any objections raised</b><span class="s mono">objections</span></div><span class="badge plain b-outline">Text</span><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Edit" data-open="goalModal"><i data-icon="pencil" data-size="sm"></i></button></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><div class="title">Questions</div><p>Worked naturally into the conversation — not a rigid script, and not in a fixed order.</p></div>
+          <button class="btn btn-sm btn-outline" type="button" data-toast="Question added"><i data-icon="plus" data-size="sm"></i>Add question</button></div>
+        <div class="card-body">
+          <div class="reorder-row"><span class="num-dot">1</span><div class="grow"><b class="strong">Are you still interested?</b><div class="hint">Must be answered: <b class="strong">Yes</b></div></div><label class="row-sm small">Required<span class="switch"><input type="checkbox" checked><i></i></span></label><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Remove question"><i data-icon="trash-2" data-size="sm"></i></button></div>
+          <div class="reorder-row"><span class="num-dot">2</span><div class="grow"><b class="strong">Do you have any questions?</b><div class="hint">Must be answered: <b class="strong">No</b></div></div><label class="row-sm small">Required<span class="switch"><input type="checkbox" checked><i></i></span></label><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Remove question"><i data-icon="trash-2" data-size="sm"></i></button></div>
+          <div class="reorder-row"><span class="num-dot">3</span><div class="grow"><b class="strong">Would you like us to contact you?</b><div class="hint">Must be answered: <b class="strong">Yes</b></div></div><label class="row-sm small">Required<span class="switch"><input type="checkbox"><i></i></span></label><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Remove question"><i data-icon="trash-2" data-size="sm"></i></button></div>
+        </div>
+      </div>
+    </div></div>
+
+    <!-- ================= OUTCOMES & TRANSFER ================= -->
+    <div data-panel="outcomes"><div class="panel-stack">
+      <div class="card">
+        <div class="card-head"><div><div class="title">Call outcomes</div><p>Every call ends with one of these. Success outcomes count toward this agent's success rate.</p></div>
+          <button class="btn btn-sm btn-outline" type="button" data-toast="Outcome added"><i data-icon="plus" data-size="sm"></i>Add outcome</button></div>
+        <div class="card-body pad-0">
+          <div class="eyebrow group-label">Defined by you</div>
+          <div class="item-row"><span class="grip"><i data-icon="grip-vertical"></i></span><div class="grow"><b>Interested</b><span class="s">Customer confirms they are still interested.</span></div><label class="row-sm small">Success<span class="switch"><input type="checkbox" checked><i></i></span></label></div>
+          <div class="item-row"><span class="grip"><i data-icon="grip-vertical"></i></span><div class="grow"><b>Not Interested</b><span class="s">Customer is no longer interested.</span></div><label class="row-sm small">Success<span class="switch"><input type="checkbox"><i></i></span></label></div>
+          <div class="item-row"><span class="grip"><i data-icon="grip-vertical"></i></span><div class="grow"><b>Call Back Later</b><span class="s">Customer asks to be called at another time.</span></div><label class="row-sm small">Success<span class="switch"><input type="checkbox"><i></i></span></label></div>
+          <div class="item-row"><span class="grip"><i data-icon="grip-vertical"></i></span><div class="grow"><b>Appointment Requested</b><span class="s">Customer wants to book a viewing or meeting.</span></div><label class="row-sm small">Success<span class="switch"><input type="checkbox" checked><i></i></span></label></div>
+          <div class="eyebrow group-label">Detected automatically</div>
+          <div class="item-row"><div class="grow"><b>Voicemail</b><span class="s">Answering machine reached instead of a person.</span></div><span class="badge plain b-outline">Voicemail</span></div>
+          <div class="item-row"><div class="grow"><b>Wrong Number</b><span class="s">The person says this is not the right contact.</span></div><span class="badge plain b-outline">Wrong number</span></div>
+          <div class="item-row"><div class="grow"><b>No Answer</b><span class="s">Nobody picked up.</span></div><span class="badge plain b-outline">No answer</span></div>
+          <div class="item-row"><div class="grow"><b>Unknown</b><span class="s">The result could not be determined.</span></div><span class="badge plain b-outline">Unknown</span></div>
+        </div>
+        <div class="card-foot"><span class="small muted">Actions that follow an outcome are set up under <b class="strong">Automations</b>.</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><div class="title">Voicemail</div><p>The platform recognises answering machines so they're logged accurately.</p></div></div>
+        <div class="card-body stack">
+          <div class="perm-row" style="padding-top:0"><div class="grow"><b>Detect voicemail</b><span>Log these calls as “Voicemail” instead of Interested or Unknown.</span></div><span class="switch"><input type="checkbox" checked><i></i></span></div>
+          <div class="perm-row"><div class="grow"><b>Leave a short message</b><span>Only a pre-approved message is ever left.</span></div><span class="switch"><input type="checkbox" checked><i></i></span></div>
+          <div class="field"><label class="label" for="vm-msg">Voicemail message</label>
+            <textarea class="textarea" id="vm-msg" style="min-height:88px">Hi, this is Elena from Aegean Homes, following up on your enquiry. Please call us back on 21 5550 1001 when you get a moment. Thank you!</textarea></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><div class="title">Talk to a human</div><p>Hand the live call to your team when needed.</p></div><span class="switch"><input type="checkbox" checked aria-label="Enable transfer"><i></i></span></div>
+        <div class="card-body stack">
+          <div class="label">Transfer this call to a real person when:</div>
+          <label class="choice choice-check"><input type="checkbox" checked><span class="choice-mark"></span><span class="choice-body"><b>The customer explicitly asks for a human</b></span></label>
+          <label class="choice choice-check"><input type="checkbox"><span class="choice-mark"></span><span class="choice-body"><b>The agent can't resolve the conversation</b></span></label>
+          <label class="choice choice-check"><input type="checkbox" checked><span class="choice-mark"></span><span class="choice-body"><b>A specific outcome is reached</b><span>Choose the outcomes below.</span></span></label>
+          <div class="row wrap" style="gap:8px;padding-left:4px"><span class="chip chip-x">Appointment Requested <i data-icon="x" data-size="sm"></i></span><button class="chip chip-x" type="button">+ Add outcome</button></div>
+          <div class="form-grid">
+            <div class="field"><label class="label" for="tr-num">Transfer to</label><input class="input" id="tr-num" value="+30 21 5550 1100"><span class="hint">A phone number or team extension.</span></div>
+            <div class="field full"><label class="label" for="tr-fb">If nobody is available</label><textarea class="textarea" id="tr-fb" style="min-height:80px">I'm sorry, nobody from the team is free right now. I've noted your request and someone will call you back shortly.</textarea>
+              <span class="hint">The agent takes a message and the call is logged as a follow-up — the customer is never left stuck.</span></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+
+    <!-- ================= KNOWLEDGE ================= -->
+    <div data-panel="knowledge"><div class="panel-stack">
+      <div class="card">
+        <div class="card-head"><div><div class="title">Knowledge this agent can use</div><p>The agent searches these sources live while talking to customers. 3 attached.</p></div>
+          <a class="btn btn-sm btn-outline" href="knowledge-new.html"><i data-icon="plus" data-size="sm"></i>Add knowledge</a></div>
+        <div class="card-body pad-0">
+          <div class="item-row"><span class="check"><input type="checkbox" checked aria-label="Attach Property FAQ.md"><i></i></span><div class="grow"><b>Property FAQ.md</b><span class="s">File · Version 3 · Updated 12 Sep</span></div><span class="badge b-success">Ready</span></div>
+          <div class="item-row"><span class="check"><input type="checkbox" checked aria-label="Attach Pricing and Payment Policy"><i></i></span><div class="grow"><b>Pricing &amp; Payment Policy</b><span class="s">Typed text · Version 2 · Updated 3 Sep</span></div><span class="badge b-success">Ready</span></div>
+          <div class="item-row"><span class="check"><input type="checkbox" checked aria-label="Attach Viewing Policy.docx"><i></i></span><div class="grow"><b>Viewing Policy.docx</b><span class="s">File · Version 1 · Updated 28 Aug</span></div><span class="badge b-success">Ready</span></div>
+          <div class="item-row"><span class="check"><input type="checkbox" aria-label="Attach Company Overview"><i></i></span><div class="grow"><b>Company Overview</b><span class="s">Typed text · Version 1 · Updated 20 Aug</span></div><span class="badge b-success">Ready</span></div>
+          <div class="item-row"><span class="check"><input type="checkbox" aria-label="Attach Rental Terms.md"><i></i></span><div class="grow"><b>Rental Terms.md</b><span class="s">File · Version 1 · Uploaded today</span></div><span class="badge b-live">Processing</span></div>
+          <div class="item-row"><span class="check"><input type="checkbox" disabled aria-label="Attach Mortgage Guide.docx"><i></i></span><div class="grow"><b>Mortgage Guide.docx</b><span class="s">File · Upload failed to process — try again</span></div><span class="badge b-error">Failed</span></div>
+        </div>
+      </div>
+    </div></div>
+
+    <!-- ================= CRM ================= -->
+    <div data-panel="crm"><div class="panel-stack">
+      <div class="card">
+        <div class="card-head"><div><div class="title">CRM connection</div><p>Where this agent looks up and updates records.</p></div><a class="btn btn-sm btn-text" href="integration-detail.html">Manage connection</a></div>
+        <div class="card-body">
+          <div class="field" style="max-width:420px"><label class="label" for="crm-conn">Connection</label>
+            <select class="select" id="crm-conn"><option selected>HubSpot — Aegean Homes (Active)</option><option>Aegean CRM (Connection failing)</option><option>None</option></select></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><div class="title">What this agent is allowed to do in HubSpot</div><p>Nothing is allowed unless you switch it on. The agent can only <em>request</em> an action — the platform checks it before anything happens.</p></div><span class="tool-count">3 of 8 allowed</span></div>
+        <div class="card-body pad-0">
+          <div class="perm-row"><div class="grow"><b>Look up a contact</b><span>Read a contact's details before and during a call.</span></div><span class="switch"><input type="checkbox" checked><i></i></span></div>
+          <div class="perm-row"><div class="grow"><b>Look up a deal</b><span>Read a deal and its current stage.</span></div><span class="switch"><input type="checkbox"><i></i></span></div>
+          <div class="perm-row"><div class="grow"><b>Update a contact</b><span>Change fields such as lead status.</span></div><span class="switch"><input type="checkbox" checked><i></i></span></div>
+          <div class="perm-row"><div class="grow"><b>Update a deal stage</b><span>Move a deal to another stage.</span></div><span class="switch"><input type="checkbox"><i></i></span></div>
+          <div class="perm-row"><div class="grow"><b>Add a note to a contact</b><span>Save the call summary on the contact.</span></div><span class="switch"><input type="checkbox" checked><i></i></span></div>
+          <div class="perm-row"><div class="grow"><b>Log an activity</b><span>Record the call as an activity.</span></div><span class="switch"><input type="checkbox"><i></i></span></div>
+          <div class="perm-row"><div class="grow"><b>Update a custom property</b><span>Write to a custom field such as Interest.</span></div><span class="switch"><input type="checkbox"><i></i></span></div>
+          <div class="perm-row"><div class="grow"><b>Create a task</b><span>Create a follow-up task for your team.</span></div><span class="switch"><input type="checkbox"><i></i></span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><div class="title">Field mapping</div><p>Match our fields to the fields in your CRM. Saved for this agent; overrides the connection's default mapping.</p></div><button class="btn btn-sm btn-outline" type="button" data-toast="Mapping row added"><i data-icon="plus" data-size="sm"></i>Add mapping</button></div>
+        <div class="table-scroll"><table class="table map-table">
+          <thead><tr><th>Our field</th><th></th><th>Their CRM's field</th><th>Direction</th><th>Personalize calls</th></tr></thead>
+          <tbody>
+            <tr><td><b>Customer name</b></td><td class="muted">→</td><td><select class="select"><option>Contact Name</option></select></td><td><select class="select"><option>Both</option><option>Read</option><option>Write</option></select></td><td><span class="check"><input type="checkbox" checked aria-label="Use for personalization"><i></i></span></td></tr>
+            <tr><td><b>Phone</b></td><td class="muted">→</td><td><select class="select"><option>Phone Number</option></select></td><td><select class="select"><option>Read</option><option>Both</option></select></td><td><span class="check"><input type="checkbox" aria-label="Use for personalization"><i></i></span></td></tr>
+            <tr><td><b>Call outcome</b></td><td class="muted">→</td><td><select class="select"><option>Lead Status</option></select></td><td><select class="select"><option>Write</option><option>Both</option></select></td><td><span class="check"><input type="checkbox" aria-label="Use for personalization"><i></i></span></td></tr>
+            <tr><td><b>Call summary</b></td><td class="muted">→</td><td><select class="select"><option>Activity Note</option></select></td><td><select class="select"><option>Write</option><option>Both</option></select></td><td><span class="check"><input type="checkbox" aria-label="Use for personalization"><i></i></span></td></tr>
+            <tr><td><b>Interest level</b></td><td class="muted">→</td><td><select class="select"><option>Custom Field: Interest</option></select></td><td><select class="select"><option>Both</option><option>Read</option></select></td><td><span class="check"><input type="checkbox" checked aria-label="Use for personalization"><i></i></span></td></tr>
+            <tr><td><b>Next follow-up date</b></td><td class="muted">→</td><td><select class="select"><option>Next Follow-up</option></select></td><td><select class="select"><option>Write</option><option>Both</option></select></td><td><span class="check"><input type="checkbox" aria-label="Use for personalization"><i></i></span></td></tr>
+            <tr><td><b>Last contact</b></td><td class="muted">→</td><td><select class="select"><option>Last Activity Date</option></select></td><td><select class="select"><option>Read</option></select></td><td><span class="check"><input type="checkbox" checked aria-label="Use for personalization"><i></i></span></td></tr>
+            <tr><td><b>Previous notes</b></td><td class="muted">→</td><td><select class="select"><option>Notes</option></select></td><td><select class="select"><option>Read</option></select></td><td><span class="check"><input type="checkbox" checked aria-label="Use for personalization"><i></i></span></td></tr>
+          </tbody></table></div>
+        <div class="card-foot"><span class="small muted">Fields ticked under “Personalize calls” are pulled from the CRM and given to the agent before each call.</span></div>
+      </div>
+    </div></div>
+
+    <!-- ================= PHONE ================= -->
+    <div data-panel="phone"><div class="panel-stack">
+      <div class="card">
+        <div class="card-head"><div><div class="title">Phone number</div><p>The number this agent calls from and receives calls on.</p></div><a class="btn btn-sm btn-text" href="phone-numbers.html">All phone numbers</a></div>
+        <div class="card-body stack">
+          <div class="row" style="gap:16px">
+            <span class="logo-tile lg"><i data-icon="phone"></i></span>
+            <div class="grow"><div class="title num">+30 21 5550 1001</div><div class="small muted">Provisioned by the platform</div></div>
+            <span class="badge b-success">Active</span>
+          </div>
+          <hr>
+          <div class="field" style="max-width:420px"><label class="label" for="ph-num">Assigned number</label>
+            <select class="select" id="ph-num"><option selected>+30 21 5550 1001 — Provisioned</option><option>+30 21 5550 1002 — Your own number (Sales Agent)</option><option>+30 21 5550 1003 — Provisioned (Appointment Confirmation)</option><option>None</option></select>
+            <span class="hint">Used for outbound calls and for anyone calling this agent back.</span></div>
+          <div class="row wrap" style="gap:10px"><a class="btn btn-sm btn-outline" href="phone-numbers.html">Get a new number</a><a class="btn btn-sm btn-outline" href="phone-numbers.html">Bring your own number</a></div>
+        </div>
+      </div>
+    </div></div>
+
+    <!-- ================= SCHEDULING & RETRIES ================= -->
+    <div data-panel="retries"><div class="panel-stack">
+      <div class="split">
+        <div class="card">
+          <div class="card-head"><div><div class="title">Retry rule</div><p>What happens when a call didn't go through.</p></div><span class="switch"><input type="checkbox" checked aria-label="Enable retries"><i></i></span></div>
+          <div class="card-body stack">
+            <div class="form-grid">
+              <div class="field"><label class="label" for="rt-max">Maximum attempts</label><input class="input" id="rt-max" type="number" value="3" min="1" max="10"><span class="hint">Including the first call.</span></div>
+              <div class="field"><span class="label">Retry when the call was</span>
+                <div class="stack-sm" style="padding-top:4px">
+                  <label class="check"><input type="checkbox" checked><i></i>Not answered</label>
+                  <label class="check"><input type="checkbox" checked><i></i>Busy</label>
+                  <label class="check"><input type="checkbox" checked><i></i>Failed</label>
+                  <label class="check"><input type="checkbox"><i></i>Reached voicemail</label>
+                </div></div>
+            </div>
+            <div>
+              <div class="label" style="margin-bottom:8px">Delay between attempts</div>
+              <div class="reorder-row"><span class="num-dot">1</span><div class="grow small">Wait after attempt 1</div><div class="input-suffix" style="width:180px"><input class="input input-sm" type="number" value="120" aria-label="Minutes after attempt 1"><span class="suffix">minutes</span></div><span class="small muted nowrap">= 2 hours</span></div>
+              <div class="reorder-row"><span class="num-dot">2</span><div class="grow small">Wait after attempt 2</div><div class="input-suffix" style="width:180px"><input class="input input-sm" type="number" value="1440" aria-label="Minutes after attempt 2"><span class="suffix">minutes</span></div><span class="small muted nowrap">= 24 hours</span></div>
+            </div>
+            <div>
+              <div class="label" style="margin-bottom:8px">Allowed calling hours</div>
+              <div class="grid-2">
+                <label class="choice"><input type="radio" name="hours" checked><span class="choice-mark"></span><span class="choice-body"><b>Use company calling hours</b><span>Mon–Sat 09:00–18:00 · Sunday no calling</span></span></label>
+                <label class="choice"><input type="radio" name="hours"><span class="choice-mark"></span><span class="choice-body"><b>Custom hours for this agent</b><span>Set different windows just for retries.</span></span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="card"><div class="card-body">
+            <div class="title" style="margin-bottom:8px">How it plays out</div>
+            <div class="attempt-flow">
+              <div class="step"><span class="n">1</span><span>Attempt 1 → no answer</span></div>
+              <div class="wait">wait 2 hours</div>
+              <div class="step"><span class="n">2</span><span>Attempt 2 → no answer</span></div>
+              <div class="wait">wait 24 hours</div>
+              <div class="step"><span class="n">3</span><span>Attempt 3 → still no answer</span></div>
+              <div class="wait">stop trying</div>
+            </div>
+            <p class="hint mt-2">Retries never happen outside allowed calling hours.</p>
+          </div></div>
+          <div class="card"><div class="card-body">
+            <div class="title" style="margin-bottom:4px">Failed CRM updates</div>
+            <p class="small muted" style="margin-bottom:12px">If updating your CRM after a call fails, the platform retries automatically. This schedule is fixed.</p>
+            <div class="kv-list">
+              <div><span>Retry 1</span><b>after 1 minute</b></div>
+              <div><span>Retry 2</span><b>after 5 minutes</b></div>
+              <div><span>Retry 3</span><b>after 30 minutes</b></div>
+              <div><span>Retry 4</span><b>after 2 hours</b></div>
+              <div><span>Then</span><span class="badge b-error">Needs attention</span></div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+    </div></div>
+
+    <!-- ================= AUTOMATIONS ================= -->
+    <div data-panel="automations"><div class="panel-stack">
+      <div class="row between wrap">
+        <p class="small muted" style="max-width:640px">“When this happens, do that.” Rules here apply to this agent only. Rules that apply to every agent in your company are marked <span class="badge plain b-outline b-soft">All agents</span>.</p>
+        <button class="btn btn-outline" type="button" data-open="ruleModal"><i data-icon="plus" data-size="sm"></i>Add rule</button>
+      </div>
+
+      <div class="card rule-card">
+        <div class="card-head"><div class="rule-when"><span class="kw">When</span><span class="chip">Call outcome is</span><span class="chip strong">Interested</span></div>
+          <div class="row-sm"><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Edit rule" data-open="ruleModal"><i data-icon="pencil" data-size="sm"></i></button><span class="switch"><input type="checkbox" checked aria-label="Enable rule"><i></i></span></div></div>
+        <div class="card-body">
+          <span class="kw">Then</span>
+          <div class="rule-actions">
+            <div class="a"><i data-icon="database" data-size="sm"></i>Update the CRM · status → Interested<span class="d">Immediately</span></div>
+            <div class="a"><i data-icon="file-text" data-size="sm"></i>Add a note to the CRM contact<span class="d">Immediately</span></div>
+            <div class="a"><i data-icon="calendar-clock" data-size="sm"></i>Schedule a follow-up call<span class="d">After 2 days</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card rule-card">
+        <div class="card-head"><div class="rule-when"><span class="kw">When</span><span class="chip">Call outcome is</span><span class="chip strong">Appointment Requested</span></div>
+          <div class="row-sm"><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Edit rule" data-open="ruleModal"><i data-icon="pencil" data-size="sm"></i></button><span class="switch"><input type="checkbox" checked aria-label="Enable rule"><i></i></span></div></div>
+        <div class="card-body">
+          <span class="kw">Then</span>
+          <div class="rule-actions">
+            <div class="a"><i data-icon="calendar" data-size="sm"></i>Create a calendar event<span class="d">Immediately</span></div>
+            <div class="a"><i data-icon="database" data-size="sm"></i>Update the CRM · status → Appointment booked<span class="d">Immediately</span></div>
+            <div class="a"><i data-icon="mail" data-size="sm"></i>Send a confirmation email<span class="d">After 5 minutes</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card rule-card">
+        <div class="card-head"><div class="rule-when"><span class="kw">When</span><span class="chip">Call outcome is</span><span class="chip strong">Not Interested</span><span class="badge plain b-outline b-soft">All agents</span></div>
+          <div class="row-sm"><button class="btn btn-sm btn-text btn-icon" type="button" aria-label="Edit rule" data-open="ruleModal"><i data-icon="pencil" data-size="sm"></i></button><span class="switch"><input type="checkbox" aria-label="Enable rule"><i></i></span></div></div>
+        <div class="card-body">
+          <span class="kw">Then</span>
+          <div class="rule-actions">
+            <div class="a"><i data-icon="database" data-size="sm"></i>Update the CRM · status → Not interested<span class="d">Immediately</span></div>
+            <div class="a"><i data-icon="ban" data-size="sm"></i>Close the follow-up (cancel pending calls)<span class="d">Immediately</span></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+
+    <!-- ================= ACCESS ================= -->
+    <div data-panel="access"><div class="panel-stack">
+      <div class="card">
+        <div class="card-head"><div><div class="title">Who can use this agent</div><p>Owners and admins can always see every agent. Members and viewers only see agents they've been given.</p></div><a class="btn btn-sm btn-text" href="settings-team.html">Manage team</a></div>
+        <div class="card-body pad-0">
+          <div class="item-row"><span class="avatar a-lavender">PR</span><div class="grow"><b>Petros Rodinos</b><span class="s">Owner · full access</span></div><span class="badge plain b-outline">Always</span></div>
+          <div class="item-row"><span class="avatar a-mint">MK</span><div class="grow"><b>Maria Kanellou</b><span class="s">Admin · full access</span></div><span class="badge plain b-outline">Always</span></div>
+          <div class="item-row"><span class="avatar a-peach">NP</span><div class="grow"><b>Nikos Petrou</b><span class="s">Member · can view calls and run tests</span></div><label class="row-sm small">Has access<span class="switch"><input type="checkbox" checked><i></i></span></label></div>
+          <div class="item-row"><span class="avatar a-sky">ES</span><div class="grow"><b>Elena Sotiriou</b><span class="s">Viewer · read-only</span></div><label class="row-sm small">Has access<span class="switch"><input type="checkbox"><i></i></span></label></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- Sticky save bar -->
+  <div class="savebar" role="region" aria-label="Unsaved changes">
+    <span class="msg"><span class="dot ink"></span>Unsaved changes</span>
+    <div class="actions">
+      <button class="btn btn-outline" type="button" data-toast="Changes discarded">Discard</button>
+      <button class="btn btn-primary" type="button" data-toast="Agent saved">Save changes</button>
+    </div>
+  </div>
+
+  <!-- Goal item modal -->
+  <div class="modal-backdrop" id="goalModal" role="dialog" aria-modal="true" aria-labelledby="goalTitle">
+    <div class="modal">
+      <div class="modal-head"><div><h3 id="goalTitle">Information to collect</h3><p>One piece of information the agent should come away with.</p></div><button class="icon-btn" type="button" data-close aria-label="Close"><i data-icon="x"></i></button></div>
+      <div class="modal-body stack">
+        <div class="field"><label class="label" for="gm-label">Label</label><input class="input" id="gm-label" value="Preferred time"></div>
+        <div class="form-grid">
+          <div class="field"><label class="label" for="gm-key">Key</label><input class="input mono" id="gm-key" value="preferred_time"></div>
+          <div class="field"><label class="label" for="gm-type">Answer type</label><select class="select" id="gm-type"><option>Text</option><option>Yes / No</option><option>Number</option><option>Date</option><option selected>Choose from a list</option></select></div>
+        </div>
+        <div class="field"><label class="label" for="gm-vals">Allowed answers</label><input class="input" id="gm-vals" value="Morning, Afternoon, Evening"><span class="hint">Separate with commas.</span></div>
+        <div class="field"><label class="label" for="gm-desc">Description <span class="opt">Optional</span></label><textarea class="textarea" id="gm-desc" style="min-height:72px">When would the customer prefer to be contacted?</textarea></div>
+        <div class="segmented" style="align-self:flex-start"><label><input type="radio" name="req" checked>Must find out</label><label><input type="radio" name="req">Nice to know</label></div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-outline" type="button" data-close>Cancel</button><button class="btn btn-primary" type="button" data-close>Save item</button></div>
+    </div>
+  </div>
+
+  <!-- Automation rule modal -->
+  <div class="modal-backdrop" id="ruleModal" role="dialog" aria-modal="true" aria-labelledby="ruleTitle">
+    <div class="modal modal-lg">
+      <div class="modal-head"><div><h3 id="ruleTitle">Automation rule</h3><p>When this happens, do that.</p></div><button class="icon-btn" type="button" data-close aria-label="Close"><i data-icon="x"></i></button></div>
+      <div class="modal-body stack-lg">
+        <div class="field"><label class="label" for="ru-name">Rule name</label><input class="input" id="ru-name" value="Interested → follow up"></div>
+        <div class="form-grid">
+          <div class="field"><label class="label" for="ru-trig">When</label><select class="select" id="ru-trig"><option selected>A call outcome is reached</option><option>A call is completed</option><option>A call fails</option><option>A call is transferred</option><option>Voicemail is detected</option></select></div>
+          <div class="field"><label class="label" for="ru-out">Outcome</label><select class="select" id="ru-out"><option selected>Interested</option><option>Not Interested</option><option>Call Back Later</option><option>Appointment Requested</option></select></div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px">Then do</div>
+          <div class="rule-actions" style="margin-top:0">
+            <div class="a"><i data-icon="database" data-size="sm"></i>Update the CRM<span class="d">Immediately</span></div>
+            <div class="a"><i data-icon="file-text" data-size="sm"></i>Add a note to the CRM contact<span class="d">Immediately</span></div>
+            <div class="a"><i data-icon="calendar-clock" data-size="sm"></i>Schedule a follow-up call<span class="d">After 2 days</span></div>
+          </div>
+          <div class="row wrap mt-2" style="gap:8px"><select class="select select-sm" style="width:auto" aria-label="Add action"><option>Add an action…</option><option>Update the CRM</option><option>Add a note</option><option>Create a CRM task</option><option>Schedule a follow-up call</option><option>Cancel follow-up calls</option><option>Create a calendar event</option><option>Send an email</option><option>Send an SMS</option><option>Send to another system</option></select></div>
+        </div>
+        <div class="field"><span class="label">Applies to</span>
+          <div class="grid-2">
+            <label class="choice"><input type="radio" name="scope" checked><span class="choice-mark"></span><span class="choice-body"><b>This agent only</b></span></label>
+            <label class="choice"><input type="radio" name="scope"><span class="choice-mark"></span><span class="choice-body"><b>Every agent in my company</b></span></label>
+          </div></div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-outline" type="button" data-close>Cancel</button><button class="btn btn-primary" type="button" data-close>Save rule</button></div>
+    </div>
+  </div>
+
+  <!-- Test agent modal (spec §35) -->
+  <div class="modal-backdrop" id="testModal" role="dialog" aria-modal="true" aria-labelledby="testTitle">
+    <div class="modal">
+      <div class="modal-head"><div><h3 id="testTitle">Test this agent</h3><p>Place a real test call to try the conversation out.</p></div><button class="icon-btn" type="button" data-close aria-label="Close"><i data-icon="x"></i></button></div>
+      <div class="modal-body stack">
+        <div class="field"><label class="label" for="t-name">Name</label><input class="input" id="t-name" value="Petros Rodinos"></div>
+        <div class="field"><label class="label" for="t-phone">Phone number</label><input class="input" id="t-phone" value="+30 697 555 0100"></div>
+        <div class="field"><label class="label" for="t-crm">Link to a CRM contact <span class="opt">Optional</span></label><select class="select" id="t-crm"><option>Don't link</option><option>John Smith · HubSpot</option><option>Maria Papadopoulou · HubSpot</option></select><span class="hint">Linking lets the agent use that contact's details.</span></div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-outline" type="button" data-close>Cancel</button><button class="btn btn-primary" type="button" data-close><i data-icon="phone-call" data-size="sm"></i>Place test call</button></div>
+    </div>
+  </div>
+
+  <!-- Delete modal -->
+  <div class="modal-backdrop" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="delTitle">
+    <div class="modal">
+      <div class="modal-head"><div><h3 id="delTitle">Delete this agent?</h3><p>Lead Follow-up Agent will stop making and receiving calls. Its 342 past calls stay in your call history.</p></div></div>
+      <div class="modal-body"><div class="notice n-error"><i data-icon="triangle-alert"></i><div class="grow">Its phone number will be unassigned and any pending scheduled calls will be canceled.</div></div></div>
+      <div class="modal-foot"><button class="btn btn-outline" type="button" data-close>Keep agent</button><button class="btn btn-danger-fill" type="button" data-close>Delete agent</button></div>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

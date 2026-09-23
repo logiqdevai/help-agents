@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create account · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .brand-inline .brand-name { font-family: var(--font-display); font-weight: 300; font-size: 22px; color: var(--ink); }
+    .auth-foot a:hover { color: var(--ink); }
+    .auth-form.wide { max-width: 440px; }
+  </style>
+</head>
+<body class="auth">
+<div class="auth-shell">
+  <div class="auth-form-side">
+    <a class="brand-inline" href="login.html"><span class="brand-orb"></span><span class="brand-name">Voice Agent</span></a>
+    <div class="auth-form-wrap">
+      <form class="auth-form wide" onsubmit="return false">
+        <div>
+          <h1>Create your account</h1>
+          <p class="lede">Set up your company workspace in a few minutes. Your team, agents and call history stay private to your company.</p>
+        </div>
+        <div class="form-grid">
+          <div class="field full"><label class="label" for="name">Your name</label><input class="input" id="name" placeholder="Petros Rodinos" autocomplete="name"></div>
+          <div class="field full"><label class="label" for="email">Work email</label><input class="input" id="email" type="email" placeholder="you@company.com" autocomplete="email"></div>
+          <div class="field full">
+            <label class="label" for="pw">Password</label>
+            <div class="input-suffix">
+              <input class="input" id="pw" type="password" data-reveal value="Athens-2026-calls" autocomplete="new-password">
+              <button class="btn btn-sm btn-text" type="button" data-reveal-btn>Show</button>
+            </div>
+            <div class="pw-meter" aria-hidden="true"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+            <span class="hint">Good. Use 12+ characters with a mix of letters, numbers and symbols.</span>
+          </div>
+          <div class="field full"><label class="label" for="company">Company name</label><input class="input" id="company" placeholder="Aegean Homes"></div>
+          <div class="field"><label class="label" for="phone">Phone <span class="opt">Optional</span></label><input class="input" id="phone" type="tel" placeholder="+30 21 0000 0000"></div>
+          <div class="field"><label class="label" for="site">Website <span class="opt">Optional</span></label><input class="input" id="site" placeholder="aegeanhomes.gr"></div>
+        </div>
+        <label class="check" style="align-items:flex-start"><input type="checkbox"><i></i><span class="small">I agree to the <a class="link" href="#">Terms of Service</a> and <a class="link" href="#">Privacy Policy</a>.</span></label>
+        <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="location.href='verify-email.html'">Create account</button>
+        <p class="small muted center">Already have an account? <a class="link" href="login.html">Log in</a></p>
+      </form>
+    </div>
+    <div class="auth-foot"><span>© 2026 Voice Agent</span><a href="#">Privacy</a><a href="#">Terms</a></div>
+  </div>
+
+  <aside class="auth-art" aria-hidden="true">
+    <span class="orb orb-peach" style="width:440px;height:440px;left:-120px;top:-90px"></span>
+    <span class="orb orb-rose" style="width:400px;height:400px;right:-100px;top:30%"></span>
+    <span class="orb orb-mint" style="width:360px;height:360px;left:12%;bottom:-140px"></span>
+    <span class="orb orb-lavender" style="width:260px;height:260px;right:10%;top:-50px"></span>
+    <h2>Set up once. Let it call.</h2>
+    <p>Connect your CRM, add what your agents should know, and go live with a tested agent, without touching any voice infrastructure.</p>
+  </aside>
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

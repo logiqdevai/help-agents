@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lead Follow-up Agent · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .agent-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+    .agent-head h1 { font-family: var(--font-display); font-weight: 300; font-size: 36px; line-height: 1.17; letter-spacing: -0.36px; color: var(--ink); }
+    .agent-head .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .status-switch { display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 16px 0 14px; border: 1px solid var(--hairline-strong); border-radius: 9999px; background: var(--card); font-size: 14px; font-weight: 500; color: var(--ink); letter-spacing: 0; }
+    .glance { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+    .glance .tile { padding: 20px 24px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+    .glance .tile .v { font-size: 16px; font-weight: 500; color: var(--ink); letter-spacing: 0.1px; }
+    .glance .tile .s { font-size: 14px; color: var(--muted); letter-spacing: 0; }
+    .span-2 { grid-column: span 2; }
+    .perf { display: flex; gap: 24px; }
+    .perf b { display: block; font-family: var(--font-display); font-weight: 300; font-size: 32px; line-height: 1.1; color: var(--ink); }
+    .perf span { font-size: 13px; color: var(--muted); }
+    .wave-mini { padding: 10px 14px; border-radius: 9999px; margin-top: 6px; }
+    .quote { padding: 16px 18px; background: var(--canvas-soft); border: 1px solid var(--hairline); border-radius: 12px; font-size: 14.5px; line-height: 1.6; color: var(--ink); letter-spacing: 0; }
+    .quote p + p { margin-top: 10px; }
+    .goal-list li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 14.5px; color: var(--ink); letter-spacing: 0; }
+    .goal-list li .ic { color: var(--muted); margin-top: 2px; }
+    .goal-list li small { display: block; color: var(--muted); font-size: 12px; }
+    .q-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--hairline-soft); }
+    .q-item:last-child { border-bottom: 0; }
+    .q-item .num-dot { width: 24px; height: 24px; border-radius: 9999px; background: var(--strong); font-size: 12px; font-weight: 600; color: var(--ink); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+    .tool-yes .ic { color: var(--success); }
+    .tool-no { color: var(--muted); }
+    .tool-no .ic { color: var(--muted-soft); }
+    .tab-body { padding-top: 24px; }
+    @media (max-width: 1100px) { .glance { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 639px) { .glance { grid-template-columns: minmax(0, 1fr); } .span-2 { grid-column: auto; } .agent-head h1 { font-size: 30px; } .perf { gap: 20px; } }
+  </style>
+</head>
+<body data-nav="agents" data-crumbs='[["Agents","agents.html"],["Lead Follow-up Agent"]]'>
+<div id="content">
+
+  <div>
+    <a class="back" href="agents.html"><i data-icon="arrow-left" data-size="sm"></i>All agents</a>
+    <div class="agent-head">
+      <div class="row-top" style="min-width:0">
+        <span class="agent-mark m-mint lg"><i data-icon="bot" data-size="lg"></i></span>
+        <div style="min-width:0">
+          <div class="row wrap" style="gap:12px"><h1>Lead Follow-up Agent</h1><span class="badge b-success">Active</span></div>
+          <p class="muted" style="margin-top:6px;max-width:560px">Follows up with new leads and finds out whether they are still interested. Outbound · last edited 18 Sep by Maria Kanellou.</p>
+        </div>
+      </div>
+      <div class="actions">
+        <label class="status-switch" title="Turn the agent on or off">
+          <span class="switch"><input type="checkbox" checked aria-label="Agent active"><i></i></span>Active
+        </label>
+        <a class="btn btn-outline" href="agent-edit.html"><i data-icon="pencil" data-size="sm"></i>Edit</a>
+        <span class="row-sm"><button class="btn btn-outline" type="button" disabled title="Campaigns arrive in Version 2">Start campaign</button><span class="badge plain b-outline">Version 2</span></span>
+        <button class="btn btn-primary" type="button" data-open="testModal"><i data-icon="flask-conical" data-size="sm"></i>Test agent</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- At a glance (spec §36) -->
+  <section class="glance" aria-label="Agent at a glance">
+    <div class="card tile span-2">
+      <div class="eyebrow">Goal</div>
+      <div class="v">Determine customer interest</div>
+      <div class="s">Find out whether the lead is still interested, why not if they aren't, and whether they want a callback or an appointment.</div>
+    </div>
+    <div class="card tile span-2">
+      <div class="eyebrow">Voice</div>
+      <div class="v">Elena · Greek / Female</div>
+      <div class="wave-card wave-mini">
+        <button class="play sm" type="button" data-wave="#voiceWave" aria-label="Play voice sample"><i data-icon="play" data-size="sm"></i></button>
+        <div class="wave" id="voiceWave" data-bars="44"></div>
+        <span class="xs muted num">0:08</span>
+      </div>
+    </div>
+    <div class="card tile"><div class="eyebrow">Knowledge</div><div class="v">3 sources</div><div class="s"><a class="link" href="knowledge.html">All ready</a> · used live in calls</div></div>
+    <div class="card tile"><div class="eyebrow">CRM</div><div class="v">HubSpot</div><div class="s"><span class="row-sm"><span class="dot ok"></span>Connected · 3 tools allowed</span></div></div>
+    <div class="card tile"><div class="eyebrow">Phone</div><div class="v num">+30 21 5550 1001</div><div class="s">Provisioned by the platform</div></div>
+    <div class="card tile">
+      <div class="eyebrow">Performance</div>
+      <div class="perf"><div><b class="num">342</b><span>Calls made</span></div><div><b class="num">68%</b><span>Success rate</span></div></div>
+    </div>
+  </section>
+
+  <div data-tabs>
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="overview" type="button">Overview</button>
+      <button class="tab" data-tab="behavior" type="button">Behavior</button>
+      <button class="tab" data-tab="knowledge" type="button">Knowledge <span class="pill-count">3</span></button>
+      <button class="tab" data-tab="crm" type="button">CRM</button>
+      <button class="tab" data-tab="calls" type="button">Calls</button>
+    </div>
+
+    <!-- ============ Overview ============ -->
+    <div data-panel="overview" class="tab-body">
+      <div class="stack-lg">
+        <div class="grid-4">
+          <div class="card stat"><div class="stat-label">Calls today</div><div class="stat-value">64</div><div class="stat-note"><span class="up">+9%</span> vs. yesterday</div></div>
+          <div class="card stat"><div class="stat-label">Success rate · 30 days</div><div class="stat-value">68%</div><div class="stat-note">233 of 342 calls</div></div>
+          <div class="card stat"><div class="stat-label">Average duration</div><div class="stat-value">2m 52s</div><div class="stat-note">Answered calls only</div></div>
+          <div class="card stat"><div class="stat-label">Average cost</div><div class="stat-value">€0.31</div><div class="stat-note">Per call · AI + telephony</div></div>
+        </div>
+
+        <div class="split-wide">
+          <div class="stack-lg">
+            <div class="card">
+              <div class="card-head"><div class="title">Outcomes · last 30 days</div><span class="small muted">342 calls</span></div>
+              <div class="card-body stack">
+                <div class="bar-row"><span class="name">Interested</span><span class="track"><span style="width:100%"></span></span><span class="val">190</span></div>
+                <div class="bar-row"><span class="name">Appointment requested</span><span class="track"><span style="width:23%"></span></span><span class="val">43</span></div>
+                <div class="bar-row"><span class="name">Not interested</span><span class="track"><span class="light" style="width:20%"></span></span><span class="val">38</span></div>
+                <div class="bar-row"><span class="name">Call back later</span><span class="track"><span class="light" style="width:16%"></span></span><span class="val">31</span></div>
+                <div class="bar-row"><span class="name">Voicemail</span><span class="track"><span class="light" style="width:12%"></span></span><span class="val">22</span></div>
+                <div class="bar-row"><span class="name">No answer</span><span class="track"><span class="light" style="width:6%"></span></span><span class="val">11</span></div>
+                <div class="bar-row"><span class="name">Wrong number</span><span class="track"><span class="light" style="width:2%"></span></span><span class="val">4</span></div>
+                <div class="bar-row"><span class="name">Unknown</span><span class="track"><span class="light" style="width:2%"></span></span><span class="val">3</span></div>
+                <div class="legend"><span><i></i>Success outcome</span><span><i class="light"></i>Other outcome</span></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="section-head"><h2>Recent calls</h2><a class="btn btn-sm btn-outline" href="calls.html">All calls</a></div>
+              <div class="table-wrap"><div class="table-scroll">
+                <table class="table">
+                  <thead><tr><th>Time</th><th>Contact</th><th>Duration</th><th>Status</th><th>Outcome</th><th class="r">Cost</th></tr></thead>
+                  <tbody>
+                    <tr data-href="call-detail.html"><td class="nowrap">14:31<span class="sub">#18372</span></td><td><b>John Smith</b></td><td class="num">02:43</td><td><span class="badge b-success">Completed</span></td><td>Interested</td><td class="r num">€0.36</td></tr>
+                    <tr data-href="call-detail.html"><td class="nowrap">14:11<span class="sub">#18369</span></td><td><b>Giorgos Alexiou</b></td><td class="num">00:28</td><td><span class="badge b-success">Completed</span></td><td>Voicemail</td><td class="r num">€0.03</td></tr>
+                    <tr data-href="call-detail.html"><td class="nowrap">14:02<span class="sub">#18368</span></td><td><b>Sofia Nikolaou</b></td><td class="num">03:36</td><td><span class="badge b-success">Completed</span></td><td>Call back later</td><td class="r num">€0.47</td></tr>
+                    <tr data-href="call-detail.html"><td class="nowrap">13:52<span class="sub">#18365</span></td><td><b>Maria Papadopoulou</b></td><td class="num">03:10</td><td><span class="badge b-success">Completed</span></td><td>Appointment requested</td><td class="r num">€0.41</td></tr>
+                    <tr data-href="call-detail.html"><td class="nowrap">13:40<span class="sub">#18363</span></td><td><b>Dimitris Kostas</b></td><td class="num">00:00</td><td><span class="badge">No answer</span></td><td>No answer</td><td class="r num">€0.01</td></tr>
+                  </tbody>
+                </table>
+              </div></div>
+            </div>
+          </div>
+
+          <div class="stack-lg">
+            <div class="card">
+              <div class="card-head"><div class="title">Ready to go live</div><span class="badge b-success">7 of 7</span></div>
+              <div class="card-body">
+                <div class="progress"><span style="width:100%"></span></div>
+                <ul class="stack-sm mt-3" style="gap:12px">
+                  <li class="row-top small"><i data-icon="circle-check" class="ok"></i><div><b class="strong">Basics</b><div class="muted">Name, description and purpose</div></div></li>
+                  <li class="row-top small"><i data-icon="circle-check" class="ok"></i><div><b class="strong">Behavior</b><div class="muted">Instructions, 4 goals, 3 questions, 8 outcomes</div></div></li>
+                  <li class="row-top small"><i data-icon="circle-check" class="ok"></i><div><b class="strong">Knowledge</b><div class="muted">3 sources ready to use</div></div></li>
+                  <li class="row-top small"><i data-icon="circle-check" class="ok"></i><div><b class="strong">CRM</b><div class="muted">HubSpot connected · 3 tools · 6 fields mapped</div></div></li>
+                  <li class="row-top small"><i data-icon="circle-check" class="ok"></i><div><b class="strong">Phone</b><div class="muted">+30 21 5550 1001 is active</div></div></li>
+                  <li class="row-top small"><i data-icon="circle-check" class="ok"></i><div><b class="strong">Test</b><div class="muted">Last test call on 21 Sep</div></div></li>
+                  <li class="row-top small"><i data-icon="circle-check" class="ok"></i><div><b class="strong">Activated</b><div class="muted">Live since 12 Aug</div></div></li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="title">Retry &amp; follow-up rules</div><a class="btn btn-sm btn-text" href="agent-edit.html">Edit</a></div>
+              <div class="card-body">
+                <dl class="kv">
+                  <dt>Retry when</dt><dd>No answer, busy, failed</dd>
+                  <dt>Attempts</dt><dd>Up to 3</dd>
+                  <dt>Delays</dt><dd>2 hours, then 24 hours</dd>
+                  <dt>Calling hours</dt><dd>Company hours (Mon–Sat 09:00–18:00)</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Behavior ============ -->
+    <div data-panel="behavior" class="tab-body">
+      <div class="stack-lg">
+        <div class="row between wrap">
+          <p class="muted small">A read-only summary of how this agent behaves on a call.</p>
+          <a class="btn btn-outline btn-sm" href="agent-edit.html"><i data-icon="pencil" data-size="sm"></i>Edit behavior</a>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="title">Instructions</div><span class="small muted">Plain language · 1,240 characters</span></div>
+          <div class="card-body">
+            <div class="quote">
+              <p>You are a customer follow-up assistant.</p>
+              <p>Your goal is to find out whether the customer is still interested in our product or service. Be polite and concise.</p>
+              <p>Ask the following questions naturally, in conversation — not like a script. Never make up information you don't have.</p>
+              <p class="muted">… If the customer asks something you can't answer, explain that a member of the team will get back to them. End the call once you've achieved the goal.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><div class="title">Goal</div><span class="small muted">Determine customer interest</span></div>
+            <div class="card-body stack">
+              <div>
+                <div class="eyebrow">Must find out</div>
+                <ul class="goal-list">
+                  <li><i data-icon="circle" data-size="sm"></i><span>Are they interested?<small>Yes / No</small></span></li>
+                  <li><i data-icon="circle" data-size="sm"></i><span>If not, why not?<small>Text</small></span></li>
+                  <li><i data-icon="circle" data-size="sm"></i><span>Do they want a callback?<small>Yes / No</small></span></li>
+                  <li><i data-icon="circle" data-size="sm"></i><span>Do they want an appointment?<small>Yes / No</small></span></li>
+                </ul>
+              </div>
+              <hr>
+              <div>
+                <div class="eyebrow">Nice to know</div>
+                <ul class="goal-list">
+                  <li><i data-icon="circle" data-size="sm"></i><span>Preferred date<small>Date</small></span></li>
+                  <li><i data-icon="circle" data-size="sm"></i><span>Preferred time<small>Morning / Afternoon / Evening</small></span></li>
+                  <li><i data-icon="circle" data-size="sm"></i><span>Any questions they had<small>Text</small></span></li>
+                  <li><i data-icon="circle" data-size="sm"></i><span>Any objections raised<small>Text</small></span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="stack-lg">
+            <div class="card">
+              <div class="card-head"><div class="title">Questions</div><span class="small muted">Worked into the conversation, not a script</span></div>
+              <div class="card-body">
+                <div class="q-item"><span class="num-dot">1</span><div class="grow"><b class="strong">Are you still interested?</b><div class="small muted">Must be answered: Yes</div></div></div>
+                <div class="q-item"><span class="num-dot">2</span><div class="grow"><b class="strong">Do you have any questions?</b><div class="small muted">Must be answered: No</div></div></div>
+                <div class="q-item"><span class="num-dot">3</span><div class="grow"><b class="strong">Would you like someone from our team to contact you?</b><div class="small muted">Must be answered: Yes</div></div></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="title">Success</div></div>
+              <div class="card-body stack-sm">
+                <p class="small"><span class="strong">Successful:</span> Customer confirms they are still interested.</p>
+                <p class="small"><span class="strong">Unsuccessful:</span> Customer declines, or the call ends without an answer.</p>
+                <p class="small muted">Maximum call length: 6 minutes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="title">Possible outcomes</div><span class="small muted">Each outcome can trigger follow-up actions</span></div>
+          <div class="table-scroll">
+            <table class="table">
+              <thead><tr><th>Outcome</th><th>Counts as</th><th>Detected</th><th>Then</th></tr></thead>
+              <tbody>
+                <tr><td><b>Interested</b></td><td><span class="badge b-success">Success</span></td><td>By the agent</td><td>Update CRM lead status · add note</td></tr>
+                <tr><td><b>Appointment requested</b></td><td><span class="badge b-success">Success</span></td><td>By the agent</td><td>Update CRM · create calendar event</td></tr>
+                <tr><td><b>Not interested</b></td><td><span class="badge b-outline">Other</span></td><td>By the agent</td><td>Update CRM · close the follow-up</td></tr>
+                <tr><td><b>Call back later</b></td><td><span class="badge b-outline">Other</span></td><td>By the agent</td><td>Schedule a follow-up call</td></tr>
+                <tr><td><b>Voicemail</b></td><td><span class="badge b-outline">Other</span></td><td>Automatically</td><td>Retry per retry rules</td></tr>
+                <tr><td><b>Wrong number</b></td><td><span class="badge b-outline">Other</span></td><td>Automatically</td><td>Flag contact in CRM</td></tr>
+                <tr><td><b>No answer</b></td><td><span class="badge b-outline">Other</span></td><td>Automatically</td><td>Retry per retry rules</td></tr>
+                <tr><td><b>Unknown</b></td><td><span class="badge b-outline">Other</span></td><td>Automatically</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><div class="title">Talking to a human</div><span class="badge b-success">On</span></div>
+            <div class="card-body stack">
+              <ul class="stack-sm small" style="gap:10px">
+                <li class="row-sm tool-yes"><i data-icon="circle-check"></i>Transfer when the customer asks for a human</li>
+                <li class="row-sm tool-no"><i data-icon="circle"></i>Transfer when the agent can't resolve the conversation</li>
+                <li class="row-sm tool-no"><i data-icon="circle"></i>Transfer when a specific outcome is reached</li>
+              </ul>
+              <dl class="kv">
+                <dt>Transfer to</dt><dd class="num">+30 21 5550 1010 · Sales team</dd>
+                <dt>If nobody answers</dt><dd>“Thanks for your patience. Nobody is free right now, so I've noted your details and a colleague will call you back today.” Logged as a follow-up.</dd>
+              </dl>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="title">Voicemail</div></div>
+            <div class="card-body stack">
+              <ul class="stack-sm small" style="gap:10px">
+                <li class="row-sm tool-yes"><i data-icon="circle-check"></i>Detect voicemail and log it as its own outcome</li>
+                <li class="row-sm tool-yes"><i data-icon="circle-check"></i>Leave a short pre-approved message</li>
+              </ul>
+              <div class="quote">“Hello, this is Aegean Homes calling about your recent enquiry. We'll try you again soon, or you can call us back on 21 5550 1001. Thank you.”</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Knowledge ============ -->
+    <div data-panel="knowledge" class="tab-body">
+      <div class="stack-lg">
+        <div class="row between wrap">
+          <p class="muted small">Sources this agent can search live while it talks to customers.</p>
+          <div class="row-sm"><a class="btn btn-outline btn-sm" href="knowledge-new.html"><i data-icon="plus" data-size="sm"></i>Add knowledge</a><a class="btn btn-outline btn-sm" href="agent-edit.html">Choose sources</a></div>
+        </div>
+        <div class="table-wrap"><div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>Name</th><th>Type</th><th>Status</th><th>Version</th><th>Added by</th><th>Last updated</th></tr></thead>
+            <tbody>
+              <tr data-href="knowledge-detail.html"><td><span class="row"><span class="logo-tile"><i data-icon="file-text"></i></span><b>Property FAQ.md</b></span></td><td>Uploaded file</td><td><span class="badge b-success">Ready</span></td><td class="num">v3</td><td>Maria Kanellou</td><td class="nowrap">18 Sep</td></tr>
+              <tr data-href="knowledge-detail.html"><td><span class="row"><span class="logo-tile"><i data-icon="type"></i></span><b>Pricing &amp; Payment Policy</b></span></td><td>Typed text</td><td><span class="badge b-success">Ready</span></td><td class="num">v2</td><td>Petros Rodinos</td><td class="nowrap">10 Sep</td></tr>
+              <tr data-href="knowledge-detail.html"><td><span class="row"><span class="logo-tile"><i data-icon="file-text"></i></span><b>Viewing Policy.docx</b></span></td><td>Uploaded file</td><td><span class="badge b-success">Ready</span></td><td class="num">v1</td><td>Nikos Petrou</td><td class="nowrap">2 Sep</td></tr>
+            </tbody>
+          </table>
+        </div></div>
+        <div class="notice n-soft"><i data-icon="info"></i><div class="grow">Each call keeps a snapshot of the knowledge the agent had at the time, so you can always see what it knew during a past call.</div></div>
+      </div>
+    </div>
+
+    <!-- ============ CRM ============ -->
+    <div data-panel="crm" class="tab-body">
+      <div class="stack-lg">
+        <div class="card">
+          <div class="list-row" style="padding:20px 24px">
+            <span class="logo-tile lg">H</span>
+            <div class="grow"><b>HubSpot</b><span>Connected · last verified 2 minutes ago · used for contacts, notes and tasks</span></div>
+            <span class="badge b-success">Connected</span>
+            <a class="btn btn-outline btn-sm" href="integration-detail.html">Manage connection</a>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><div class="title">What this agent can do in HubSpot</div><span class="small muted">Only what is allowed</span></div>
+            <div class="card-body">
+              <div class="eyebrow">Allowed</div>
+              <ul class="stack-sm" style="gap:0">
+                <li class="perm-row tool-yes"><i data-icon="circle-check"></i><div class="grow"><b>Look up a contact</b><span>Find the person before the call</span></div></li>
+                <li class="perm-row tool-yes"><i data-icon="circle-check"></i><div class="grow"><b>Update a contact</b><span>Write the call outcome and lead status</span></div></li>
+                <li class="perm-row tool-yes"><i data-icon="circle-check"></i><div class="grow"><b>Add a note to a contact</b><span>Save the call summary</span></div></li>
+              </ul>
+              <div class="eyebrow mt-4">Not allowed</div>
+              <ul class="stack-sm" style="gap:0">
+                <li class="perm-row tool-no"><i data-icon="circle"></i><div class="grow"><b>Look up a deal</b></div></li>
+                <li class="perm-row tool-no"><i data-icon="circle"></i><div class="grow"><b>Update a deal stage</b></div></li>
+                <li class="perm-row tool-no"><i data-icon="circle"></i><div class="grow"><b>Log an activity</b></div></li>
+                <li class="perm-row tool-no"><i data-icon="circle"></i><div class="grow"><b>Update a custom property</b></div></li>
+                <li class="perm-row tool-no"><i data-icon="circle"></i><div class="grow"><b>Create a task</b></div></li>
+              </ul>
+            </div>
+            <div class="card-foot"><span class="small muted">The AI can only request actions. The platform checks each request before anything is changed.</span></div>
+          </div>
+
+          <div class="stack-lg">
+            <div class="card">
+              <div class="card-head"><div class="title">Field mapping</div><span class="small muted">Set once per connection</span></div>
+              <div class="table-scroll">
+                <table class="table">
+                  <thead><tr><th>Our field</th><th>HubSpot field</th></tr></thead>
+                  <tbody>
+                    <tr><td>Customer name</td><td>Contact Name</td></tr>
+                    <tr><td>Phone</td><td>Phone Number</td></tr>
+                    <tr><td>Call outcome</td><td>Lead Status</td></tr>
+                    <tr><td>Call summary</td><td>Activity Note</td></tr>
+                    <tr><td>Interest level</td><td>Custom Field: Interest</td></tr>
+                    <tr><td>Next follow-up date</td><td>Next Follow-up</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="title">Personalization</div><span class="small muted">Passed to the agent before dialing</span></div>
+              <div class="card-body stack">
+                <div class="row wrap" style="gap:8px"><span class="chip">Customer name</span><span class="chip">Last contact</span><span class="chip">Interested in</span><span class="chip">Previous notes</span></div>
+                <div class="quote">
+                  <dl class="kv" style="grid-template-columns:130px 1fr">
+                    <dt>Customer name</dt><dd>Maria Papadopoulou</dd>
+                    <dt>Last contact</dt><dd>14 days ago</dd>
+                    <dt>Interested in</dt><dd>2-bedroom apartment, Athens center</dd>
+                    <dt>Previous notes</dt><dd>Asked about pricing, budget ~€180,000</dd>
+                  </dl>
+                </div>
+                <p class="small muted">Example of what the agent already knows before it says hello.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Calls ============ -->
+    <div data-panel="calls" class="tab-body">
+      <div class="stack-lg">
+        <div class="row between wrap">
+          <p class="muted small">The latest calls handled by this agent.</p>
+          <a class="btn btn-outline btn-sm" href="calls.html">Open in Calls <i data-icon="arrow-up-right" data-size="sm"></i></a>
+        </div>
+        <div class="table-wrap"><div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>Date</th><th>Contact</th><th>Phone number</th><th>Duration</th><th>Status</th><th>Outcome</th><th class="r">Cost</th></tr></thead>
+            <tbody>
+              <tr data-href="call-detail.html"><td class="nowrap">Today 14:31<span class="sub">#18372</span></td><td><b>John Smith</b></td><td class="num nowrap">+30 697 555 0142</td><td class="num">02:43</td><td><span class="badge b-success">Completed</span></td><td>Interested</td><td class="r num">€0.36</td></tr>
+              <tr data-href="call-detail.html"><td class="nowrap">Today 14:11<span class="sub">#18369</span></td><td><b>Giorgos Alexiou</b></td><td class="num nowrap">+30 693 555 0121</td><td class="num">00:28</td><td><span class="badge b-success">Completed</span></td><td>Voicemail</td><td class="r num">€0.03</td></tr>
+              <tr data-href="call-detail.html"><td class="nowrap">Today 14:02<span class="sub">#18368</span></td><td><b>Sofia Nikolaou</b></td><td class="num nowrap">+30 697 555 0163</td><td class="num">03:36</td><td><span class="badge b-success">Completed</span></td><td>Call back later</td><td class="r num">€0.47</td></tr>
+              <tr data-href="call-detail.html"><td class="nowrap">Today 13:52<span class="sub">#18365</span></td><td><b>Maria Papadopoulou</b></td><td class="num nowrap">+30 694 555 0108</td><td class="num">03:10</td><td><span class="badge b-success">Completed</span></td><td>Appointment requested</td><td class="r num">€0.41</td></tr>
+              <tr data-href="call-detail.html"><td class="nowrap">Today 13:40<span class="sub">#18363</span></td><td><b>Dimitris Kostas</b></td><td class="num nowrap">+30 698 555 0155</td><td class="num">00:00</td><td><span class="badge">No answer</span></td><td>No answer</td><td class="r num">€0.01</td></tr>
+              <tr data-href="call-detail.html"><td class="nowrap">Today 13:22<span class="sub">#18359</span></td><td><b>Nikos Georgiou</b></td><td class="num nowrap">+30 69 555 01</td><td class="num">00:00</td><td><span class="badge b-error">Failed</span></td><td class="muted">—</td><td class="r num">€0.00</td></tr>
+            </tbody>
+          </table>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Test call modal (spec §35) -->
+  <div class="modal-backdrop" id="testModal" role="dialog" aria-modal="true" aria-labelledby="testTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <div><h3 id="testTitle">Place a test call</h3><p>Try Lead Follow-up Agent out on a real phone before customers do.</p></div>
+        <button class="icon-btn" type="button" data-close aria-label="Close"><i data-icon="x"></i></button>
+      </div>
+      <div class="modal-body stack-lg" data-tabs>
+        <div class="tabs">
+          <button class="tab active" type="button" data-tab="live">Live call</button>
+          <button class="tab" type="button" disabled style="opacity:.55;cursor:not-allowed" title="Coming later">Text simulator <span class="badge plain b-outline" style="margin-left:4px;padding:1px 8px">Coming later</span></button>
+        </div>
+        <div data-panel="live" class="stack">
+          <div class="form-grid">
+            <div class="field"><label class="label" for="tName">Name</label><input class="input" id="tName" value="Petros Rodinos"></div>
+            <div class="field"><label class="label" for="tPhone">Phone number</label><input class="input" id="tPhone" type="tel" placeholder="+30 69X XXX XXXX"></div>
+            <div class="field full"><label class="label" for="tContact">Link to an existing CRM contact <span class="opt">Optional</span></label>
+              <select class="select" id="tContact">
+                <option>Don't link — use the name above</option>
+                <option>Maria Papadopoulou · HubSpot contact</option>
+                <option>Dimitris Kostas · HubSpot contact</option>
+                <option>Eleni Vasileiou · HubSpot contact</option>
+                <option>Giorgos Alexiou · HubSpot contact</option>
+                <option>Sofia Nikolaou · HubSpot contact</option>
+              </select>
+              <span class="hint">Linking a contact lets the agent open the call with the details it would have on a real call.</span>
+            </div>
+          </div>
+          <div class="notice n-soft"><i data-icon="info"></i><div class="grow">The call rings this number immediately and appears in Calls marked as a test. Test calls are billed like any other call. Automated calls still only run within your calling hours (Mon–Sat 09:00–18:00, Europe/Athens).</div></div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-outline" type="button" data-close>Cancel</button>
+        <button class="btn btn-primary" type="button" data-close<i data-icon="phone-call" data-size="sm"></i>Start test call</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

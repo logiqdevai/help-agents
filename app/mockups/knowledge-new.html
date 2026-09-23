@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add knowledge · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .drop { border: 1.5px dashed var(--hairline-strong); border-radius: 16px; background: var(--canvas-soft); padding: 32px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .drop:hover { border-color: var(--ink); }
+    .drop .drop-orb { width: 48px; height: 48px; border-radius: 9999px; background: radial-gradient(circle at 30% 30%, #fff, var(--mint)); display: inline-flex; align-items: center; justify-content: center; color: var(--ink); }
+    .file-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--hairline); border-radius: 12px; background: var(--card); }
+    .file-row + .file-row { margin-top: 8px; }
+    .file-row .grow b { display: block; color: var(--ink); font-weight: 500; }
+    .file-row .grow span { font-size: 13px; color: var(--muted); }
+    .connect-card { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid var(--hairline); border-radius: 12px; background: var(--canvas-soft); opacity: .8; }
+    .connect-card .grow b { display: block; font-weight: 500; color: var(--ink); }
+    .connect-card .grow span { font-size: 13px; color: var(--muted); }
+    .word-count { font-size: 13px; color: var(--muted); }
+    .agent-pick { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--hairline-soft); }
+    .agent-pick:last-child { border-bottom: 0; }
+    .agent-pick .grow b { display: block; color: var(--ink); font-weight: 500; font-size: 15px; }
+    .agent-pick .grow span { font-size: 13px; color: var(--muted); }
+    .agent-mark.sm { width: 32px; height: 32px; }
+  </style>
+</head>
+<body data-nav="knowledge" data-crumbs='[["Knowledge","knowledge.html"],["Add knowledge"]]'>
+<div id="content">
+
+  <div>
+    <a class="back" href="knowledge.html"><i data-icon="arrow-left" data-size="sm"></i>Knowledge</a>
+    <div class="page-head">
+      <div>
+        <h1>Add knowledge</h1>
+        <p>Give your agents the business information they need. It’s processed automatically, then agents can look it up live while they talk to customers.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="split">
+    <div class="stack-lg">
+
+      <!-- 1. Source type -->
+      <div class="card">
+        <div class="card-head"><div><div class="title">1. How do you want to add it?</div><p>You can add more sources any time.</p></div></div>
+        <div class="card-body stack">
+          <div class="grid-2" id="typeChoices">
+            <label class="choice">
+              <input type="radio" name="source-type" value="text" checked>
+              <span class="choice-icon"><i data-icon="type"></i></span>
+              <span class="choice-body"><b>Type it directly</b><span>Write or paste company information, policies, FAQs, product details or scripts.</span></span>
+              <span class="choice-mark"></span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="source-type" value="file">
+              <span class="choice-icon"><i data-icon="file-up"></i></span>
+              <span class="choice-body"><b>Upload a file</b><span>Plain text (.txt), Markdown (.md) or Word documents (.doc, .docx).</span></span>
+              <span class="choice-mark"></span>
+            </label>
+          </div>
+
+          <div class="divider-label">Connect a tool</div>
+          <div class="grid-3">
+            <div class="connect-card"><span class="logo-tile">G</span><div class="grow"><b>Google Docs</b><span>Coming soon</span></div></div>
+            <div class="connect-card"><span class="logo-tile">N</span><div class="grow"><b>Notion</b><span>Coming soon</span></div></div>
+            <div class="connect-card"><span class="logo-tile">Dr</span><div class="grow"><b>Google Drive</b><span>Coming soon</span></div></div>
+            <div class="connect-card"><span class="logo-tile">Db</span><div class="grow"><b>Dropbox</b><span>Coming soon</span></div></div>
+            <div class="connect-card"><span class="logo-tile">SP</span><div class="grow"><b>SharePoint</b><span>Coming soon</span></div></div>
+          </div>
+          <p class="hint">Connected tools will let agents pull knowledge straight from your documents. See <a class="link" href="integrations.html">Integrations</a>.</p>
+        </div>
+      </div>
+
+      <!-- 2a. Typed text -->
+      <div class="card" id="panelText">
+        <div class="card-head"><div><div class="title">2. Write your knowledge</div><p>Plain language works best. Short sections with clear headings are easiest for agents to use.</p></div></div>
+        <div class="card-body stack">
+          <div class="field">
+            <label class="label" for="k-name">Name</label>
+            <input class="input" id="k-name" type="text" placeholder="e.g. Pricing &amp; Payment Policy" value="">
+            <span class="hint">This is how the source appears in lists and on agents.</span>
+          </div>
+          <div class="field">
+            <label class="label" for="k-text">Content <span class="opt word-count">0 words</span></label>
+            <textarea class="textarea textarea-lg" id="k-text" placeholder="Paste or type your content here…"></textarea>
+            <span class="hint">Good things to add: company information · policies · FAQs · product or service details · call scripts and guidance.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2b. File upload -->
+      <div class="card" id="panelFile" hidden>
+        <div class="card-head"><div><div class="title">2. Upload your files</div><p>.txt, .md, .doc and .docx · up to 10 MB each</p></div></div>
+        <div class="card-body stack">
+          <div class="drop">
+            <span class="drop-orb"><i data-icon="upload"></i></span>
+            <div class="strong">Drag files here, or <a class="link" href="#" onclick="return false">browse your computer</a></div>
+            <div class="small muted">We extract and organise the text so agents can search it live during calls.</div>
+          </div>
+          <div>
+            <div class="eyebrow" style="margin-bottom:10px">Ready to add (2)</div>
+            <div class="file-row">
+              <span class="src-icon logo-tile"><i data-icon="file-text"></i></span>
+              <div class="grow"><b>Property FAQ.md</b><span>14 KB · Markdown</span></div>
+              <span class="badge b-success">Ready to upload</span>
+              <button class="btn btn-sm btn-icon btn-text" type="button" aria-label="Remove file"><i data-icon="x" data-size="sm"></i></button>
+            </div>
+            <div class="file-row">
+              <span class="src-icon logo-tile"><i data-icon="file-text"></i></span>
+              <div class="grow"><b>Viewing Policy.docx</b><span>38 KB · Word document</span></div>
+              <span class="badge b-success">Ready to upload</span>
+              <button class="btn btn-sm btn-icon btn-text" type="button" aria-label="Remove file"><i data-icon="x" data-size="sm"></i></button>
+            </div>
+            <div class="file-row">
+              <span class="src-icon logo-tile"><i data-icon="circle-alert"></i></span>
+              <div class="grow"><b>Brochure.pdf</b><span class="bad">PDF files aren’t supported yet. Use .txt, .md, .doc or .docx.</span></div>
+              <button class="btn btn-sm btn-icon btn-text" type="button" aria-label="Remove file"><i data-icon="x" data-size="sm"></i></button>
+            </div>
+          </div>
+          <div class="notice n-soft"><i data-icon="info"></i><div class="grow">After you save, each file shows as <b>Processing</b> for a short while. You’ll see <b>Ready</b> once agents can use it, and a clear message if something goes wrong.</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right column -->
+    <div class="stack-lg" style="position:sticky;top:88px">
+      <div class="card">
+        <div class="card-head"><div><div class="title">3. Who can use it?</div><p>Pick the agents that should draw on this.</p></div></div>
+        <div class="card-body" style="padding-top:8px;padding-bottom:8px">
+          <div class="agent-pick"><span class="agent-mark sm m-mint"><i data-icon="bot" data-size="sm"></i></span><div class="grow"><b>Lead Follow-up Agent</b><span>Active</span></div><label class="check"><input type="checkbox" checked aria-label="Lead Follow-up Agent"><i></i></label></div>
+          <div class="agent-pick"><span class="agent-mark sm m-peach"><i data-icon="bot" data-size="sm"></i></span><div class="grow"><b>Appointment Confirmation Agent</b><span>Active</span></div><label class="check"><input type="checkbox" aria-label="Appointment Confirmation Agent"><i></i></label></div>
+          <div class="agent-pick"><span class="agent-mark sm m-lavender"><i data-icon="bot" data-size="sm"></i></span><div class="grow"><b>Sales Agent</b><span>Active</span></div><label class="check"><input type="checkbox" checked aria-label="Sales Agent"><i></i></label></div>
+          <div class="agent-pick"><span class="agent-mark sm m-rose"><i data-icon="bot" data-size="sm"></i></span><div class="grow"><b>Candidate Availability Agent</b><span>Draft</span></div><label class="check"><input type="checkbox" aria-label="Candidate Availability Agent"><i></i></label></div>
+          <div class="agent-pick"><span class="agent-mark sm m-sky"><i data-icon="bot" data-size="sm"></i></span><div class="grow"><b>Reservation Confirmation Agent</b><span>Inactive</span></div><label class="check"><input type="checkbox" aria-label="Reservation Confirmation Agent"><i></i></label></div>
+        </div>
+        <div class="card-foot"><span class="small muted">2 agents selected</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-body stack">
+          <div class="row-top"><i data-icon="rotate-ccw"></i><div class="small"><b class="ink">Changes are versioned.</b> When you edit this later, the old version is kept, so you can always see what an agent knew during a past call.</div></div>
+          <a class="btn btn-primary btn-block" href="knowledge.html" data-toast="Knowledge saved — processing has started"><i data-icon="save" data-size="sm"></i>Save knowledge</a>
+          <a class="btn btn-outline btn-block" href="knowledge.html">Cancel</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+<script>
+  (function () {
+    var radios = document.querySelectorAll('input[name="source-type"]');
+    var pt = document.getElementById('panelText'), pf = document.getElementById('panelFile');
+    function sync() {
+      var v = document.querySelector('input[name="source-type"]:checked').value;
+      pt.hidden = v !== 'text'; pf.hidden = v !== 'file';
+    }
+    radios.forEach(function (r) { r.addEventListener('change', sync); });
+    var ta = document.getElementById('k-text'), wc = document.querySelector('.word-count');
+    ta.addEventListener('input', function () { var n = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0; wc.textContent = n + ' words'; });
+    sync();
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Security settings · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .narrow { max-width: 760px; }
+    .session-icon { width: 40px; height: 40px; border-radius: 9999px; background: var(--strong); display: inline-flex; align-items: center; justify-content: center; flex: none; color: var(--ink); }
+    .field .input-suffix .btn { right: 4px; }
+    @media (max-width: 639px) { .list-row { flex-wrap: wrap; } }
+  </style>
+</head>
+<body data-nav="settings" data-crumbs='[["Settings","settings-organization.html"],["Security"]]'>
+<div id="content">
+
+  <div class="page-head">
+    <div>
+      <h1>Settings</h1>
+      <p>Manage your company account, team and how agents are allowed to call.</p>
+    </div>
+  </div>
+
+  <nav class="subnav" aria-label="Settings">
+    <a href="settings-organization.html">Organization</a>
+    <a href="settings-team.html">Team</a>
+    <a href="settings-security.html" class="active">Security</a>
+    <a href="settings-account.html">Account</a>
+    <a href="activity-log.html">Activity log</a>
+  </nav>
+
+  <div class="stack-lg narrow">
+
+    <!-- Email verification -->
+    <section class="card">
+      <div class="card-body row between wrap">
+        <div class="row-top">
+          <span class="session-icon"><i data-icon="mail-check"></i></span>
+          <div><div class="strong">Email verification</div><div class="small muted">petros@hosperly.com was verified on 2 Sep 2026.</div></div>
+        </div>
+        <span class="badge b-success">Verified</span>
+      </div>
+    </section>
+
+    <!-- Change password -->
+    <section class="card">
+      <div class="card-head"><div><div class="title">Change password</div><p>Use at least 10 characters. You will stay signed in on this device.</p></div></div>
+      <div class="card-body stack">
+        <div class="field"><label class="label" for="pwCur">Current password</label>
+          <div class="input-suffix"><input class="input" id="pwCur" type="password" data-reveal value="currentpass123"><button class="btn btn-sm btn-text" data-reveal-btn type="button" aria-label="Show password"><i data-icon="eye" data-size="sm"></i></button></div></div>
+        <div class="field"><label class="label" for="pwNew">New password</label>
+          <div class="input-suffix"><input class="input" id="pwNew" type="password" data-reveal value="a-longer-new-passphrase"><button class="btn btn-sm btn-text" data-reveal-btn type="button" aria-label="Show password"><i data-icon="eye" data-size="sm"></i></button></div>
+          <div class="pw-meter mt-1" aria-hidden="true"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+          <span class="hint">Strong. Longer passphrases are better than symbols.</span></div>
+        <div class="field has-error"><label class="label" for="pwConf">Confirm new password</label><input class="input" id="pwConf" type="password" value="a-longer-new-passphras"><span class="hint">Passwords do not match.</span></div>
+      </div>
+      <div class="card-foot"><span class="small muted">Last changed 3 months ago</span><button class="btn btn-primary" data-toast="Password updated" type="button">Update password</button></div>
+    </section>
+
+    <!-- Sessions -->
+    <section class="card">
+      <div class="card-head"><div><div class="title">Where you are signed in</div><p>You can be logged in on several devices at once.</p></div><button class="btn btn-sm btn-outline" data-toast="Signed out of 2 other devices" type="button">Sign out all others</button></div>
+      <div class="list-row">
+        <span class="session-icon"><i data-icon="laptop"></i></span>
+        <div class="grow"><b>Chrome on Windows <span class="badge b-success" style="margin-left:6px">This device</span></b><span>Athens, Greece · active now</span></div>
+      </div>
+      <div class="list-row">
+        <span class="session-icon"><i data-icon="smartphone"></i></span>
+        <div class="grow"><b>Safari on iPhone</b><span>Athens, Greece · last active yesterday, 20:41</span></div>
+        <button class="btn btn-sm btn-outline" data-toast="Signed out of Safari on iPhone" type="button">Sign out</button>
+      </div>
+      <div class="list-row">
+        <span class="session-icon"><i data-icon="monitor"></i></span>
+        <div class="grow"><b>Edge on Windows</b><span>Thessaloniki, Greece · last active 17 Sep, 11:03</span></div>
+        <button class="btn btn-sm btn-outline" data-toast="Signed out of Edge on Windows" type="button">Sign out</button>
+      </div>
+    </section>
+
+    <!-- Secrets note (spec §39) -->
+    <section class="orb-card" style="padding:28px">
+      <span class="orb orb-lavender" style="width:260px;height:260px;right:-60px;top:-80px"></span>
+      <span class="orb orb-mint" style="width:200px;height:200px;right:120px;bottom:-110px"></span>
+      <div class="row-top">
+        <span class="session-icon" style="background:#fff"><i data-icon="lock"></i></span>
+        <div><div class="title">How we protect your connections</div>
+          <p class="small mt-1" style="max-width:560px">CRM keys, tokens and other credentials are stored encrypted. After you save one, the full value is never shown again, only a masked hint such as <span class="masked">••••abcd</span>. Secrets stay on our servers and never reach your browser. Every action in your account is checked against your role, and each company’s data is kept completely separate.</p></div>
+      </div>
+    </section>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

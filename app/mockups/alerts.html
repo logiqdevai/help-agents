@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alerts · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .alert-item { display: flex; gap: 16px; align-items: flex-start; padding: 20px 24px; border-bottom: 1px solid var(--hairline-soft); }
+    .alert-item:last-child { border-bottom: 0; }
+    .alert-ic { width: 36px; height: 36px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; flex: none; background: var(--strong); color: var(--ink); }
+    .alert-ic.err { background: var(--error-soft); color: var(--error); }
+    .alert-main { flex: 1; min-width: 0; }
+    .alert-title { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .alert-title b { color: var(--ink); font-weight: 500; font-size: 15px; }
+    .alert-msg { margin-top: 4px; font-size: 14px; letter-spacing: 0; }
+    .alert-meta { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); letter-spacing: 0; align-items: center; }
+    .alert-meta span, .alert-meta a { display: inline-flex; align-items: center; gap: 6px; }
+    .alert-meta a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--hairline-strong); text-underline-offset: 3px; }
+    .alert-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .retry-steps .tl-body { padding-top: 2px; }
+    @media (max-width: 639px) {
+      .alert-item { padding: 16px; gap: 12px; }
+    }
+  </style>
+</head>
+<body data-nav="dashboard" data-crumbs='[["Dashboard","dashboard.html"],["Alerts"]]'>
+<div id="content">
+
+  <div class="page-head">
+    <div>
+      <h1>Alerts</h1>
+      <p>Anything that went wrong is shown here, never hidden. Your calls and their results are always saved, even when a follow-up step fails.</p>
+    </div>
+    <div class="actions">
+      <button class="btn btn-outline" type="button" data-toast="Marked all as read"><i data-icon="check" data-size="sm"></i>Mark all as read</button>
+    </div>
+  </div>
+
+  <div class="split-wide">
+    <div class="card card-flush" data-tabs>
+      <div class="tabs" style="padding:0 12px">
+        <button class="tab active" type="button" data-tab="open">Open <span class="pill-count">3</span></button>
+        <button class="tab" type="button" data-tab="resolved">Resolved <span class="pill-count">8</span></button>
+        <button class="tab" type="button" data-tab="dismissed">Dismissed <span class="pill-count">2</span></button>
+      </div>
+
+      <!-- OPEN -->
+      <div data-panel="open">
+        <div class="alert-item">
+          <span class="alert-ic err"><i data-icon="refresh-cw"></i></span>
+          <div class="alert-main">
+            <div class="alert-title"><b>CRM update failed</b><span class="badge b-error">Needs attention</span></div>
+            <p class="alert-msg">HubSpot rejected the custom property “Interest level” for John Smith. All 4 automatic retries were used, so this needs a person to look at it. The call and its results are saved.</p>
+            <div class="alert-meta">
+              <span><i data-icon="tag" data-size="sm"></i>CRM_UPDATE_FAILED</span>
+              <a href="call-detail.html"><i data-icon="phone-call" data-size="sm"></i>Call #18372</a>
+              <span><i data-icon="clock" data-size="sm"></i>Today, 14:52</span>
+            </div>
+            <div class="alert-actions">
+              <button class="btn btn-sm btn-outline" type="button" data-toast="CRM update queued for retry"><i data-icon="refresh-cw" data-size="sm"></i>Retry CRM update</button>
+              <a class="btn btn-sm btn-text" href="call-detail.html">View call</a>
+              <button class="btn btn-sm btn-text" type="button" data-toast="Alert dismissed">Dismiss</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert-item">
+          <span class="alert-ic err"><i data-icon="plug"></i></span>
+          <div class="alert-main">
+            <div class="alert-title"><b>Aegean CRM connection failing</b><span class="badge b-error">Error</span></div>
+            <p class="alert-msg">Authentication was rejected (401 Unauthorized). Sales Agent cannot look up or update contacts until the API key is replaced.</p>
+            <div class="alert-meta">
+              <span><i data-icon="tag" data-size="sm"></i>INTEGRATION_FAILED</span>
+              <a href="integration-detail.html"><i data-icon="plug" data-size="sm"></i>Aegean CRM</a>
+              <span><i data-icon="clock" data-size="sm"></i>Today, 13:08</span>
+            </div>
+            <div class="alert-actions">
+              <a class="btn btn-sm btn-outline" href="integration-detail.html"><i data-icon="key" data-size="sm"></i>Fix connection</a>
+              <button class="btn btn-sm btn-text" type="button" data-toast="Alert dismissed">Dismiss</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert-item">
+          <span class="alert-ic err"><i data-icon="phone-off"></i></span>
+          <div class="alert-main">
+            <div class="alert-title"><b>Invalid phone number</b><span class="badge b-outline">Warning</span></div>
+            <p class="alert-msg">Call failed to connect. The number saved for Nikos Georgiou (+30 21 555) is not a valid phone number, so the call was not placed.</p>
+            <div class="alert-meta">
+              <span><i data-icon="tag" data-size="sm"></i>INVALID_PHONE_NUMBER</span>
+              <a href="call-detail.html"><i data-icon="phone-call" data-size="sm"></i>Call #18359</a>
+              <span><i data-icon="clock" data-size="sm"></i>Today, 11:20</span>
+            </div>
+            <div class="alert-actions">
+              <a class="btn btn-sm btn-outline" href="call-detail.html">View call</a>
+              <button class="btn btn-sm btn-text" type="button" data-toast="Alert dismissed">Dismiss</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESOLVED -->
+      <div data-panel="resolved">
+        <div class="alert-item">
+          <span class="alert-ic"><i data-icon="file-text"></i></span>
+          <div class="alert-main">
+            <div class="alert-title"><b>Knowledge upload failed to process</b><span class="badge b-success">Resolved</span></div>
+            <p class="alert-msg">Neighborhood Guide.md failed to process. Re-uploaded and indexed successfully.</p>
+            <div class="alert-meta">
+              <span><i data-icon="tag" data-size="sm"></i>KNOWLEDGE_PROCESSING_FAILED</span>
+              <a href="knowledge-detail.html"><i data-icon="book-open" data-size="sm"></i>Neighborhood Guide.md</a>
+              <span><i data-icon="clock" data-size="sm"></i>22 Sep, 16:04 · resolved 22 Sep, 16:11</span>
+            </div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <span class="alert-ic"><i data-icon="cloud"></i></span>
+          <div class="alert-main">
+            <div class="alert-title"><b>AI service temporarily unavailable</b><span class="badge b-success">Resolved</span></div>
+            <p class="alert-msg">3 calls could not start for about 6 minutes. They were rescheduled automatically and completed.</p>
+            <div class="alert-meta">
+              <span><i data-icon="tag" data-size="sm"></i>AI_SERVICE_UNAVAILABLE</span>
+              <a href="scheduled-calls.html"><i data-icon="calendar-clock" data-size="sm"></i>3 rescheduled calls</a>
+              <span><i data-icon="clock" data-size="sm"></i>19 Sep, 10:12 · resolved 19 Sep, 10:18</span>
+            </div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <span class="alert-ic"><i data-icon="smartphone"></i></span>
+          <div class="alert-main">
+            <div class="alert-title"><b>No available phone number to make the call</b><span class="badge b-success">Resolved</span></div>
+            <p class="alert-msg">Candidate Availability Agent had no phone number assigned. A number was assigned and the calls resumed.</p>
+            <div class="alert-meta">
+              <span><i data-icon="tag" data-size="sm"></i>NO_PHONE_NUMBER_AVAILABLE</span>
+              <a href="phone-numbers.html"><i data-icon="phone" data-size="sm"></i>Phone numbers</a>
+              <span><i data-icon="clock" data-size="sm"></i>17 Sep, 09:30 · resolved 17 Sep, 09:44</span>
+            </div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <span class="alert-ic"><i data-icon="refresh-cw"></i></span>
+          <div class="alert-main">
+            <div class="alert-title"><b>CRM update failed</b><span class="badge b-success">Resolved</span></div>
+            <p class="alert-msg">Note for Sofia Nikolaou failed once and succeeded on automatic retry 2 (after 5 minutes).</p>
+            <div class="alert-meta">
+              <span><i data-icon="tag" data-size="sm"></i>CRM_UPDATE_FAILED</span>
+              <a href="call-detail.html"><i data-icon="phone-call" data-size="sm"></i>Call #18310</a>
+              <span><i data-icon="clock" data-size="sm"></i>16 Sep, 15:02 · resolved 16 Sep, 15:07</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DISMISSED -->
+      <div data-panel="dismissed">
+        <div class="alert-item">
+          <span class="alert-ic"><i data-icon="phone-off"></i></span>
+          <div class="alert-main">
+            <div class="alert-title"><b>Invalid phone number</b><span class="badge">Dismissed</span></div>
+            <p class="alert-msg">The number for Giorgos Alexiou is missing a digit. Dismissed by Maria Kanellou.</p>
+            <div class="alert-meta">
+              <span><i data-icon="tag" data-size="sm"></i>INVALID_PHONE_NUMBER</span>
+              <a href="call-detail.html"><i data-icon="phone-call" data-size="sm"></i>Call #18104</a>
+              <span><i data-icon="clock" data-size="sm"></i>12 Sep, 12:40</span>
+            </div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <span class="alert-ic"><i data-icon="info"></i></span>
+          <div class="alert-main">
+            <div class="alert-title"><b>Call failed to connect</b><span class="badge">Dismissed</span></div>
+            <p class="alert-msg">The contact's carrier did not accept the call. Dismissed by Petros Rodinos.</p>
+            <div class="alert-meta">
+              <span><i data-icon="tag" data-size="sm"></i>CALL_FAILED</span>
+              <a href="call-detail.html"><i data-icon="phone-call" data-size="sm"></i>Call #18021</a>
+              <span><i data-icon="clock" data-size="sm"></i>9 Sep, 17:15</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack-lg">
+      <div class="card">
+        <div class="card-head"><div><div class="title">CRM update retry schedule</div><p>When a CRM update fails, we retry automatically.</p></div></div>
+        <div class="card-body">
+          <ol class="timeline retry-steps">
+            <li><span class="tl-dot"><i data-icon="refresh-cw"></i></span><div class="tl-body"><b>Retry 1</b> after 1 minute</div></li>
+            <li><span class="tl-dot"><i data-icon="refresh-cw"></i></span><div class="tl-body"><b>Retry 2</b> after 5 minutes</div></li>
+            <li><span class="tl-dot"><i data-icon="refresh-cw"></i></span><div class="tl-body"><b>Retry 3</b> after 30 minutes</div></li>
+            <li><span class="tl-dot"><i data-icon="refresh-cw"></i></span><div class="tl-body"><b>Retry 4</b> after 2 hours</div></li>
+            <li><span class="tl-dot bad"><i data-icon="triangle-alert"></i></span><div class="tl-body"><b>Needs attention</b><br><span class="muted">Flagged here so someone can look into it. You can retry manually at any time.</span></div></li>
+          </ol>
+        </div>
+      </div>
+      <div class="notice n-soft"><i data-icon="shield-check"></i><div class="grow"><b>Nothing is lost.</b> A failed CRM update never affects the call itself. The transcript, summary and outcome stay saved and visible.</div></div>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

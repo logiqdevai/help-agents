@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aegean CRM · Integrations · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    dl.kv { margin: 0; }
+    .tool-row { display: flex; align-items: flex-start; gap: 14px; padding: 16px 24px; border-bottom: 1px solid var(--hairline-soft); flex-wrap: wrap; }
+    .tool-row:last-child { border-bottom: 0; }
+    .tool-row .grow { min-width: 220px; }
+    .tool-row .grow b { display: block; color: var(--ink); font-weight: 500; }
+    .tool-row .grow span { font-size: 14px; color: var(--muted); letter-spacing: 0; }
+    .tool-row .mono { color: var(--muted); font-size: 12px; }
+    .tool-row .schema { flex-basis: 100%; }
+    .tool-row .code { margin-top: 4px; }
+    .map-input { min-width: 180px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip.off { border-style: dashed; color: var(--muted); background: transparent; }
+    .chip.off .ic { color: var(--muted-soft); }
+    .danger-card { border-color: var(--error-line); }
+    .health { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .health .cell { padding: 16px 20px; border: 1px solid var(--hairline); border-radius: 12px; background: var(--card); }
+    .health .cell .eyebrow { margin-bottom: 6px; display: block; }
+    .health .cell .v { color: var(--ink); font-weight: 500; }
+    @media (max-width: 767px) { .health { grid-template-columns: minmax(0, 1fr); } }
+  </style>
+</head>
+<body data-nav="integrations" data-crumbs='[["Integrations","integrations.html"],["Aegean CRM"]]'>
+<div id="content">
+
+  <div>
+    <a class="back" href="integrations.html"><i data-icon="arrow-left" data-size="sm"></i>Integrations</a>
+    <div class="page-head">
+      <div class="row-top" style="gap:16px">
+        <span class="logo-tile lg">Ae</span>
+        <div>
+          <h1>Aegean CRM</h1>
+          <p class="row wrap" style="gap:10px;margin-top:8px"><span class="badge b-error">Error</span><span class="badge b-outline plain">Custom CRM</span><span class="small muted">Last verified 3 hours ago · used by 1 agent</span></p>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-outline" type="button" data-toast="Testing… still returning 401"><i data-icon="zap" data-size="sm"></i>Test connection</button>
+        <button class="btn btn-primary" type="button" data-open="credModal"><i data-icon="key" data-size="sm"></i>Update credentials</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice n-error">
+    <i data-icon="circle-alert"></i>
+    <div class="grow"><b>Authentication was rejected (401). Update the API key.</b><br>Calls handled by the Sales Agent are still saved, but CRM updates are paused and retried once this is fixed. Last attempt: today, 11:52.</div>
+    <button class="btn btn-sm btn-outline" type="button" data-open="credModal">Update key</button>
+  </div>
+
+  <div data-tabs>
+    <div class="tabs" role="tablist">
+      <button class="tab active" type="button" data-tab="overview">Overview</button>
+      <button class="tab" type="button" data-tab="tools">Tools <span class="pill-count">6</span></button>
+      <button class="tab" type="button" data-tab="mapping">Field mapping</button>
+      <button class="tab" type="button" data-tab="agents">Agents <span class="pill-count">1</span></button>
+      <button class="tab" type="button" data-tab="contacts">Contacts</button>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div data-panel="overview" style="padding-top:24px">
+      <div class="stack-lg">
+        <div class="split-wide">
+          <div class="card">
+            <div class="card-head"><div class="title">Connection details</div><button class="btn btn-sm btn-outline" type="button" data-open="credModal">Edit</button></div>
+            <div class="card-body">
+              <dl class="kv">
+                <dt>Name</dt><dd>Aegean CRM</dd>
+                <dt>Category</dt><dd>CRM</dd>
+                <dt>Base URL</dt><dd class="mono">https://crm.aegeanhomes.example/api/v2</dd>
+                <dt>Authentication</dt><dd>API key · sent in header <span class="mono">X-API-Key</span></dd>
+                <dt>API documentation</dt><dd><a class="link" href="#" onclick="return false">crm.aegeanhomes.example/docs <i data-icon="external-link" data-size="sm" style="vertical-align:-2px"></i></a></dd>
+                <dt>Saved key</dt><dd><span class="masked">••••7f3a</span> <span class="small muted">· stored encrypted, never shown again</span></dd>
+                <dt>Last verified</dt><dd>Today, 11:52 · failed (401)</dd>
+                <dt>Connected by</dt><dd>Petros Rodinos · 4 Sep 2026</dd>
+              </dl>
+            </div>
+          </div>
+
+          <div class="stack-lg">
+            <div class="card">
+              <div class="card-head"><div class="title">Used by</div></div>
+              <div class="list-row" data-href="agent-detail.html" style="cursor:pointer"><span class="agent-mark m-lavender"><i data-icon="bot"></i></span><div class="grow"><b>Sales Agent</b><span>Inbound · 3 tools allowed</span></div><i data-icon="chevron-right" data-size="sm"></i></div>
+            </div>
+            <div class="card">
+              <div class="card-body small">
+                <b class="ink">Everything else keeps working.</b>
+                <p class="muted mt-1">Only Sales Agent uses this connection. Agents on HubSpot aren’t affected.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card danger-card">
+          <div class="card-head"><div><div class="title">Disconnect</div><p>Removes this connection and its saved credentials. Agents using it will no longer be able to look up or update records.</p></div><button class="btn btn-danger" type="button" data-open="disconnectModal">Disconnect Aegean CRM</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLS -->
+    <div data-panel="tools" style="padding-top:24px">
+      <div class="stack-lg">
+        <div class="notice n-soft"><i data-icon="info"></i><div class="grow"><b>Each CRM has its own list of tools.</b> These are the actions <b>Aegean CRM</b> offers, as defined by your team. Agents get only the ones you tick on the agent itself.</div></div>
+        <div class="card">
+          <div class="card-head"><div><div class="title">Tools this CRM offers</div><p>Defined by you for this custom connection.</p></div><button class="btn btn-sm btn-outline" type="button" data-toast="Tool editor would open here"><i data-icon="plus" data-size="sm"></i>Add tool</button></div>
+
+          <div class="tool-row">
+            <div class="grow"><b>Look up a contact</b><span>Find a person by phone number or email.</span> <span class="mono">lookup_contact</span></div>
+            <span class="badge b-soft">Read</span>
+            <label class="switch"><input type="checkbox" checked aria-label="Look up a contact enabled"><i></i></label>
+            <button class="btn btn-sm btn-text" type="button" data-toggle="#schema1">Input schema</button>
+            <div class="schema" id="schema1" hidden><div class="code"><span class="c">// what the AI can send</span>
+{ <span class="k">"phone"</span>: <span class="s">"string"</span>, <span class="k">"email"</span>: <span class="s">"string (optional)"</span> }</div></div>
+          </div>
+
+          <div class="tool-row">
+            <div class="grow"><b>Update a contact</b><span>Change status or details on a contact record.</span> <span class="mono">update_contact</span></div>
+            <span class="badge b-soft">Write</span>
+            <label class="switch"><input type="checkbox" checked aria-label="Update a contact enabled"><i></i></label>
+            <button class="btn btn-sm btn-text" type="button" data-toggle="#schema2">Input schema</button>
+            <div class="schema" id="schema2" hidden><div class="code">{ <span class="k">"contact_id"</span>: <span class="s">"string"</span>, <span class="k">"status"</span>: <span class="s">"enum: new | interested | not_interested | callback"</span>, <span class="k">"fields"</span>: <span class="s">"object (optional)"</span> }</div></div>
+          </div>
+
+          <div class="tool-row">
+            <div class="grow"><b>Add a note</b><span>Attach the call summary to the contact’s history.</span> <span class="mono">add_note</span></div>
+            <span class="badge b-soft">Write</span>
+            <label class="switch"><input type="checkbox" checked aria-label="Add a note enabled"><i></i></label>
+            <button class="btn btn-sm btn-text" type="button" data-toggle="#schema3">Input schema</button>
+            <div class="schema" id="schema3" hidden><div class="code">{ <span class="k">"contact_id"</span>: <span class="s">"string"</span>, <span class="k">"note"</span>: <span class="s">"string (max 2000)"</span> }</div></div>
+          </div>
+
+          <div class="tool-row">
+            <div class="grow"><b>Create a task</b><span>Create a follow-up task for the team.</span> <span class="mono">create_task</span></div>
+            <span class="badge b-soft">Write</span>
+            <label class="switch"><input type="checkbox" checked aria-label="Create a task enabled"><i></i></label>
+            <button class="btn btn-sm btn-text" type="button" data-toggle="#schema4">Input schema</button>
+            <div class="schema" id="schema4" hidden><div class="code">{ <span class="k">"contact_id"</span>: <span class="s">"string"</span>, <span class="k">"title"</span>: <span class="s">"string"</span>, <span class="k">"due"</span>: <span class="s">"date"</span> }</div></div>
+          </div>
+
+          <div class="tool-row">
+            <div class="grow"><b>Log a call</b><span>Record that a call took place, with its outcome.</span> <span class="mono">log_call</span></div>
+            <span class="badge b-soft">Write</span>
+            <label class="switch"><input type="checkbox" checked aria-label="Log a call enabled"><i></i></label>
+            <button class="btn btn-sm btn-text" type="button" data-toggle="#schema5">Input schema</button>
+            <div class="schema" id="schema5" hidden><div class="code">{ <span class="k">"contact_id"</span>: <span class="s">"string"</span>, <span class="k">"outcome"</span>: <span class="s">"string"</span>, <span class="k">"duration_seconds"</span>: <span class="s">"number"</span> }</div></div>
+          </div>
+
+          <div class="tool-row">
+            <div class="grow"><b>Update a custom field</b><span>Write a value to a custom field, such as Interest.</span> <span class="mono">update_custom_field</span></div>
+            <span class="badge b-soft">Write</span>
+            <label class="switch"><input type="checkbox" aria-label="Update a custom field enabled"><i></i></label>
+            <button class="btn btn-sm btn-text" type="button" data-toggle="#schema6">Input schema</button>
+            <div class="schema" id="schema6" hidden><div class="code">{ <span class="k">"contact_id"</span>: <span class="s">"string"</span>, <span class="k">"field"</span>: <span class="s">"string"</span>, <span class="k">"value"</span>: <span class="s">"string | number"</span> }</div></div>
+          </div>
+        </div>
+        <p class="small muted">The AI can only <b class="ink">request</b> a tool. Before anything reaches your CRM, we check that the agent is allowed to use it, that this connection is valid, and that the request makes sense.</p>
+      </div>
+    </div>
+
+    <!-- FIELD MAPPING -->
+    <div data-panel="mapping" style="padding-top:24px">
+      <div class="stack-lg">
+        <div class="card">
+          <div class="card-head"><div><div class="title">Match fields between systems</div><p>Saved for this connection, so you only set it up once. An agent can override it in its own CRM settings.</p></div><button class="btn btn-sm btn-outline" type="button" data-toast="Mapping saved"><i data-icon="save" data-size="sm"></i>Save mapping</button></div>
+          <div class="table-scroll">
+            <table class="table">
+              <thead><tr><th>Our field</th><th></th><th>Aegean CRM field</th><th>Direction</th><th class="r">Use to personalise calls</th></tr></thead>
+              <tbody>
+                <tr><td><b>Customer name</b></td><td class="muted"><i data-icon="arrow-right" data-size="sm"></i></td><td><input class="input input-sm map-input" value="Contact Name" aria-label="CRM field for Customer name"></td><td><select class="select select-sm" aria-label="Direction"><option>Read + write</option><option selected>Read</option><option>Write</option></select></td><td class="r"><label class="switch"><input type="checkbox" checked aria-label="Personalise with Customer name"><i></i></label></td></tr>
+                <tr><td><b>Phone</b></td><td class="muted"><i data-icon="arrow-right" data-size="sm"></i></td><td><input class="input input-sm map-input" value="Phone Number" aria-label="CRM field for Phone"></td><td><select class="select select-sm" aria-label="Direction"><option>Read + write</option><option selected>Read</option><option>Write</option></select></td><td class="r"><label class="switch"><input type="checkbox" aria-label="Personalise with Phone"><i></i></label></td></tr>
+                <tr><td><b>Call outcome</b></td><td class="muted"><i data-icon="arrow-right" data-size="sm"></i></td><td><input class="input input-sm map-input" value="Lead Status" aria-label="CRM field for Call outcome"></td><td><select class="select select-sm" aria-label="Direction"><option>Read + write</option><option>Read</option><option selected>Write</option></select></td><td class="r"><label class="switch"><input type="checkbox" aria-label="Personalise with Call outcome"><i></i></label></td></tr>
+                <tr><td><b>Call summary</b></td><td class="muted"><i data-icon="arrow-right" data-size="sm"></i></td><td><input class="input input-sm map-input" value="Activity Note" aria-label="CRM field for Call summary"></td><td><select class="select select-sm" aria-label="Direction"><option>Read + write</option><option>Read</option><option selected>Write</option></select></td><td class="r"><label class="switch"><input type="checkbox" aria-label="Personalise with Call summary"><i></i></label></td></tr>
+                <tr><td><b>Interest level</b></td><td class="muted"><i data-icon="arrow-right" data-size="sm"></i></td><td><input class="input input-sm map-input" value="Custom Field: Interest" aria-label="CRM field for Interest level"></td><td><select class="select select-sm" aria-label="Direction"><option selected>Read + write</option><option>Read</option><option>Write</option></select></td><td class="r"><label class="switch"><input type="checkbox" checked aria-label="Personalise with Interest level"><i></i></label></td></tr>
+                <tr><td><b>Next follow-up date</b></td><td class="muted"><i data-icon="arrow-right" data-size="sm"></i></td><td><input class="input input-sm map-input" value="Next Follow-up" aria-label="CRM field for Next follow-up date"></td><td><select class="select select-sm" aria-label="Direction"><option>Read + write</option><option>Read</option><option selected>Write</option></select></td><td class="r"><label class="switch"><input type="checkbox" aria-label="Personalise with Next follow-up date"><i></i></label></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-foot"><button class="btn btn-sm btn-text" type="button" data-toast="New mapping row added"><i data-icon="plus" data-size="sm"></i>Add field</button><span class="small muted">Fields marked for personalisation are handed to the agent before it calls.</span></div>
+        </div>
+        <div class="notice n-soft"><i data-icon="info"></i><div class="grow"><b>Per connection or per agent.</b> This mapping applies to every agent using Aegean CRM. Sales Agent has no overrides.</div></div>
+      </div>
+    </div>
+
+    <!-- AGENTS -->
+    <div data-panel="agents" style="padding-top:24px">
+      <div class="stack-lg">
+        <div class="card">
+          <div class="card-head"><div><div class="title">Sales Agent</div><p>Inbound · Active · what it’s allowed to do in this CRM</p></div><a class="btn btn-sm btn-outline" href="agent-edit.html">Change tools</a></div>
+          <div class="card-body stack">
+            <div><div class="eyebrow" style="margin-bottom:8px">Allowed</div>
+              <div class="tag-row">
+                <span class="chip"><i data-icon="check" data-size="sm"></i>Look up a contact</span>
+                <span class="chip"><i data-icon="check" data-size="sm"></i>Update a contact</span>
+                <span class="chip"><i data-icon="check" data-size="sm"></i>Add a note</span>
+              </div>
+            </div>
+            <div><div class="eyebrow" style="margin-bottom:8px">Not allowed</div>
+              <div class="tag-row">
+                <span class="chip off"><i data-icon="ban" data-size="sm"></i>Create a task</span>
+                <span class="chip off"><i data-icon="ban" data-size="sm"></i>Log a call</span>
+                <span class="chip off"><i data-icon="ban" data-size="sm"></i>Update a custom field</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="small muted">Lead Follow-up Agent and Appointment Confirmation Agent use HubSpot, so they don’t appear here.</p>
+      </div>
+    </div>
+
+    <!-- CONTACTS -->
+    <div data-panel="contacts" style="padding-top:24px">
+      <div class="stack-lg">
+        <div class="notice n-soft"><i data-icon="info"></i><div class="grow">We only keep a light record of who to call. Your real customer data stays in Aegean CRM.</div></div>
+        <div class="table-wrap"><div class="table-scroll">
+          <table class="table">
+            <thead><tr><th>CRM reference</th><th>Name</th><th>Phone</th><th>Email</th><th>Record type</th><th class="r">CRM record</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">CNT-20418</td><td><b>Maria Papadopoulou</b></td><td class="nowrap">+30 697 555 0118</td><td>maria.p@example.com</td><td><span class="badge b-soft">Lead</span></td><td class="r"><a class="link small" href="#" onclick="return false">Open in CRM</a></td></tr>
+              <tr><td class="mono">CNT-20433</td><td><b>Dimitris Kostas</b></td><td class="nowrap">+30 694 555 0132</td><td>d.kostas@example.com</td><td><span class="badge b-soft">Lead</span></td><td class="r"><a class="link small" href="#" onclick="return false">Open in CRM</a></td></tr>
+              <tr><td class="mono">CNT-20451</td><td><b>Eleni Vasileiou</b></td><td class="nowrap">+30 698 555 0190</td><td>eleni.v@example.com</td><td><span class="badge b-soft">Contact</span></td><td class="r"><a class="link small" href="#" onclick="return false">Open in CRM</a></td></tr>
+              <tr><td class="mono">CNT-20467</td><td><b>Giorgos Alexiou</b></td><td class="nowrap">+30 693 555 0121</td><td>—</td><td><span class="badge b-soft">Lead</span></td><td class="r"><a class="link small" href="#" onclick="return false">Open in CRM</a></td></tr>
+              <tr><td class="mono">CNT-20472</td><td><b>Sofia Nikolaou</b></td><td class="nowrap">+30 697 555 0163</td><td>sofia.n@example.com</td><td><span class="badge b-soft">Contact</span></td><td class="r"><a class="link small" href="#" onclick="return false">Open in CRM</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-foot"><span>Showing 5 of 148 contacts</span><span class="small">Contacts marked do-not-call are never dialled.</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update credentials -->
+  <div class="modal-backdrop" id="credModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="credTitle">
+      <div class="modal-head"><div><h3 id="credTitle">Update credentials</h3><p>For security, the current key is never shown. Enter a new one to replace it.</p></div><button class="btn btn-icon btn-text" data-close aria-label="Close"><i data-icon="x"></i></button></div>
+      <div class="modal-body stack">
+        <div class="field"><span class="label">Current key</span><div class="input" style="display:flex;align-items:center;background:var(--strong)"><span class="masked">••••7f3a</span></div></div>
+        <div class="field has-error"><label class="label" for="newKey">New API key</label>
+          <div class="input-suffix"><input class="input" id="newKey" type="password" data-reveal placeholder="Paste the new key" autocomplete="off"><button class="btn btn-sm btn-text" data-reveal-btn type="button" aria-label="Show or hide key"><i data-icon="eye" data-size="sm"></i></button></div>
+          <span class="hint">The last key was rejected by the CRM (401).</span>
+        </div>
+        <div class="notice n-soft"><i data-icon="lock"></i><div class="grow">Stored encrypted. Once saved, only a masked hint like <span class="mono">••••abcd</span> is ever shown.</div></div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close>Cancel</button><button class="btn btn-outline" type="button" data-toast="Connection verified"><i data-icon="zap" data-size="sm"></i>Save and test</button></div>
+    </div>
+  </div>
+
+  <!-- Disconnect -->
+  <div class="modal-backdrop" id="disconnectModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="discTitle">
+      <div class="modal-head"><div><h3 id="discTitle">Disconnect Aegean CRM?</h3><p>Sales Agent will stop looking up and updating records. Call history stays. You can reconnect at any time.</p></div></div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close>Keep connected</button><a class="btn btn-danger-fill" href="integrations.html">Disconnect</a></div>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

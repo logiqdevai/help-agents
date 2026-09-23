@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+</head>
+<body data-nav="dashboard" data-crumbs='[["Dashboard"]]'>
+<div id="content">
+
+  <div class="page-head">
+    <div>
+      <h1>Good afternoon, Petros</h1>
+      <p>Tuesday 23 September · Aegean Homes · Europe/Athens. Here is what your agents did today.</p>
+    </div>
+    <div class="actions">
+      <div class="segmented" data-tabs-none>
+        <button class="active" type="button">Today</button>
+        <button type="button">7 days</button>
+        <button type="button">30 days</button>
+      </div>
+      <a class="btn btn-outline" href="calls.html"><i data-icon="phone-call" data-size="sm"></i>View all calls</a>
+    </div>
+  </div>
+
+  <!-- Needs attention banner (spec §33: errors are surfaced, never silent) -->
+  <div class="notice n-error">
+    <i data-icon="triangle-alert"></i>
+    <div class="grow"><b>3 things need your attention.</b> 1 CRM update needs attention, 1 CRM connection is failing and 1 call failed to connect.</div>
+    <a class="btn btn-sm btn-outline" href="alerts.html">Review alerts</a>
+  </div>
+
+  <!-- Headline stats (spec §4) -->
+  <section class="grid-6" aria-label="Today at a glance" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+    <div class="card stat"><div class="stat-label">Calls today</div><div class="stat-value">128</div><div class="stat-note"><span class="up">+7%</span> vs. yesterday (119)</div></div>
+    <div class="card stat"><div class="stat-label">Successful calls</div><div class="stat-value">94</div><div class="stat-note"><span class="strong">73%</span> reached a success outcome</div></div>
+    <div class="card stat"><div class="stat-label">Interested leads</div><div class="stat-value">41</div><div class="stat-note"><span class="up">+12%</span> vs. yesterday</div></div>
+    <div class="card stat"><div class="stat-label">Appointments booked</div><div class="stat-value">9</div><div class="stat-note">3 waiting for confirmation</div></div>
+    <div class="card stat"><div class="stat-label">Average call length</div><div class="stat-value">2m 41s</div><div class="stat-note"><span class="down">−6s</span> vs. yesterday</div></div>
+    <div class="card stat"><div class="stat-label">AI cost today</div><div class="stat-value">€18.42</div><div class="stat-note">Telephony €5.91 · total €24.33</div></div>
+  </section>
+
+  <!-- Calls over time + success split -->
+  <section class="split-wide">
+    <div class="card">
+      <div class="card-head">
+        <div><div class="title">Calls over time</div><p>Calls per hour, within calling hours (09:00–18:00)</p></div>
+        <div class="legend"><span><i></i>Today</span><span><i class="line" style="background:var(--muted-soft)"></i>Yesterday</span></div>
+      </div>
+      <div class="card-body chart-wrap">
+        <svg data-chart='{"labels":["09","10","11","12","13","14","15","16","17"],"bars":[[8,16,19,12,10,17,20,16,10]],"lines":[[7,14,18,15,9,15,18,14,9]],"names":["Today","Yesterday"],"yMax":24,"yStep":6,"height":240,"points":false}'></svg>
+      </div>
+    </div>
+    <div class="stack-lg">
+      <div class="card">
+        <div class="card-head"><div class="title">Successful vs. unsuccessful</div></div>
+        <div class="card-body stack">
+          <div style="display:flex;height:14px;border-radius:9999px;overflow:hidden;gap:2px">
+            <span style="flex:94;background:var(--ink)"></span><span style="flex:34;background:var(--hairline-strong)"></span>
+          </div>
+          <div class="grid-2">
+            <div><div class="legend"><span><i></i>Successful</span></div><div class="display-sm num mt-1">94 <span class="small muted">· 73%</span></div></div>
+            <div><div class="legend"><span><i class="light"></i>Unsuccessful</span></div><div class="display-sm num mt-1">34 <span class="small muted">· 27%</span></div></div>
+          </div>
+          <p class="small muted">Success is decided by the outcomes each agent marks as successful.</p>
+        </div>
+      </div>
+      <div class="orb-card" style="padding:24px">
+        <span class="orb orb-mint" style="width:260px;height:260px;right:-60px;top:-70px"></span>
+        <span class="orb orb-lavender" style="width:220px;height:220px;right:60px;bottom:-110px"></span>
+        <div class="eyebrow">Estimated cost</div>
+        <div class="display-md num mt-2">€412.60</div>
+        <p class="small muted mt-1">Month to date · projected €589 by 30 Sep</p>
+        <a class="link small" href="analytics.html" style="display:inline-block;margin-top:12px">Open usage reports →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Outcomes + most active agents -->
+  <section class="grid-2">
+    <div class="card">
+      <div class="card-head"><div class="title">Call outcomes</div><span class="small muted">128 calls today</span></div>
+      <div class="card-body stack">
+        <div class="bar-row"><span class="name">Interested</span><span class="track"><span style="width:100%"></span></span><span class="val">41</span></div>
+        <div class="bar-row"><span class="name">Confirmed</span><span class="track"><span style="width:78%"></span></span><span class="val">32</span></div>
+        <div class="bar-row"><span class="name">Rescheduled</span><span class="track"><span style="width:29%"></span></span><span class="val">12</span></div>
+        <div class="bar-row"><span class="name">Voicemail</span><span class="track"><span class="light" style="width:24%"></span></span><span class="val">10</span></div>
+        <div class="bar-row"><span class="name">Appointment requested</span><span class="track"><span style="width:22%"></span></span><span class="val">9</span></div>
+        <div class="bar-row"><span class="name">Not interested</span><span class="track"><span class="light" style="width:22%"></span></span><span class="val">9</span></div>
+        <div class="bar-row"><span class="name">No answer</span><span class="track"><span class="light" style="width:15%"></span></span><span class="val">6</span></div>
+        <div class="bar-row"><span class="name">Call back later</span><span class="track"><span class="light" style="width:12%"></span></span><span class="val">5</span></div>
+        <div class="bar-row"><span class="name">Unknown</span><span class="track"><span class="light" style="width:7%"></span></span><span class="val">3</span></div>
+        <div class="bar-row"><span class="name">Wrong number</span><span class="track"><span class="light" style="width:2%"></span></span><span class="val">1</span></div>
+        <div class="legend"><span><i></i>Success outcome</span><span><i class="light"></i>Other outcome</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="title">Most active agents</div><a class="btn btn-sm btn-text" href="agents.html">All agents</a></div>
+      <div class="list-row" data-href="agent-detail.html" style="cursor:pointer">
+        <span class="agent-mark m-mint"><i data-icon="bot"></i></span>
+        <div class="grow"><b>Lead Follow-up Agent</b><span>Outbound · HubSpot</span></div>
+        <div class="right"><div class="strong num">64 calls</div><div class="small muted">68% success</div></div>
+      </div>
+      <div class="list-row" data-href="agent-detail.html" style="cursor:pointer">
+        <span class="agent-mark m-peach"><i data-icon="bot"></i></span>
+        <div class="grow"><b>Appointment Confirmation Agent</b><span>Outbound · HubSpot</span></div>
+        <div class="right"><div class="strong num">46 calls</div><div class="small muted">96% success</div></div>
+      </div>
+      <div class="list-row" data-href="agent-detail.html" style="cursor:pointer">
+        <span class="agent-mark m-lavender"><i data-icon="bot"></i></span>
+        <div class="grow"><b>Sales Agent</b><span>Inbound · Aegean CRM</span></div>
+        <div class="right"><div class="strong num">18 calls</div><div class="small muted">61% success</div></div>
+      </div>
+      <div class="list-row" data-href="agent-detail.html" style="cursor:pointer">
+        <span class="agent-mark m-sky"><i data-icon="bot"></i></span>
+        <div class="grow"><b>Reservation Confirmation Agent</b><span>Inactive</span></div>
+        <div class="right"><div class="strong num">0 calls</div><div class="small muted">—</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Attention + follow-ups -->
+  <section class="grid-2">
+    <div class="card">
+      <div class="card-head"><div class="title">Needs attention</div><a class="btn btn-sm btn-text" href="alerts.html">All alerts</a></div>
+      <div class="list-row">
+        <span class="tl-dot bad" style="width:32px;height:32px;border-radius:9999px;background:var(--error-soft);color:var(--error);display:inline-flex;align-items:center;justify-content:center"><i data-icon="refresh-cw" data-size="sm"></i></span>
+        <div class="grow"><b>CRM update failed · Call #18372</b><span>HubSpot rejected the “Interest level” property. Retried 4 times.</span></div>
+        <a class="btn btn-sm btn-outline" href="call-detail.html">Retry</a>
+      </div>
+      <div class="list-row">
+        <span class="tl-dot bad" style="width:32px;height:32px;border-radius:9999px;background:var(--error-soft);color:var(--error);display:inline-flex;align-items:center;justify-content:center"><i data-icon="plug" data-size="sm"></i></span>
+        <div class="grow"><b>Aegean CRM connection failing</b><span>Authentication was rejected (401). Update the API key.</span></div>
+        <a class="btn btn-sm btn-outline" href="integration-detail.html">Fix</a>
+      </div>
+      <div class="list-row">
+        <span class="tl-dot bad" style="width:32px;height:32px;border-radius:9999px;background:var(--error-soft);color:var(--error);display:inline-flex;align-items:center;justify-content:center"><i data-icon="phone-off" data-size="sm"></i></span>
+        <div class="grow"><b>Call failed to connect · Call #18359</b><span>Invalid phone number for Nikos Georgiou.</span></div>
+        <a class="btn btn-sm btn-outline" href="call-detail.html">View</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="title">Pending follow-ups</div><a class="btn btn-sm btn-text" href="scheduled-calls.html">Scheduled calls</a></div>
+      <div class="list-row">
+        <span class="avatar a-mint">MP</span>
+        <div class="grow"><b>Maria Papadopoulou</b><span>Lead Follow-up Agent · retry 2 of 3</span></div>
+        <div class="right small"><div class="strong">Today 17:45</div><div class="muted">Retry</div></div>
+      </div>
+      <div class="list-row">
+        <span class="avatar a-peach">DK</span>
+        <div class="grow"><b>Dimitris Kostas</b><span>Lead Follow-up Agent · callback requested</span></div>
+        <div class="right small"><div class="strong">Tomorrow 10:00</div><div class="muted">Follow-up</div></div>
+      </div>
+      <div class="list-row">
+        <span class="avatar a-sky">EV</span>
+        <div class="grow"><b>Eleni Vasileiou</b><span>Appointment Confirmation Agent</span></div>
+        <div class="right small"><div class="strong">Tomorrow 11:30</div><div class="muted">Automation</div></div>
+      </div>
+      <div class="card-foot"><span class="small muted">14 pending in total</span><a class="link small" href="scheduled-calls.html">See all</a></div>
+    </div>
+  </section>
+
+  <!-- Recent calls -->
+  <section>
+    <div class="section-head"><h2>Recent calls</h2><a class="btn btn-sm btn-outline" href="calls.html">View all calls</a></div>
+    <div class="table-wrap"><div class="table-scroll">
+      <table class="table">
+        <thead><tr><th>Date</th><th>Agent</th><th>Contact</th><th>Direction</th><th>Duration</th><th>Status</th><th>Outcome</th><th class="r">Cost</th></tr></thead>
+        <tbody>
+          <tr data-href="call-detail.html"><td class="nowrap">14:31<span class="sub">Call #18372</span></td><td><b>Lead Follow-up</b></td><td>John Smith<span class="sub">+30 697 555 0142</span></td><td><span class="row-sm"><i data-icon="phone-outgoing" data-size="sm"></i>Outbound</span></td><td class="num">02:43</td><td><span class="badge b-success">Completed</span></td><td>Interested</td><td class="r num">€0.36</td></tr>
+          <tr data-href="call-detail.html"><td class="nowrap">14:24<span class="sub">Call #18371</span></td><td><b>Sales Agent</b></td><td>Anna Lambrou<span class="sub">+30 694 555 0177</span></td><td><span class="row-sm"><i data-icon="phone-incoming" data-size="sm"></i>Inbound</span></td><td class="num">04:12</td><td><span class="badge b-outline">Transferred</span></td><td>Appointment requested</td><td class="r num">€0.52</td></tr>
+          <tr data-href="call-detail.html"><td class="nowrap">14:18<span class="sub">Call #18370</span></td><td><b>Appointment Confirmation</b></td><td>Eleni Vasileiou<span class="sub">+30 698 555 0190</span></td><td><span class="row-sm"><i data-icon="phone-outgoing" data-size="sm"></i>Outbound</span></td><td class="num">01:05</td><td><span class="badge b-success">Completed</span></td><td>Confirmed</td><td class="r num">€0.14</td></tr>
+          <tr data-href="call-detail.html"><td class="nowrap">14:11<span class="sub">Call #18369</span></td><td><b>Lead Follow-up</b></td><td>Giorgos Alexiou<span class="sub">+30 693 555 0121</span></td><td><span class="row-sm"><i data-icon="phone-outgoing" data-size="sm"></i>Outbound</span></td><td class="num">00:28</td><td><span class="badge b-success">Completed</span></td><td>Voicemail</td><td class="r num">€0.03</td></tr>
+          <tr data-href="call-detail.html"><td class="nowrap">14:02<span class="sub">Call #18368</span></td><td><b>Lead Follow-up</b></td><td>Sofia Nikolaou<span class="sub">+30 697 555 0163</span></td><td><span class="row-sm"><i data-icon="phone-outgoing" data-size="sm"></i>Outbound</span></td><td class="num">03:36</td><td><span class="badge b-success">Completed</span></td><td>Call back later</td><td class="r num">€0.47</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+  </section>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

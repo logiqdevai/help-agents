@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verify your email · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .brand-inline .brand-name { font-family: var(--font-display); font-weight: 300; font-size: 22px; color: var(--ink); }
+    .auth-foot a:hover { color: var(--ink); }
+    .auth-form-wrap { align-items: flex-start; padding-top: 6vh; }
+    .state-ok { background: #dcfce7; color: var(--success); }
+  </style>
+</head>
+<body class="auth">
+<div class="auth-shell">
+  <div class="auth-form-side">
+    <a class="brand-inline" href="login.html"><span class="brand-orb"></span><span class="brand-name">Voice Agent</span></a>
+    <div class="auth-form-wrap">
+      <div class="auth-form">
+        <div class="stack-lg">
+          <div>
+            <span class="avatar avatar-lg a-mint" style="margin-bottom:20px"><i data-icon="mail" data-size="lg"></i></span>
+            <h1>Check your inbox</h1>
+            <p class="lede">We sent a verification link to <b class="ink">petros@hosperly.com</b>. Open it to activate your account.</p>
+          </div>
+          <div class="row wrap">
+            <button class="btn btn-outline" type="button" data-toast="Verification email sent again">Resend email</button>
+            <a class="btn btn-text" href="signup.html">Use a different email</a>
+          </div>
+          <p class="small muted">Can't find it? Check your spam folder. The link expires in 24 hours.</p>
+        </div>
+
+        <div class="divider-label">Once you click the link</div>
+
+        <div class="card card-body stack">
+          <span class="avatar avatar-lg state-ok"><i data-icon="badge-check" data-size="lg"></i></span>
+          <div>
+            <div class="display-sm">Email verified</div>
+            <p class="small muted" style="margin-top:4px">Thanks. Your email address is confirmed and your workspace is ready.</p>
+          </div>
+          <div><a class="btn btn-primary" href="dashboard.html">Continue to dashboard</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="auth-foot"><span>© 2026 Voice Agent</span><a href="#">Privacy</a><a href="#">Terms</a></div>
+  </div>
+
+  <aside class="auth-art" aria-hidden="true">
+    <span class="orb orb-mint" style="width:440px;height:440px;left:-100px;top:-90px"></span>
+    <span class="orb orb-sky" style="width:420px;height:420px;right:-110px;top:30%"></span>
+    <span class="orb orb-peach" style="width:340px;height:340px;left:14%;bottom:-130px"></span>
+    <h2>One quick step.</h2>
+    <p>Verifying your email keeps your company account and its call data secure.</p>
+  </aside>
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

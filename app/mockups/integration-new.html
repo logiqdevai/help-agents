@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connect a CRM · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .card-foot { flex-wrap: wrap; }
+    .prov-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .prov-grid .choice { align-items: center; padding: 14px 16px; }
+    .prov-grid .choice .choice-body span { font-size: 13px; }
+    .auth-seg { display: flex; flex-wrap: wrap; border-radius: 16px; }
+    .auth-seg label { flex: 1 1 auto; justify-content: center; }
+    .oauth-box { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px; border: 1px solid var(--hairline); border-radius: 16px; background: var(--canvas-soft); }
+    .perm-list { display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+    .perm-list li { display: flex; gap: 10px; align-items: flex-start; }
+    .perm-list li .ic { color: var(--success); margin-top: 3px; }
+    .kvrow { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: center; }
+    .kvrow + .kvrow { margin-top: 10px; }
+    .verified { display: flex; gap: 16px; align-items: flex-start; }
+    .verified .ok-mark { width: 40px; height: 40px; border-radius: 9999px; background: #dcfce7; color: var(--success); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+    .check-list { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+    .check-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink); }
+    .check-list .ic { color: var(--success); }
+    @media (max-width: 639px) { .prov-grid { grid-template-columns: minmax(0, 1fr); } .kvrow { grid-template-columns: 1fr; } }
+    @media (min-width: 640px) and (max-width: 900px) { .prov-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  </style>
+</head>
+<body data-nav="integrations" data-crumbs='[["Integrations","integrations.html"],["Connect a CRM"]]'>
+<div id="content">
+
+  <div>
+    <a class="back" href="integrations.html"><i data-icon="arrow-left" data-size="sm"></i>Integrations</a>
+    <div class="page-head">
+      <div>
+        <h1>Connect a CRM</h1>
+        <p>Your customer data stays in your CRM. We only keep a light record of who to call and how to find them again.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="split">
+    <div class="stack-lg">
+
+      <!-- Step 1 -->
+      <div class="card">
+        <div class="card-head"><div><div class="title">1. Choose your CRM</div><p>Pick a supported CRM, or connect your own system.</p></div></div>
+        <div class="card-body">
+          <div class="prov-grid" role="radiogroup" aria-label="CRM provider">
+            <label class="choice"><input type="radio" name="prov" value="oauth" data-name="HubSpot"><span class="logo-tile">Hu</span><span class="choice-body"><b>HubSpot</b><span>Sign in to connect</span></span><span class="choice-mark"></span></label>
+            <label class="choice"><input type="radio" name="prov" value="oauth" data-name="Salesforce"><span class="logo-tile">Sf</span><span class="choice-body"><b>Salesforce</b><span>Sign in to connect</span></span><span class="choice-mark"></span></label>
+            <label class="choice"><input type="radio" name="prov" value="oauth" data-name="Pipedrive"><span class="logo-tile">Pd</span><span class="choice-body"><b>Pipedrive</b><span>Sign in to connect</span></span><span class="choice-mark"></span></label>
+            <label class="choice"><input type="radio" name="prov" value="oauth" data-name="Zoho"><span class="logo-tile">Zo</span><span class="choice-body"><b>Zoho</b><span>Sign in to connect</span></span><span class="choice-mark"></span></label>
+            <label class="choice"><input type="radio" name="prov" value="custom" data-name="Custom CRM" checked><span class="logo-tile"><i data-icon="database"></i></span><span class="choice-body"><b>Custom CRM</b><span>In-house system</span></span><span class="choice-mark"></span></label>
+            <label class="choice"><input type="radio" name="prov" value="custom" data-name="Generic API"><span class="logo-tile"><i data-icon="terminal"></i></span><span class="choice-body"><b>Any system with an API</b><span>General-purpose API</span></span><span class="choice-mark"></span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2a: OAuth providers -->
+      <div class="card" id="panelOauth" hidden>
+        <div class="card-head"><div><div class="title">2. Sign in to <span id="provName">HubSpot</span></div><p>You’ll be sent to <span class="provName2">HubSpot</span> to approve access, then brought right back.</p></div></div>
+        <div class="card-body">
+          <div class="oauth-box">
+            <div class="strong">This connection will be able to:</div>
+            <ul class="perm-list">
+              <li><i data-icon="check" data-size="sm"></i>Read contacts, leads and companies so agents can personalise calls</li>
+              <li><i data-icon="check" data-size="sm"></i>Update records and add notes after each call</li>
+              <li><i data-icon="check" data-size="sm"></i>Create tasks and log activities</li>
+            </ul>
+            <p class="small muted">Agents can only use the specific actions you allow for each agent. You can disconnect at any time.</p>
+            <button class="btn btn-primary btn-lg" type="button" data-toast="You would be redirected to sign in"><i data-icon="external-link" data-size="sm"></i>Connect with <span class="provName2">HubSpot</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2b: Custom -->
+      <div class="card" id="panelCustom">
+        <div class="card-head"><div><div class="title">2. Connection details</div><p>Everything here is used only by our servers. Nothing is ever exposed in your browser.</p></div></div>
+        <div class="card-body stack-lg">
+          <div class="form-grid">
+            <div class="field"><label class="label" for="crmName">CRM name</label><input class="input" id="crmName" type="text" value="Aegean CRM" placeholder="e.g. Aegean CRM"><span class="hint">Shown to your team when choosing a CRM for an agent.</span></div>
+            <div class="field"><label class="label" for="baseUrl">Web address (base URL)</label><input class="input" id="baseUrl" type="url" value="https://crm.aegeanhomes.example/api/v2" placeholder="https://"></div>
+            <div class="field full"><label class="label" for="docsUrl">Link to API documentation <span class="opt">Optional</span></label><input class="input" id="docsUrl" type="url" value="https://crm.aegeanhomes.example/docs" placeholder="https://"><span class="hint">Helps your team when defining which tools the CRM offers.</span></div>
+          </div>
+
+          <div class="field">
+            <span class="label">How does it authenticate?</span>
+            <div class="segmented auth-seg" role="radiogroup" aria-label="Authentication type">
+              <label><input type="radio" name="auth" value="api" checked>API key</label>
+              <label><input type="radio" name="auth" value="bearer">Bearer token</label>
+              <label><input type="radio" name="auth" value="basic">Username / password</label>
+              <label><input type="radio" name="auth" value="oauth2">OAuth2</label>
+              <label><input type="radio" name="auth" value="headers">Custom headers</label>
+            </div>
+          </div>
+
+          <div data-auth="api" class="form-grid">
+            <div class="field full"><label class="label" for="apiKey">API key</label>
+              <div class="input-suffix"><input class="input" id="apiKey" type="password" data-reveal value="sk_live_9f3a1c7e2b" autocomplete="off"><button class="btn btn-sm btn-text" data-reveal-btn type="button" aria-label="Show or hide key"><i data-icon="eye" data-size="sm"></i></button></div>
+            </div>
+            <div class="field"><label class="label" for="hdrName">Header name</label><input class="input" id="hdrName" type="text" value="X-API-Key"></div>
+            <div class="field"><label class="label" for="hdrPlace">Send it in</label><select class="select" id="hdrPlace"><option>Request header</option><option>Query string</option></select></div>
+          </div>
+          <div data-auth="bearer" class="form-grid" hidden>
+            <div class="field full"><label class="label" for="bearer">Bearer token</label><input class="input" id="bearer" type="password" placeholder="Paste your token" autocomplete="off"><span class="hint">Sent as <span class="mono">Authorization: Bearer …</span></span></div>
+          </div>
+          <div data-auth="basic" class="form-grid" hidden>
+            <div class="field"><label class="label" for="bu">Username</label><input class="input" id="bu" type="text" autocomplete="off"></div>
+            <div class="field"><label class="label" for="bp">Password</label><input class="input" id="bp" type="password" autocomplete="off"></div>
+          </div>
+          <div data-auth="oauth2" class="form-grid" hidden>
+            <div class="field"><label class="label" for="cid">Client ID</label><input class="input" id="cid" type="text"></div>
+            <div class="field"><label class="label" for="csec">Client secret</label><input class="input" id="csec" type="password" autocomplete="off"></div>
+            <div class="field"><label class="label" for="authUrl">Authorization URL</label><input class="input" id="authUrl" type="url" placeholder="https://"></div>
+            <div class="field"><label class="label" for="tokUrl">Token URL</label><input class="input" id="tokUrl" type="url" placeholder="https://"></div>
+            <div class="field full"><label class="label" for="scopes">Scopes <span class="opt">Optional</span></label><input class="input" id="scopes" type="text" placeholder="contacts.read contacts.write"></div>
+          </div>
+          <div data-auth="headers" hidden>
+            <div class="label" style="margin-bottom:8px">Custom headers</div>
+            <div class="kvrow"><input class="input" type="text" placeholder="Header name" aria-label="Header name"><input class="input" type="password" placeholder="Value" aria-label="Header value"><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="x" data-size="sm"></i></button></div>
+            <div class="kvrow"><input class="input" type="text" placeholder="Header name" aria-label="Header name"><input class="input" type="password" placeholder="Value" aria-label="Header value"><button class="btn btn-icon btn-text" type="button" aria-label="Remove"><i data-icon="x" data-size="sm"></i></button></div>
+            <button class="btn btn-sm btn-outline mt-3" type="button"><i data-icon="plus" data-size="sm"></i>Add header</button>
+          </div>
+
+          <div class="notice n-soft"><i data-icon="lock"></i><div class="grow"><b>Keys are stored encrypted and never shown again.</b> After saving, you’ll only see a masked hint like <span class="mono">••••abcd</span>. To change a key later, you enter a new one.</div></div>
+        </div>
+        <div class="card-foot">
+          <button class="btn btn-outline" type="button" data-toast="Connection verified"><i data-icon="zap" data-size="sm"></i>Test connection</button>
+          <div class="row"><a class="btn btn-text" href="integrations.html">Cancel</a><button class="btn btn-primary" type="button" data-toast="Connection saved">Save connection</button></div>
+        </div>
+      </div>
+
+      <!-- Result state (static preview of what appears after Test connection) -->
+      <div>
+        <div class="eyebrow" style="margin-bottom:10px">After you test the connection</div>
+        <div class="card"><div class="card-body">
+          <div class="verified">
+            <span class="ok-mark"><i data-icon="check" data-size="lg"></i></span>
+            <div class="grow">
+              <div class="title">Connection verified</div>
+              <p class="small muted">Aegean CRM responded in 320 ms. Saved key shown as <span class="masked">••••7f3a</span>.</p>
+              <ul class="check-list">
+                <li><i data-icon="circle-check" data-size="sm"></i>Address reachable</li>
+                <li><i data-icon="circle-check" data-size="sm"></i>Credentials accepted</li>
+                <li><i data-icon="circle-check" data-size="sm"></i>Found 3 contacts to preview</li>
+              </ul>
+              <div class="row mt-3"><a class="btn btn-outline btn-sm" href="integration-detail.html">Define tools and field mapping</a></div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+
+    <div class="stack-lg" style="position:sticky;top:88px">
+      <div class="orb-card" style="padding:24px">
+        <span class="orb orb-mint" style="width:220px;height:220px;right:-60px;top:-60px"></span>
+        <span class="orb orb-lavender" style="width:200px;height:200px;left:-40px;bottom:-100px"></span>
+        <div class="eyebrow">What happens next</div>
+        <ol class="stack mt-3 small" style="counter-reset:s">
+          <li class="row-top"><span class="avatar avatar-sm">1</span><span><b class="ink">Define the tools.</b> Choose which actions this CRM offers (look up, update, add a note…).</span></li>
+          <li class="row-top"><span class="avatar avatar-sm">2</span><span><b class="ink">Match the fields.</b> Tell us which of your CRM’s fields correspond to ours.</span></li>
+          <li class="row-top"><span class="avatar avatar-sm">3</span><span><b class="ink">Allow it per agent.</b> Each agent only gets the tools you tick.</span></li>
+        </ol>
+      </div>
+      <div class="card"><div class="card-body small">
+        <b class="ink">Not sure which method?</b>
+        <p class="muted mt-1">Most in-house systems use an API key or a bearer token. Check your CRM’s API documentation, or ask whoever manages it.</p>
+      </div></div>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+<script>
+  (function () {
+    var oauth = document.getElementById('panelOauth'), custom = document.getElementById('panelCustom');
+    function syncProv() {
+      var r = document.querySelector('input[name="prov"]:checked');
+      var isCustom = r.value === 'custom';
+      custom.hidden = !isCustom; oauth.hidden = isCustom;
+      if (!isCustom) {
+        document.getElementById('provName').textContent = r.getAttribute('data-name');
+        document.querySelectorAll('.provName2').forEach(function (e) { e.textContent = r.getAttribute('data-name'); });
+      }
+    }
+    document.querySelectorAll('input[name="prov"]').forEach(function (r) { r.addEventListener('change', syncProv); });
+    function syncAuth() {
+      var v = document.querySelector('input[name="auth"]:checked').value;
+      document.querySelectorAll('[data-auth]').forEach(function (p) { p.hidden = p.getAttribute('data-auth') !== v; });
+    }
+    document.querySelectorAll('input[name="auth"]').forEach(function (r) { r.addEventListener('change', syncAuth); });
+    syncProv(); syncAuth();
+  })();
+</script>
+</body>
+</html>

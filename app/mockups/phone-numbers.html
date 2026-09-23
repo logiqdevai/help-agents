@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phone Numbers · Voice Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mockup.css">
+  <style>
+    .num-card { display: flex; flex-direction: column; }
+    .num-card .num-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 24px 24px 0; }
+    .num-card .number { font-family: var(--font-display); font-weight: 300; font-size: 28px; line-height: 1.15; color: var(--ink); letter-spacing: -0.2px; font-variant-numeric: tabular-nums; }
+    .num-card .num-body { padding: 16px 24px 20px; }
+    .num-card .num-foot { margin-top: auto; padding: 14px 24px; border-top: 1px solid var(--hairline); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .steps { counter-reset: s; display: flex; flex-direction: column; gap: 14px; }
+    .steps li { counter-increment: s; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; letter-spacing: 0; }
+    .steps li::before { content: counter(s); width: 24px; height: 24px; border-radius: 9999px; background: var(--strong); color: var(--ink); font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+    .steps li.done::before { content: "✓"; background: var(--primary); color: #fff; }
+    .steps li b { color: var(--ink); font-weight: 500; }
+    .verify-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+    .agent-inline { display: inline-flex; align-items: center; gap: 8px; }
+    .agent-inline .agent-mark { width: 24px; height: 24px; }
+    .agent-inline .agent-mark .ic { width: 13px; height: 13px; }
+    @media (max-width: 639px) { .card-head { flex-wrap: wrap; } .verify-grid .form-grid { grid-template-columns: minmax(0, 1fr); } }
+    @media (max-width: 900px) { .verify-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+  </style>
+</head>
+<body data-nav="phone-numbers" data-crumbs='[["Phone Numbers"]]'>
+<div id="content">
+
+  <div class="page-head">
+    <div>
+      <h1>Phone numbers</h1>
+      <p>Numbers your agents call from and answer on. Get a new one in minutes or bring the number your customers already know.</p>
+    </div>
+    <div class="actions"><button class="btn btn-primary" data-open="addNumber" type="button"><i data-icon="plus" data-size="sm"></i>Add phone number</button></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="segmented" data-tabs>
+      <button class="active" data-tab="all" type="button">All <span class="soft">5</span></button>
+      <button data-tab="active" type="button">Active <span class="soft">3</span></button>
+      <button data-tab="attention" type="button">Needs attention <span class="soft">2</span></button>
+    </div>
+    <span class="grow"></span>
+    <span class="small muted">Showing all numbers in the mockup</span>
+  </div>
+
+  <section class="grid-2" aria-label="Phone numbers">
+    <article class="card num-card hover">
+      <div class="num-top"><div><div class="number">+30 21 5550 1001</div><div class="small muted mt-1">Main outbound line</div></div><span class="badge b-success">Active</span></div>
+      <div class="num-body stack-sm">
+        <div class="row-sm"><i data-icon="sparkles" data-size="sm"></i><span class="small">Provisioned by platform</span></div>
+        <div class="row-sm"><i data-icon="bot" data-size="sm"></i><a class="agent-inline small strong" href="agent-detail.html">Lead Follow-up Agent</a></div>
+      </div>
+      <div class="num-foot pos-rel"><span class="small muted">Added 2 Sep 2026 · 342 calls</span>
+        <span class="row-sm"><button class="btn btn-sm btn-outline" data-toast="Unassign is a mockup" type="button">Unassign</button>
+        <button class="btn btn-sm btn-icon btn-text" data-menu="mn1" aria-label="More actions" type="button"><i data-icon="ellipsis"></i></button></span>
+        <div class="menu" id="mn1" style="right:16px;bottom:52px"><button data-open="labelModal" type="button"><i data-icon="pencil" data-size="sm"></i>Edit label</button><button data-toast="Choose another agent to reassign" type="button"><i data-icon="repeat" data-size="sm"></i>Assign to another agent</button><hr><button class="danger" data-open="releaseModal" type="button"><i data-icon="trash-2" data-size="sm"></i>Release number</button></div>
+      </div>
+    </article>
+
+    <article class="card num-card hover">
+      <div class="num-top"><div><div class="number">+30 21 5550 1002</div><div class="small muted mt-1">Sales inbound</div></div><span class="badge b-success">Active</span></div>
+      <div class="num-body stack-sm">
+        <div class="row-sm"><i data-icon="phone-forwarded" data-size="sm"></i><span class="small">Your own number</span></div>
+        <div class="row-sm"><i data-icon="bot" data-size="sm"></i><a class="agent-inline small strong" href="agent-detail.html">Sales Agent</a></div>
+      </div>
+      <div class="num-foot pos-rel"><span class="small muted">Added 5 Sep 2026 · 18 calls today</span>
+        <span class="row-sm"><button class="btn btn-sm btn-outline" data-toast="Unassign is a mockup" type="button">Unassign</button>
+        <button class="btn btn-sm btn-icon btn-text" data-menu="mn2" aria-label="More actions" type="button"><i data-icon="ellipsis"></i></button></span>
+        <div class="menu" id="mn2" style="right:16px;bottom:52px"><button data-open="labelModal" type="button"><i data-icon="pencil" data-size="sm"></i>Edit label</button><hr><button class="danger" data-open="releaseModal" type="button"><i data-icon="trash-2" data-size="sm"></i>Remove number</button></div>
+      </div>
+    </article>
+
+    <article class="card num-card hover">
+      <div class="num-top"><div><div class="number">+30 21 5550 1003</div><div class="small muted mt-1">Appointment reminders</div></div><span class="badge b-success">Active</span></div>
+      <div class="num-body stack-sm">
+        <div class="row-sm"><i data-icon="sparkles" data-size="sm"></i><span class="small">Provisioned by platform</span></div>
+        <div class="row-sm"><i data-icon="bot" data-size="sm"></i><a class="agent-inline small strong" href="agent-detail.html">Appointment Confirmation Agent</a></div>
+      </div>
+      <div class="num-foot pos-rel"><span class="small muted">Added 9 Sep 2026 · 46 calls today</span>
+        <span class="row-sm"><button class="btn btn-sm btn-outline" data-toast="Unassign is a mockup" type="button">Unassign</button>
+        <button class="btn btn-sm btn-icon btn-text" data-menu="mn3" aria-label="More actions" type="button"><i data-icon="ellipsis"></i></button></span>
+        <div class="menu" id="mn3" style="right:16px;bottom:52px"><button data-open="labelModal" type="button"><i data-icon="pencil" data-size="sm"></i>Edit label</button><hr><button class="danger" data-open="releaseModal" type="button"><i data-icon="trash-2" data-size="sm"></i>Release number</button></div>
+      </div>
+    </article>
+
+    <article class="card num-card hover">
+      <div class="num-top"><div><div class="number">+30 21 5550 1004</div><div class="small muted mt-1">Recruiting line</div></div><span class="badge b-outline">Pending</span></div>
+      <div class="num-body stack-sm">
+        <div class="row-sm"><i data-icon="phone-forwarded" data-size="sm"></i><span class="small">Your own number · waiting for verification</span></div>
+        <div class="row-sm"><i data-icon="bot" data-size="sm"></i><span class="small muted">Not assigned to an agent</span></div>
+      </div>
+      <div class="num-foot"><span class="small muted">Finish connecting your carrier below</span>
+        <a class="btn btn-sm btn-outline" href="#verify">Continue setup</a></div>
+    </article>
+
+    <article class="card num-card hover" style="border-color:var(--error-line)">
+      <div class="num-top"><div><div class="number">+30 21 5550 1005</div><div class="small muted mt-1">Reservations</div></div><span class="badge b-error">Error</span></div>
+      <div class="num-body stack-sm">
+        <div class="row-sm"><i data-icon="sparkles" data-size="sm"></i><span class="small">Provisioned by platform</span></div>
+        <div class="row-sm"><i data-icon="bot" data-size="sm"></i><span class="agent-inline small strong">Reservation Confirmation Agent</span></div>
+        <div class="notice n-error mt-2"><i data-icon="triangle-alert"></i><div class="grow"><b>Could not activate this number.</b> The carrier did not confirm the number within 24 hours. We tried 3 times.</div></div>
+      </div>
+      <div class="num-foot"><span class="small muted">Last attempt today, 09:12</span><button class="btn btn-sm btn-outline" data-toast="Retrying activation…" type="button"><i data-icon="refresh-cw" data-size="sm"></i>Retry activation</button></div>
+    </article>
+
+    <article class="card num-card" style="background:var(--canvas-soft)">
+      <div class="num-top"><div><div class="number" style="color:var(--muted)">+30 21 5550 1006</div><div class="small muted mt-1">Old sales line</div></div><span class="badge">Released</span></div>
+      <div class="num-body stack-sm"><p class="small muted">Released on 12 Sep 2026. Past calls made from this number stay in your call history.</p></div>
+    </article>
+  </section>
+
+  <!-- BYO verification (generic carrier connection, no vendor named) -->
+  <section class="card" id="verify">
+    <div class="card-head"><div><div class="title">Connect your carrier for +30 21 5550 1004</div><p>Your own number keeps working with your existing carrier. Calls to and from it are routed through the platform.</p></div><span class="badge b-outline">Waiting for verification</span></div>
+    <div class="card-body verify-grid">
+      <ol class="steps">
+        <li class="done"><span><b>Add the number</b><br><span class="muted">You entered +30 21 5550 1004 and chose your carrier.</span></span></li>
+        <li><span><b>Point your carrier to us</b><br><span class="muted">In your carrier’s dashboard, route the number to the termination address on the right, using the credentials shown.</span></span></li>
+        <li><span><b>Verify the connection</b><br><span class="muted">We place a short test ring to confirm the number reaches your agent, then it becomes Active.</span></span></li>
+      </ol>
+      <div class="stack">
+        <div class="field"><span class="label">Termination address</span>
+          <div class="input-suffix"><input class="input mono" value="trunk-4f2a.calls.example.net" readonly aria-label="Termination address"><button class="btn btn-sm btn-outline" data-copy="trunk-4f2a.calls.example.net" type="button" style="right:6px"><i data-icon="copy" data-size="sm"></i>Copy</button></div></div>
+        <div class="form-grid" style="gap:14px">
+          <div class="field"><span class="label">Username</span><input class="input mono" value="aegean-1004" readonly aria-label="Username"></div>
+          <div class="field"><span class="label">Password</span><input class="input mono" value="••••••••••••" readonly aria-label="Password"><span class="hint">Shown once when the number was added.</span></div>
+        </div>
+        <div class="row wrap"><button class="btn btn-outline" data-toast="Verification test started" type="button"><i data-icon="phone-call" data-size="sm"></i>Verify connection</button><span class="small muted">Last check: not started</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Add number modal -->
+  <div class="modal-backdrop" id="addNumber" role="dialog" aria-modal="true" aria-labelledby="addTitle">
+    <div class="modal modal-lg" data-tabs>
+      <div class="modal-head"><div><h3 id="addTitle">Add a phone number</h3><p>Choose how you want to get a number for an agent.</p></div><button class="btn btn-sm btn-icon btn-text" data-close aria-label="Close" type="button"><i data-icon="x"></i></button></div>
+      <div class="modal-body stack">
+        <div class="grid-2">
+          <label class="choice" data-tab="new"><input type="radio" name="src" checked><span class="choice-icon"><i data-icon="sparkles"></i></span><span class="choice-body"><b>Get a new number</b><span>We get a number for you. Ready to use right away.</span></span></label>
+          <label class="choice" data-tab="byo"><input type="radio" name="src"><span class="choice-icon"><i data-icon="phone-forwarded"></i></span><span class="choice-body"><b>Bring your own number</b><span>Keep the number your customers already recognise.</span></span></label>
+        </div>
+        <div data-panel="new">
+          <div class="form-grid">
+            <div class="field"><label class="label" for="ncountry">Country</label><select class="select" id="ncountry"><option>Greece (+30)</option><option>Cyprus (+357)</option><option>United Kingdom (+44)</option><option>Germany (+49)</option></select></div>
+            <div class="field"><label class="label" for="ntype">Number type</label><select class="select" id="ntype"><option>Local</option><option>Mobile</option><option>Toll-free</option></select></div>
+            <div class="field"><label class="label" for="narea">Area code <span class="opt">Optional</span></label><input class="input" id="narea" placeholder="21 (Athens)"></div>
+            <div class="field"><label class="label" for="nlabel">Label <span class="opt">Optional</span></label><input class="input" id="nlabel" placeholder="e.g. Main outbound line"></div>
+            <div class="field full"><label class="label" for="nagent">Assign to agent <span class="opt">Optional</span></label><select class="select" id="nagent"><option>Assign later</option><option>Candidate Availability Agent</option><option>Reservation Confirmation Agent</option></select></div>
+          </div>
+        </div>
+        <div data-panel="byo">
+          <div class="form-grid">
+            <div class="field"><label class="label" for="bnum">Phone number</label><input class="input" id="bnum" placeholder="+30 21 5550 1234"><span class="hint">Include the country code.</span></div>
+            <div class="field"><label class="label" for="bcar">Carrier</label><input class="input" id="bcar" placeholder="e.g. your telecom provider"></div>
+            <div class="field full"><label class="label" for="btrunk">Carrier trunk details <span class="opt">Optional</span></label><input class="input" id="btrunk" placeholder="Trunk name or account reference"></div>
+            <div class="field full"><label class="label" for="blabel">Label <span class="opt">Optional</span></label><input class="input" id="blabel" placeholder="e.g. Sales inbound"></div>
+          </div>
+          <div class="notice n-soft mt-3"><i data-icon="info"></i><div class="grow">After you add it, we show the address and credentials to enter in your carrier’s dashboard, then verify the connection with a test ring.</div></div>
+        </div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close type="button">Cancel</button><button class="btn btn-primary" data-close type="button">Continue</button></div>
+    </div>
+  </div>
+
+  <!-- Edit label -->
+  <div class="modal-backdrop" id="labelModal" role="dialog" aria-modal="true" aria-labelledby="lblTitle">
+    <div class="modal">
+      <div class="modal-head"><div><h3 id="lblTitle">Edit label</h3><p>Labels are just for your team. Customers never see them.</p></div><button class="btn btn-sm btn-icon btn-text" data-close aria-label="Close" type="button"><i data-icon="x"></i></button></div>
+      <div class="modal-body"><div class="field"><label class="label" for="lbl">Label</label><input class="input" id="lbl" value="Main outbound line"></div></div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close type="button">Cancel</button><button class="btn btn-primary" data-close type="button">Save label</button></div>
+    </div>
+  </div>
+
+  <!-- Release -->
+  <div class="modal-backdrop" id="releaseModal" role="dialog" aria-modal="true" aria-labelledby="relTitle">
+    <div class="modal">
+      <div class="modal-head"><div><h3 id="relTitle">Release this number?</h3><p>The agent stops answering and calling on it straight away.</p></div><button class="btn btn-sm btn-icon btn-text" data-close aria-label="Close" type="button"><i data-icon="x"></i></button></div>
+      <div class="modal-body"><div class="notice n-error"><i data-icon="triangle-alert"></i><div class="grow"><b>A released number may not come back.</b> Past calls stay in your history.</div></div></div>
+      <div class="modal-foot"><button class="btn btn-outline" data-close type="button">Keep number</button><button class="btn btn-danger-fill" data-close type="button">Release number</button></div>
+    </div>
+  </div>
+
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/mockup.js"></script>
+</body>
+</html>
