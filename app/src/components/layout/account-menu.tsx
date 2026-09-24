@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CheckIcon, ChevronsUpDownIcon, LogOutIcon, ShieldCheckIcon, UserIcon, UsersIcon } from "lucide-react";
+import { CheckIcon, ChevronUpIcon, LogOutIcon, ShieldCheckIcon, UserIcon, UsersIcon } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -17,8 +17,16 @@ import { getCompanyRoleLabel } from "@/config/constants/dropdowns/users/company-
 import { useLogout } from "@/features/auth/hooks/use-auth";
 import { useSwitchCompany } from "@/features/company/hooks/use-switch-company";
 import { initialsOf } from "@/lib/format";
+import { cn } from "@/lib/utils";
 import { Routes } from "@/routes/routes";
 import { useAuthStore } from "@/stores/auth";
+
+const MENU_CLASS =
+  "min-w-[220px] rounded-xl border border-border bg-card p-1.5 shadow-[0_8px_28px_rgba(0,0,0,0.1)] ring-0";
+const MENU_LABEL_CLASS = "px-3 pt-2 pb-1 text-xs font-semibold tracking-[0.96px] text-muted-foreground uppercase";
+const MENU_ITEM_CLASS = "gap-2.5 rounded-lg px-3 py-[9px] text-sm tracking-normal text-ink";
+const MENU_ICON_CLASS = "size-[18px]";
+const MENU_SEPARATOR_CLASS = "mx-0 my-1.5";
 
 /** Sidebar footer: who is signed in, company switcher, account links and log out. */
 export function AccountMenu() {
@@ -35,50 +43,65 @@ export function AccountMenu() {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger
-            render={<SidebarMenuButton size="lg" className="h-12" tooltip={user?.name ?? "Account"} />}
+            render={
+              <SidebarMenuButton
+                size="lg"
+                className="h-12 gap-2.5 rounded-lg tracking-normal"
+                tooltip={user?.name ?? "Account"}
+              />
+            }
           >
             <Avatar className="size-8">
-              <AvatarFallback className="bg-gradient-lavender/60 text-xs font-medium">
+              <AvatarFallback className="bg-gradient-lavender text-xs font-semibold tracking-normal text-ink">
                 {initialsOf(user?.name ?? user?.email)}
               </AvatarFallback>
             </Avatar>
-            <span className="flex min-w-0 flex-1 flex-col text-left leading-tight">
-              <span className="truncate text-sm font-medium">{user?.name ?? user?.email}</span>
+            <span className="flex min-w-0 flex-1 flex-col text-left leading-[1.3]">
+              <span className="truncate text-sm font-medium text-ink">{user?.name ?? user?.email}</span>
               <span className="truncate text-xs text-muted-foreground">
                 {activeCompany ? `${activeCompany.name} · ${getCompanyRoleLabel(activeCompany.role)}` : "—"}
               </span>
             </span>
-            <ChevronsUpDownIcon className="ml-auto size-4 text-muted-foreground" />
+            <ChevronUpIcon className="ml-auto size-[15px] text-body" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="top" align="start" className="min-w-60">
+          <DropdownMenuContent side="top" align="start" className={MENU_CLASS}>
             {companies.length > 1 ? (
               <>
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel>Company</DropdownMenuLabel>
+                  <DropdownMenuLabel className={MENU_LABEL_CLASS}>Company</DropdownMenuLabel>
                   {companies.map((company) => (
-                    <DropdownMenuItem key={company.id} onClick={() => switchCompany(company.id)}>
+                    <DropdownMenuItem
+                      key={company.id}
+                      className={MENU_ITEM_CLASS}
+                      onClick={() => switchCompany(company.id)}
+                    >
                       <span className="flex-1 truncate">{company.name}</span>
-                      {company.id === activeCompanyId ? <CheckIcon className="size-4" /> : null}
+                      {company.id === activeCompanyId ? <CheckIcon className={MENU_ICON_CLASS} /> : null}
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator />
+                <DropdownMenuSeparator className={MENU_SEPARATOR_CLASS} />
               </>
             ) : null}
             <DropdownMenuGroup>
-              <DropdownMenuItem render={<Link href={Routes.settings.account} />}>
-                <UserIcon /> Account
+              <DropdownMenuLabel className={MENU_LABEL_CLASS}>Signed in as</DropdownMenuLabel>
+              <DropdownMenuItem className={MENU_ITEM_CLASS} render={<Link href={Routes.settings.account} />}>
+                <UserIcon className={MENU_ICON_CLASS} /> Account
               </DropdownMenuItem>
-              <DropdownMenuItem render={<Link href={Routes.settings.security} />}>
-                <ShieldCheckIcon /> Security
+              <DropdownMenuItem className={MENU_ITEM_CLASS} render={<Link href={Routes.settings.security} />}>
+                <ShieldCheckIcon className={MENU_ICON_CLASS} /> Security
               </DropdownMenuItem>
-              <DropdownMenuItem render={<Link href={Routes.settings.team} />}>
-                <UsersIcon /> Team
+              <DropdownMenuItem className={MENU_ITEM_CLASS} render={<Link href={Routes.settings.team} />}>
+                <UsersIcon className={MENU_ICON_CLASS} /> Team
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive" onClick={() => logout.mutate()}>
-              <LogOutIcon /> Log out
+            <DropdownMenuSeparator className={MENU_SEPARATOR_CLASS} />
+            <DropdownMenuItem
+              variant="destructive"
+              className={cn(MENU_ITEM_CLASS, "data-[variant=destructive]:focus:bg-accent")}
+              onClick={() => logout.mutate()}
+            >
+              <LogOutIcon className={MENU_ICON_CLASS} /> Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
