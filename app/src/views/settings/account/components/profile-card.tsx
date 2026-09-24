@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { StatusBadge, StatusTones } from "@/components/ui/status-badge";
 import { getLanguageOptions } from "@/config/constants/dropdowns/shared/language.options";
 import { getTimezoneOptions } from "@/config/constants/dropdowns/shared/timezone.options";
@@ -142,13 +142,15 @@ export const ProfileCard: FC<ProfileCardProps> = ({ user }) => {
                   <FormItem>
                     <FormLabel>Language</FormLabel>
                     <FormControl>
-                      <NativeSelect className="w-full" {...field}>
-                        {getLanguageOptions(defaults.language).map((option) => (
-                          <NativeSelectOption key={option.id} value={option.id}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
+                      <SelectField
+                        className="w-full"
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        onBlur={field.onBlur}
+                        ref={field.ref}
+                        options={getLanguageOptions(defaults.language)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -161,13 +163,15 @@ export const ProfileCard: FC<ProfileCardProps> = ({ user }) => {
                   <FormItem className="sm:col-span-2">
                     <FormLabel>Timezone</FormLabel>
                     <FormControl>
-                      <NativeSelect className="w-full" {...field}>
-                        {getTimezoneOptions(defaults.timezone).map((option) => (
-                          <NativeSelectOption key={option.id} value={option.id}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
+                      <SelectField
+                        className="w-full"
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        onBlur={field.onBlur}
+                        ref={field.ref}
+                        options={getTimezoneOptions(defaults.timezone)}
+                      />
                     </FormControl>
                     <FormDescription>Dates and times across the platform are shown in this timezone.</FormDescription>
                     <FormMessage />

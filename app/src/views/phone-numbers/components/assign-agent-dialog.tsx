@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { ErrorState } from "@/components/ui/error-state";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetAgentOptions } from "@/features/phone-numbers/hooks/use-agent-options";
 import { useAssignPhoneNumberAgent } from "@/features/phone-numbers/hooks/use-phone-numbers";
@@ -60,16 +60,18 @@ const AssignAgentForm: FC<AssignAgentFormProps> = ({ phone, onDone }) => {
             <FormItem>
               <FormLabel>Agent</FormLabel>
               <FormControl>
-                <NativeSelect className="w-full" {...field}>
-                  <NativeSelectOption value="" disabled>
-                    Choose an agent
-                  </NativeSelectOption>
-                  {agents.data.map((agent) => (
-                    <NativeSelectOption key={agent.id} value={agent.id}>
-                      {agent.name}
-                    </NativeSelectOption>
-                  ))}
-                </NativeSelect>
+                <SelectField
+                  className="w-full"
+                  name={field.name}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
+                  options={[
+                    { id: "", label: "Choose an agent", disabled: true },
+                    ...agents.data.map((agent) => ({ id: agent.id, label: agent.name })),
+                  ]}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

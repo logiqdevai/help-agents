@@ -5,7 +5,7 @@ import { PauseIcon, PlayIcon, SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ErrorState } from "@/components/ui/error-state";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { Skeleton } from "@/components/ui/skeleton";
 import { VoiceGenderFilterOptions } from "@/config/constants/dropdowns/agents/voice-gender-form.options";
 import { useGetVoices } from "@/features/voices/hooks/use-voices";
@@ -62,17 +62,12 @@ export const VoicePicker: FC<VoicePickerProps> = ({ value, onChange, disabled })
             onChange={(event) => setSearch(event.target.value)}
           />
         </div>
-        <NativeSelect
+        <SelectField
           aria-label="Filter voices"
           value={gender}
-          onChange={(event) => setGender(event.target.value as typeof gender)}
-        >
-          {VoiceGenderFilterOptions.map((option) => (
-            <NativeSelectOption key={option.id} value={option.id}>
-              {option.label}
-            </NativeSelectOption>
-          ))}
-        </NativeSelect>
+          onValueChange={setGender}
+          options={VoiceGenderFilterOptions}
+        />
       </div>
 
       {voices.isPending ? (

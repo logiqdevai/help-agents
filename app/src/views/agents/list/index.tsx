@@ -7,10 +7,10 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ErrorState } from "@/components/ui/error-state";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { PageHeader } from "@/components/ui/page-header";
 import { PaginationControls } from "@/components/ui/pagination-controls";
 import { SegmentedControl } from "@/components/ui/segmented-control";
+import { SelectField } from "@/components/ui/select-field";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { AgentStatusFilterOptions } from "@/config/constants/dropdowns/agents/agent-status-filter.options";
@@ -91,20 +91,15 @@ const AgentsPage: FC = () => {
             }}
           />
         </div>
-        <NativeSelect
+        <SelectField
           aria-label="Filter by status"
           value={status}
-          onChange={(event) => {
-            setStatus(event.target.value as AgentStatus | "all");
+          onValueChange={(value) => {
+            setStatus(value);
             setPage(1);
           }}
-        >
-          {AgentStatusFilterOptions.map((option) => (
-            <NativeSelectOption key={option.id} value={option.id}>
-              {option.label}
-            </NativeSelectOption>
-          ))}
-        </NativeSelect>
+          options={AgentStatusFilterOptions}
+        />
         <SegmentedControl aria-label="View" value={view} onValueChange={setView} options={AgentViewFormOptions} />
       </div>
 

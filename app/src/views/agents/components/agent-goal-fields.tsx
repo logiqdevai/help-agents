@@ -6,7 +6,7 @@ import { PlusIcon, Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { GoalDataTypeFormOptions } from "@/config/constants/dropdowns/agents/goal-data-type-form.options";
 import { GoalRequirementFormOptions } from "@/config/constants/dropdowns/agents/goal-requirement-form.options";
 import { GoalDataTypes } from "@/features/agents/interfaces/agents.interfaces";
@@ -45,13 +45,16 @@ const GoalItemRow: FC<GoalItemRowProps> = ({ control, index, disabled, onRemove 
           <FormItem>
             <FormLabel className="sr-only">Answer type of item {index + 1}</FormLabel>
             <FormControl>
-              <NativeSelect className="w-full" disabled={disabled} {...field}>
-                {GoalDataTypeFormOptions.map((option) => (
-                  <NativeSelectOption key={option.id} value={option.id}>
-                    {option.label}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
+              <SelectField
+                className="w-full"
+                disabled={disabled}
+                name={field.name}
+                ref={field.ref}
+                onBlur={field.onBlur}
+                value={field.value}
+                onValueChange={field.onChange}
+                options={GoalDataTypeFormOptions}
+              />
             </FormControl>
           </FormItem>
         )}

@@ -1,6 +1,6 @@
 "use client";
 
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BotIcon, BuildingIcon } from "lucide-react";
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { AutomationActionTypeFormOptions } from "@/config/constants/dropdowns/agents/automation-action-type-form.options";
 import { AutomationScopeFormOptions } from "@/config/constants/dropdowns/agents/automation-scope-form.options";
 import { AutomationTriggerFormOptions } from "@/config/constants/dropdowns/agents/automation-trigger-form.options";
@@ -39,6 +39,11 @@ import { AutomationActionEditor } from "./automation-action-editor";
 
 const scopeIcons = { [RuleScopes.AGENT]: BotIcon, [RuleScopes.COMPANY]: BuildingIcon };
 
+const addActionOptions = [
+  { id: "", label: "Add an action…", disabled: true },
+  ...AutomationActionTypeFormOptions.map((option): { id: string; label: string; disabled?: boolean } => option),
+];
+
 interface AutomationRuleDialogProps {
   agent: Agent;
   /** The rule being edited, or null to create a new one for this agent. */
@@ -59,6 +64,10 @@ export const AutomationRuleDialog: FC<AutomationRuleDialogProps> = ({ agent, rul
   const trigger = useWatch({ control: form.control, name: "trigger" });
   const scope = useWatch({ control: form.control, name: "scope" });
   const actionsError = form.formState.errors.actions?.root?.message ?? form.formState.errors.actions?.message;
+  const outcomeOptions = useMemo(
+    () => [{ id: "", label: "Any outcome" }, ...agent.outcomes.map((outcome) => ({ id: outcome.id, label: outcome.label }))],
+    [agent.outcomes],
+  );
 
   const onSubmit = (values: AutomationRuleFormData) => {
     const dto = toRuleDto(values, agent.id);
@@ -98,13 +107,15 @@ export const AutomationRuleDialog: FC<AutomationRuleDialogProps> = ({ agent, rul
                   <FormItem>
                     <FormLabel>When</FormLabel>
                     <FormControl>
-                      <NativeSelect className="w-full" {...field}>
-                        {AutomationTriggerFormOptions.map((option) => (
-                          <NativeSelectOption key={option.id} value={option.id}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
+                      <SelectField
+                        className="w-full"
+                        name={field.name}
+                        ref={field.ref}
+                        onBlur={field.onBlur}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        options={AutomationTriggerFormOptions}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -117,14 +128,15 @@ export const AutomationRuleDialog: FC<AutomationRuleDialogProps> = ({ agent, rul
                     <FormItem>
                       <FormLabel>Outcome</FormLabel>
                       <FormControl>
-                        <NativeSelect className="w-full" {...field}>
-                          <NativeSelectOption value="">Any outcome</NativeSelectOption>
-                          {agent.outcomes.map((outcome) => (
-                            <NativeSelectOption key={outcome.id} value={outcome.id}>
-                              {outcome.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
+                        <SelectField
+                          className="w-full"
+                          name={field.name}
+                          ref={field.ref}
+                          onBlur={field.onBlur}
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          options={outcomeOptions}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -147,21 +159,13 @@ export const AutomationRuleDialog: FC<AutomationRuleDialogProps> = ({ agent, rul
                   ))}
                 </ul>
               ) : null}
-              <NativeSelect
+              <SelectField
                 size="sm"
                 aria-label="Add an action"
                 value=""
-                onChange={(event) => append(newActionRow(event.target.value as AutomationActionType))}
-              >
-                <NativeSelectOption value="" disabled>
-                  Add an action…
-                </NativeSelectOption>
-                {AutomationActionTypeFormOptions.map((option) => (
-                  <NativeSelectOption key={option.id} value={option.id}>
-                    {option.label}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
+                onValueChange={(next) => next && append(newActionRow(next as AutomationActionType))}
+                options={addActionOptions}
+              />
               {actionsError ? (
                 <p role="alert" className="text-sm text-destructive">
                   {actionsError}

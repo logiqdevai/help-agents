@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FC } from "react";
+import { useMemo, useState, type FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRightIcon, InfoIcon, PlusIcon, SaveIcon, XIcon } from "lucide-react";
@@ -10,7 +10,7 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/comp
 import { ErrorState } from "@/components/ui/error-state";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -111,6 +111,22 @@ const FieldMappingForm: FC<FieldMappingFormProps> = ({
   const [recordType, setRecordType] = useState<CrmRecordType>(CrmRecordTypes.CONTACT);
   const crmFields = useGetCrmFields(integrationId, recordType);
   const datalistId = `crm-fields-${integrationId}`;
+  const suggestOptions = useMemo(
+    () =>
+      CrmRecordTypeFormOptions.map((option) => ({
+        id: option.id,
+        label: `Suggest from ${option.label.toLowerCase()} fields`,
+      })),
+    [],
+  );
+  const internalFieldOptions = useMemo(
+    () => [
+      { id: "", label: "Choose a field", disabled: true },
+      ...internalFields.map((internal) => ({ id: internal.key, label: internal.label })),
+      { id: GoalFieldPrefix, label: "Information collected on the call…" },
+    ],
+    [internalFields],
+  );
 
   const form = useForm<FieldMappingsFormData>({
     resolver: zodResolver(fieldMappingsFormSchema),
@@ -140,18 +156,13 @@ const FieldMappingForm: FC<FieldMappingFormProps> = ({
               </CardDescription>
             </div>
             <div className="flex items-center gap-2">
-              <NativeSelect
+              <SelectField<CrmRecordType>
                 size="sm"
                 aria-label="Suggest CRM fields from"
                 value={recordType}
-                onChange={(event) => setRecordType(event.target.value as CrmRecordType)}
-              >
-                {CrmRecordTypeFormOptions.map((option) => (
-                  <NativeSelectOption key={option.id} value={option.id}>
-                    Suggest from {option.label.toLowerCase()} fields
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
+                onValueChange={setRecordType}
+                options={suggestOptions}
+              />
               {canManage ? (
                 <ActionButtonWithPending type="submit" size="sm" variant="outline" isPending={replaceMappings.isPending}>
                   <SaveIcon />
@@ -201,27 +212,16 @@ const FieldMappingForm: FC<FieldMappingFormProps> = ({
                             return (
                               <FormItem className="gap-1.5">
                                 <FormControl>
-                                  <NativeSelect
+                                  <SelectField
                                     className="w-full"
                                     aria-label="Our field"
                                     disabled={!canManage}
                                     value={isGoal ? GoalFieldPrefix : field.value}
-                                    onChange={(event) => field.onChange(event.target.value)}
+                                    onValueChange={field.onChange}
                                     onBlur={field.onBlur}
                                     ref={field.ref}
-                                  >
-                                    <NativeSelectOption value="" disabled>
-                                      Choose a field
-                                    </NativeSelectOption>
-                                    {internalFields.map((internal) => (
-                                      <NativeSelectOption key={internal.key} value={internal.key}>
-                                        {internal.label}
-                                      </NativeSelectOption>
-                                    ))}
-                                    <NativeSelectOption value={GoalFieldPrefix}>
-                                      Information collected on the call…
-                                    </NativeSelectOption>
-                                  </NativeSelect>
+                                    options={internalFieldOptions}
+                                  />
                                 </FormControl>
                                 {isGoal ? (
                                   <Input
@@ -269,13 +269,17 @@ const FieldMappingForm: FC<FieldMappingFormProps> = ({
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
-                                <NativeSelect className="w-full" aria-label="Direction" disabled={!canManage} {...field}>
-                                  {CrmFieldDirectionFormOptions.map((option) => (
-                                    <NativeSelectOption key={option.id} value={option.id}>
-                                      {option.label}
-                                    </NativeSelectOption>
-                                  ))}
-                                </NativeSelect>
+                                <SelectField
+                                  className="w-full"
+                                  aria-label="Direction"
+                                  disabled={!canManage}
+                                  name={field.name}
+                                  value={field.value}
+                                  onValueChange={field.onChange}
+                                  onBlur={field.onBlur}
+                                  ref={field.ref}
+                                  options={CrmFieldDirectionFormOptions}
+                                />
                               </FormControl>
                             </FormItem>
                           )}

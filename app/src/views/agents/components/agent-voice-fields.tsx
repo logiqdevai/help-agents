@@ -3,7 +3,7 @@
 import type { FC } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { Textarea } from "@/components/ui/textarea";
 import { getLanguageOptions } from "@/config/constants/dropdowns/shared/language.options";
 import type { AgentBasicsFormData } from "@/features/agents/validation-schemas/agents.schema";
@@ -25,13 +25,16 @@ export const AgentVoiceFields: FC<AgentVoiceFieldsProps> = ({ form, disabled }) 
         <FormItem className="sm:max-w-xs">
           <FormLabel>Language</FormLabel>
           <FormControl>
-            <NativeSelect className="w-full" disabled={disabled} {...field}>
-              {getLanguageOptions(field.value).map((option) => (
-                <NativeSelectOption key={option.id} value={option.id}>
-                  {option.label}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
+            <SelectField
+              className="w-full"
+              disabled={disabled}
+              name={field.name}
+              ref={field.ref}
+              onBlur={field.onBlur}
+              value={field.value}
+              onValueChange={field.onChange}
+              options={getLanguageOptions(field.value)}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

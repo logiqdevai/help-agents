@@ -7,7 +7,7 @@ import { ActionButtonWithPending } from "@/components/ui/action-button-with-pend
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { Textarea } from "@/components/ui/textarea";
 import { CrmEndpointFormOptions } from "@/config/constants/dropdowns/integrations/crm-endpoint-form.options";
 import { HttpMethodFormOptions } from "@/config/constants/dropdowns/integrations/http-method-form.options";
@@ -74,13 +74,16 @@ export const CrmEndpointsCard: FC<CrmEndpointsCardProps> = ({ integration, canMa
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <NativeSelect className="w-full" aria-label={`${option?.label} method`} {...field}>
-                              {HttpMethodFormOptions.map((m) => (
-                                <NativeSelectOption key={m.id} value={m.id}>
-                                  {m.label}
-                                </NativeSelectOption>
-                              ))}
-                            </NativeSelect>
+                            <SelectField
+                              className="w-full"
+                              aria-label={`${option?.label} method`}
+                              name={field.name}
+                              value={field.value}
+                              onValueChange={field.onChange}
+                              onBlur={field.onBlur}
+                              ref={field.ref}
+                              options={HttpMethodFormOptions}
+                            />
                           </FormControl>
                         </FormItem>
                       )}

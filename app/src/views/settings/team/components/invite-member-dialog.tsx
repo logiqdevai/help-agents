@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { CompanyRoleFormOptions } from "@/config/constants/dropdowns/users/company-role-form.options";
 import { CompanyRoles, type CompanyRole } from "@/features/auth/interfaces/auth.interfaces";
 import { useCreateInvitation } from "@/features/team/hooks/use-team";
@@ -75,13 +75,15 @@ export const InviteMemberDialog: FC<InviteMemberDialogProps> = ({ open, onOpenCh
                 <FormItem>
                   <FormLabel>Role</FormLabel>
                   <FormControl>
-                    <NativeSelect className="w-full" {...field}>
-                      {roleOptions.map((option) => (
-                        <NativeSelectOption key={option.id} value={option.id}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
+                    <SelectField
+                      className="w-full"
+                      name={field.name}
+                      ref={field.ref}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      onBlur={field.onBlur}
+                      options={roleOptions}
+                    />
                   </FormControl>
                   <FormDescription>
                     Members only see the agents they are given access to. Choose their agents with “Edit access”

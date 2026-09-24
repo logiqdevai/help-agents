@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ActionButtonWithPending } from "@/components/ui/action-button-with-pending";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { getTimezoneOptions } from "@/config/constants/dropdowns/shared/timezone.options";
 import { useUpdateCompany } from "@/features/company/hooks/use-company";
 import type { Company } from "@/features/company/interfaces/company.interfaces";
@@ -110,13 +110,15 @@ export const CompanyDetailsCard: FC<CompanyDetailsCardProps> = ({ company, canEd
                 <FormItem className="sm:col-span-2">
                   <FormLabel>Timezone</FormLabel>
                   <FormControl>
-                    <NativeSelect className="w-full" {...field}>
-                      {getTimezoneOptions(company.timezone).map((option) => (
-                        <NativeSelectOption key={option.id} value={option.id}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
+                    <SelectField
+                      className="w-full"
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      onBlur={field.onBlur}
+                      ref={field.ref}
+                      options={getTimezoneOptions(company.timezone)}
+                    />
                   </FormControl>
                   <FormDescription>Calling hours below are always interpreted in this timezone.</FormDescription>
                   <FormMessage />

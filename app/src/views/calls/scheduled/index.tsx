@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, type FC } from "react";
+import { useMemo, useState, type FC } from "react";
 import { CalendarClockIcon, PlusIcon, SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ErrorState } from "@/components/ui/error-state";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { PageHeader } from "@/components/ui/page-header";
 import { PaginationControls } from "@/components/ui/pagination-controls";
+import { SelectField } from "@/components/ui/select-field";
 import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScheduledCallSourceFilterOptions } from "@/config/constants/dropdowns/calls/scheduled-call-source-filter.options";
@@ -59,6 +59,13 @@ const ScheduledCallsPage: FC = () => {
 
   const counts = useGetScheduledCallCounts();
   const filterOptions = useGetCallFilterOptions();
+  const agentOptions = useMemo(
+    () => [
+      { id: "", label: "All agents" },
+      ...(filterOptions.data?.agents ?? []).map((agent) => ({ id: agent.id, label: agent.name })),
+    ],
+    [filterOptions.data],
+  );
   const scheduledCalls = useGetScheduledCalls({
     page,
     limit: PAGE_SIZE,
@@ -191,37 +198,26 @@ const ScheduledCallsPage: FC = () => {
               className="pl-8"
             />
           </div>
-          <NativeSelect
+          <SelectField
             className="w-full sm:w-auto"
             aria-label="Agent"
             value={agentId}
-            onChange={(event) => {
-              setAgentId(event.target.value);
+            onValueChange={(value) => {
+              setAgentId(value);
               setPage(1);
             }}
-          >
-            <NativeSelectOption value="">All agents</NativeSelectOption>
-            {filterOptions.data?.agents.map((agent) => (
-              <NativeSelectOption key={agent.id} value={agent.id}>
-                {agent.name}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-          <NativeSelect
+            options={agentOptions}
+          />
+          <SelectField
             className="w-full sm:w-auto"
             aria-label="Source"
             value={source}
-            onChange={(event) => {
-              setSource(event.target.value as ScheduledCallSource | "all");
+            onValueChange={(value) => {
+              setSource(value);
               setPage(1);
             }}
-          >
-            {ScheduledCallSourceFilterOptions.map((option) => (
-              <NativeSelectOption key={option.id} value={option.id}>
-                {option.label}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
+            options={ScheduledCallSourceFilterOptions}
+          />
         </div>
 
         <TabsContent value={tab}>{panel}</TabsContent>

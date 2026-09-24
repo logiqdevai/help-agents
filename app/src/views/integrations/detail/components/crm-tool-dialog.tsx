@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { HttpMethodFormOptions } from "@/config/constants/dropdowns/integrations/http-method-form.options";
@@ -154,13 +154,15 @@ export const CrmToolDialog: FC<CrmToolDialogProps> = ({ integrationId, tool, ope
                   <FormItem>
                     <FormLabel>Method</FormLabel>
                     <FormControl>
-                      <NativeSelect className="w-full" {...field}>
-                        {HttpMethodFormOptions.map((option) => (
-                          <NativeSelectOption key={option.id} value={option.id}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
+                      <SelectField
+                        className="w-full"
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        onBlur={field.onBlur}
+                        ref={field.ref}
+                        options={HttpMethodFormOptions}
+                      />
                     </FormControl>
                   </FormItem>
                 )}

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ActionButtonWithPending } from "@/components/ui/action-button-with-pending";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { getRecordingRetentionOptions } from "@/config/constants/dropdowns/company/recording-retention-form.options";
 import { useUpdateCompany } from "@/features/company/hooks/use-company";
 import type { Company } from "@/features/company/interfaces/company.interfaces";
@@ -67,13 +67,19 @@ export const RecordingRetentionCard: FC<RecordingRetentionCardProps> = ({ compan
               <FormItem className="max-w-sm">
                 <FormLabel>Keep recordings for</FormLabel>
                 <FormControl>
-                  <NativeSelect className="w-full" disabled={!canEdit} {...field}>
-                    {getRecordingRetentionOptions(company.recording_retention_days).map((option) => (
-                      <NativeSelectOption key={option.id ?? FOREVER} value={toSelectValue(option.id)}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
+                  <SelectField
+                    className="w-full"
+                    disabled={!canEdit}
+                    name={field.name}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    onBlur={field.onBlur}
+                    ref={field.ref}
+                    options={getRecordingRetentionOptions(company.recording_retention_days).map((option) => ({
+                      id: toSelectValue(option.id),
+                      label: option.label,
+                    }))}
+                  />
                 </FormControl>
                 <FormDescription>
                   Applies to calls recorded from now on. Deleted recordings cannot be recovered.

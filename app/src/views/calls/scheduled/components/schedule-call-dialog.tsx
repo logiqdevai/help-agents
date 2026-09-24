@@ -18,7 +18,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetCallAgentOptions } from "@/features/calls/hooks/use-calls";
 import { useCreateScheduledCall } from "@/features/scheduled-calls/hooks/use-scheduled-calls";
@@ -119,14 +119,18 @@ const ScheduleCallForm: FC<Pick<ScheduleCallDialogProps, "onOpenChange" | "defau
                   </p>
                 ) : (
                   <FormControl>
-                    <NativeSelect className="w-full" {...field}>
-                      <NativeSelectOption value="">Choose an agent</NativeSelectOption>
-                      {agents.data.map((agent) => (
-                        <NativeSelectOption key={agent.id} value={agent.id}>
-                          {agent.name}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
+                    <SelectField
+                      className="w-full"
+                      name={field.name}
+                      ref={field.ref}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      onBlur={field.onBlur}
+                      options={[
+                        { id: "", label: "Choose an agent" },
+                        ...agents.data.map((agent) => ({ id: agent.id, label: agent.name })),
+                      ]}
+                    />
                   </FormControl>
                 )}
                 <FormMessage />

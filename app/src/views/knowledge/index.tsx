@@ -1,16 +1,16 @@
 "use client";
 
 import type { FC } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { BookOpenIcon, PlusIcon, SearchIcon } from "lucide-react";
 import { buttonVariants, Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ErrorState } from "@/components/ui/error-state";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { PageHeader } from "@/components/ui/page-header";
 import { PaginationControls } from "@/components/ui/pagination-controls";
+import { SelectField } from "@/components/ui/select-field";
 import { TableSkeleton } from "@/components/ui/table-skeleton";
 import { KnowledgeStatusFilterOptions } from "@/config/constants/dropdowns/knowledge/knowledge-status-filter.options";
 import { KnowledgeTypeFilterOptions } from "@/config/constants/dropdowns/knowledge/knowledge-type-filter.options";
@@ -43,6 +43,10 @@ const KnowledgePage: FC = () => {
   const debouncedSearch = useDebouncedValue(search);
 
   const agents = useGetAgentOptions();
+  const agentOptions = useMemo(
+    () => [{ id: "all", label: "All agents" }, ...(agents.data ?? []).map((option) => ({ id: option.id, label: option.name }))],
+    [agents.data],
+  );
   const sources = useGetKnowledgeSources({
     page,
     limit: PAGE_SIZE,
@@ -97,49 +101,33 @@ const KnowledgePage: FC = () => {
             }}
           />
         </div>
-        <NativeSelect
+        <SelectField
           aria-label="Filter by status"
           value={status}
-          onChange={(event) => {
-            setStatus(event.target.value as KnowledgeStatusFilter | "all");
+          onValueChange={(value) => {
+            setStatus(value);
             setPage(1);
           }}
-        >
-          {KnowledgeStatusFilterOptions.map((option) => (
-            <NativeSelectOption key={option.id} value={option.id}>
-              {option.label}
-            </NativeSelectOption>
-          ))}
-        </NativeSelect>
-        <NativeSelect
+          options={KnowledgeStatusFilterOptions}
+        />
+        <SelectField
           aria-label="Filter by type"
           value={type}
-          onChange={(event) => {
-            setType(event.target.value as KnowledgeSourceType | "all");
+          onValueChange={(value) => {
+            setType(value);
             setPage(1);
           }}
-        >
-          {KnowledgeTypeFilterOptions.map((option) => (
-            <NativeSelectOption key={option.id} value={option.id}>
-              {option.label}
-            </NativeSelectOption>
-          ))}
-        </NativeSelect>
-        <NativeSelect
+          options={KnowledgeTypeFilterOptions}
+        />
+        <SelectField
           aria-label="Filter by agent"
           value={agent}
-          onChange={(event) => {
-            setAgent(event.target.value);
+          onValueChange={(value) => {
+            setAgent(value);
             setPage(1);
           }}
-        >
-          <NativeSelectOption value="all">All agents</NativeSelectOption>
-          {(agents.data ?? []).map((option) => (
-            <NativeSelectOption key={option.id} value={option.id}>
-              {option.name}
-            </NativeSelectOption>
-          ))}
-        </NativeSelect>
+          options={agentOptions}
+        />
       </div>
 
       {sources.isPending ? <TableSkeleton rows={6} columns={8} /> : null}

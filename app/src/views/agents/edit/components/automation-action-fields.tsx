@@ -1,11 +1,11 @@
 "use client";
 
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 import { useWatch, type Control } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { Textarea } from "@/components/ui/textarea";
 import { AutomationRecipientFormOptions } from "@/config/constants/dropdowns/agents/automation-recipient-form.options";
 import { WebhookIncludeFormOptions } from "@/config/constants/dropdowns/agents/webhook-include-form.options";
@@ -94,13 +94,15 @@ const RecipientFields: FC<RecipientFieldsProps> = ({ control, index, mode, custo
         <FormItem>
           <FormLabel>Send to</FormLabel>
           <FormControl>
-            <NativeSelect className="w-full" {...field}>
-              {AutomationRecipientFormOptions.map((option) => (
-                <NativeSelectOption key={option.id} value={option.id}>
-                  {option.label}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
+            <SelectField
+              className="w-full"
+              name={field.name}
+              ref={field.ref}
+              onBlur={field.onBlur}
+              value={field.value}
+              onValueChange={field.onChange}
+              options={AutomationRecipientFormOptions}
+            />
           </FormControl>
         </FormItem>
       )}
@@ -119,6 +121,13 @@ const RecipientFields: FC<RecipientFieldsProps> = ({ control, index, mode, custo
 
 const FollowUpAgentField: FC<{ control: Control<AutomationRuleFormData>; index: number }> = ({ control, index }) => {
   const agents = useGetAgentOptions();
+  const agentSelectOptions = useMemo(
+    () => [
+      { id: "", label: "The agent that made the call" },
+      ...(agents.data ?? []).map((agent) => ({ id: agent.id, label: agent.name })),
+    ],
+    [agents.data],
+  );
 
   return (
     <FormField
@@ -128,14 +137,15 @@ const FollowUpAgentField: FC<{ control: Control<AutomationRuleFormData>; index: 
         <FormItem>
           <FormLabel>Which agent calls</FormLabel>
           <FormControl>
-            <NativeSelect className="w-full" {...field}>
-              <NativeSelectOption value="">The agent that made the call</NativeSelectOption>
-              {agents.data?.map((agent) => (
-                <NativeSelectOption key={agent.id} value={agent.id}>
-                  {agent.name}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
+            <SelectField
+              className="w-full"
+              name={field.name}
+              ref={field.ref}
+              onBlur={field.onBlur}
+              value={field.value}
+              onValueChange={field.onChange}
+              options={agentSelectOptions}
+            />
           </FormControl>
           <FormDescription>Only an active agent can place the follow-up call.</FormDescription>
         </FormItem>

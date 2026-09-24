@@ -1,7 +1,7 @@
 "use client";
 
 import type { FC } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PhoneForwardedIcon, SparklesIcon } from "lucide-react";
@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { PasswordInput } from "@/components/ui/password-input";
+import { SelectField } from "@/components/ui/select-field";
 import { PhoneCountryOptions } from "@/config/constants/dropdowns/phone-numbers/phone-country.options";
 import { PhoneNumberSourceFormOptions } from "@/config/constants/dropdowns/phone-numbers/phone-number-source-form.options";
 import { useGetAgentOptions } from "@/features/phone-numbers/hooks/use-agent-options";
@@ -53,6 +53,10 @@ interface AddFormProps {
 const ProvisionForm: FC<AddFormProps> = ({ onDone, defaultAgentId }) => {
   const provision = useProvisionPhoneNumber();
   const agents = useGetAgentOptions();
+  const agentSelectOptions = useMemo(
+    () => [{ id: "", label: "Assign later" }, ...(agents.data ?? []).map((agent) => ({ id: agent.id, label: agent.name }))],
+    [agents.data],
+  );
   const form = useForm<ProvisionPhoneNumberFormData>({
     resolver: zodResolver(provisionPhoneNumberSchema),
     defaultValues: {
@@ -87,13 +91,15 @@ const ProvisionForm: FC<AddFormProps> = ({ onDone, defaultAgentId }) => {
               <FormItem>
                 <FormLabel>Country</FormLabel>
                 <FormControl>
-                  <NativeSelect className="w-full" {...field}>
-                    {PhoneCountryOptions.map((option) => (
-                      <NativeSelectOption key={option.id} value={option.id}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
+                  <SelectField
+                    className="w-full"
+                    name={field.name}
+                    ref={field.ref}
+                    onBlur={field.onBlur}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    options={PhoneCountryOptions}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -138,14 +144,16 @@ const ProvisionForm: FC<AddFormProps> = ({ onDone, defaultAgentId }) => {
                   Assign to agent <span className="font-normal text-muted-foreground">Optional</span>
                 </FormLabel>
                 <FormControl>
-                  <NativeSelect className="w-full" disabled={agents.isPending} {...field}>
-                    <NativeSelectOption value="">Assign later</NativeSelectOption>
-                    {(agents.data ?? []).map((agent) => (
-                      <NativeSelectOption key={agent.id} value={agent.id}>
-                        {agent.name}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
+                  <SelectField
+                    className="w-full"
+                    disabled={agents.isPending}
+                    name={field.name}
+                    ref={field.ref}
+                    onBlur={field.onBlur}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    options={agentSelectOptions}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

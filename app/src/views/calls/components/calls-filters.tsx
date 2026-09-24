@@ -5,17 +5,11 @@ import { SearchIcon } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { CallDateRangeFilterOptions } from "@/config/constants/dropdowns/calls/call-date-range-filter.options";
 import { CallDirectionFilterOptions } from "@/config/constants/dropdowns/calls/call-direction-filter.options";
 import { CallStatusFilterOptions } from "@/config/constants/dropdowns/calls/call-status-filter.options";
-import {
-  CallDateRanges,
-  type CallDateRange,
-  type CallDirection,
-  type CallFilterOptions,
-  type CallStatus,
-} from "@/features/calls/interfaces/calls.interfaces";
+import { CallDateRanges, type CallFilterOptions } from "@/features/calls/interfaces/calls.interfaces";
 import type { CallsFilterState } from "@/views/calls/hooks/use-calls-filters";
 
 interface CallsFiltersProps {
@@ -43,82 +37,58 @@ export const CallsFilters: FC<CallsFiltersProps> = ({ filters, options, onChange
           className="pl-8"
         />
       </div>
-      <NativeSelect
+      <SelectField
         className={selectClass}
         aria-label="Agent"
         value={filters.agentId}
-        onChange={(event) => onChange("agentId", event.target.value)}
-      >
-        <NativeSelectOption value="">All agents</NativeSelectOption>
-        {options?.agents.map((agent) => (
-          <NativeSelectOption key={agent.id} value={agent.id}>
-            {agent.name}
-          </NativeSelectOption>
-        ))}
-      </NativeSelect>
-      <NativeSelect
+        onValueChange={(value) => onChange("agentId", value)}
+        options={[
+          { id: "", label: "All agents" },
+          ...(options?.agents.map((agent) => ({ id: agent.id, label: agent.name })) ?? []),
+        ]}
+      />
+      <SelectField
         className={selectClass}
         aria-label="Date range"
         value={filters.dateRange}
-        onChange={(event) => onChange("dateRange", event.target.value as CallDateRange | "all")}
-      >
-        {CallDateRangeFilterOptions.map((option) => (
-          <NativeSelectOption key={option.id} value={option.id}>
-            {option.label}
-          </NativeSelectOption>
-        ))}
-      </NativeSelect>
-      <NativeSelect
+        onValueChange={(value) => onChange("dateRange", value)}
+        options={CallDateRangeFilterOptions}
+      />
+      <SelectField
         className={selectClass}
         aria-label="Outcome"
         value={filters.outcomeKey}
-        onChange={(event) => onChange("outcomeKey", event.target.value)}
-      >
-        <NativeSelectOption value="">All outcomes</NativeSelectOption>
-        {options?.outcomes.map((outcome) => (
-          <NativeSelectOption key={outcome.key} value={outcome.key}>
-            {outcome.label}
-          </NativeSelectOption>
-        ))}
-      </NativeSelect>
-      <NativeSelect
+        onValueChange={(value) => onChange("outcomeKey", value)}
+        options={[
+          { id: "", label: "All outcomes" },
+          ...(options?.outcomes.map((outcome) => ({ id: outcome.key, label: outcome.label })) ?? []),
+        ]}
+      />
+      <SelectField
         className={selectClass}
         aria-label="Status"
         value={filters.status}
-        onChange={(event) => onChange("status", event.target.value as CallStatus | "all")}
-      >
-        {CallStatusFilterOptions.map((option) => (
-          <NativeSelectOption key={option.id} value={option.id}>
-            {option.label}
-          </NativeSelectOption>
-        ))}
-      </NativeSelect>
-      <NativeSelect
+        onValueChange={(value) => onChange("status", value)}
+        options={CallStatusFilterOptions}
+      />
+      <SelectField
         className={selectClass}
         aria-label="Direction"
         value={filters.direction}
-        onChange={(event) => onChange("direction", event.target.value as CallDirection | "all")}
-      >
-        {CallDirectionFilterOptions.map((option) => (
-          <NativeSelectOption key={option.id} value={option.id}>
-            {option.label}
-          </NativeSelectOption>
-        ))}
-      </NativeSelect>
+        onValueChange={(value) => onChange("direction", value)}
+        options={CallDirectionFilterOptions}
+      />
       {options?.integrations.length ? (
-        <NativeSelect
+        <SelectField
           className={selectClass}
           aria-label="CRM"
           value={filters.integrationId}
-          onChange={(event) => onChange("integrationId", event.target.value)}
-        >
-          <NativeSelectOption value="">Any CRM</NativeSelectOption>
-          {options.integrations.map((integration) => (
-            <NativeSelectOption key={integration.id} value={integration.id}>
-              {integration.name}
-            </NativeSelectOption>
-          ))}
-        </NativeSelect>
+          onValueChange={(value) => onChange("integrationId", value)}
+          options={[
+            { id: "", label: "Any CRM" },
+            ...options.integrations.map((integration) => ({ id: integration.id, label: integration.name })),
+          ]}
+        />
       ) : null}
     </div>
 

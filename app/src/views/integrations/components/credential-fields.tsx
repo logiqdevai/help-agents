@@ -6,8 +6,8 @@ import { PlusIcon, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { PasswordInput } from "@/components/ui/password-input";
+import { SelectField } from "@/components/ui/select-field";
 import { ApiKeyPlacementFormOptions } from "@/config/constants/dropdowns/integrations/api-key-placement-form.options";
 import {
   ApiKeyPlacements,
@@ -75,17 +75,12 @@ const ApiKeyFields: FC = () => {
           <FormItem>
             <FormLabel>Send it in</FormLabel>
             <FormControl>
-              <NativeSelect
+              <SelectField
                 className="w-full"
                 value={field.value}
-                onChange={(event) => changePlacement(event.target.value as ApiKeyPlacement)}
-              >
-                {ApiKeyPlacementFormOptions.map((option) => (
-                  <NativeSelectOption key={option.id} value={option.id}>
-                    {option.label}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
+                onValueChange={changePlacement}
+                options={ApiKeyPlacementFormOptions}
+              />
             </FormControl>
           </FormItem>
         )}

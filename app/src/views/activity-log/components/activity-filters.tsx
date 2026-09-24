@@ -3,7 +3,7 @@
 import type { FC } from "react";
 import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { ActivityActorTypeFilterOptions } from "@/config/constants/dropdowns/activity/activity-actor-filter.options";
 import {
   ActivityEntityGroupFilterOptions,
@@ -67,48 +67,37 @@ export const ActivityFilters: FC<ActivityFiltersProps> = ({
           className="pl-9"
         />
       </div>
-      <NativeSelect
+      <SelectField<ActorFilter>
         aria-label="Filter by actor"
         value={actor}
-        onChange={(event) => onActorChange(event.target.value as ActorFilter)}
-      >
-        {ActivityActorTypeFilterOptions.map((option) => (
-          <NativeSelectOption key={option.id} value={option.id}>
-            {option.label}
-          </NativeSelectOption>
-        ))}
-        {people.length > 0 ? (
-          <NativeSelectOptGroup label="Team members">
-            {people.map((person) => (
-              <NativeSelectOption key={person.id} value={`${USER_ACTOR_PREFIX}${person.id}`}>
-                {person.name}
-              </NativeSelectOption>
-            ))}
-          </NativeSelectOptGroup>
-        ) : null}
-      </NativeSelect>
-      <NativeSelect
+        onValueChange={onActorChange}
+        options={ActivityActorTypeFilterOptions}
+        groups={
+          people.length > 0
+            ? [
+                {
+                  label: "Team members",
+                  options: people.map((person) => ({
+                    id: `${USER_ACTOR_PREFIX}${person.id}` as ActorFilter,
+                    label: person.name,
+                  })),
+                },
+              ]
+            : undefined
+        }
+      />
+      <SelectField
         aria-label="Filter by entity type"
         value={entityGroup}
-        onChange={(event) => onEntityGroupChange(event.target.value as ActivityEntityGroup | "all")}
-      >
-        {ActivityEntityGroupFilterOptions.map((option) => (
-          <NativeSelectOption key={option.id} value={option.id}>
-            {option.label}
-          </NativeSelectOption>
-        ))}
-      </NativeSelect>
-      <NativeSelect
+        onValueChange={onEntityGroupChange}
+        options={ActivityEntityGroupFilterOptions}
+      />
+      <SelectField
         aria-label="Filter by date range"
         value={period}
-        onChange={(event) => onPeriodChange(event.target.value as ActivityPeriod)}
-      >
-        {ActivityPeriodFilterOptions.map((option) => (
-          <NativeSelectOption key={option.id} value={option.id}>
-            {option.label}
-          </NativeSelectOption>
-        ))}
-      </NativeSelect>
+        onValueChange={onPeriodChange}
+        options={ActivityPeriodFilterOptions}
+      />
     </div>
     {isCustom ? (
       <div className="flex flex-wrap items-center gap-2">

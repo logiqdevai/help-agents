@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { CrmRecordTypeFormOptions } from "@/config/constants/dropdowns/integrations/crm-record-type-form.options";
 import { useSyncContactFromCrm } from "@/features/contacts/hooks/use-contacts";
 import { CrmRecordTypes } from "@/features/contacts/interfaces/contacts.interfaces";
@@ -125,13 +125,15 @@ export const SyncContactDialog: FC<SyncContactDialogProps> = ({
                   <FormItem>
                     <FormLabel>Record type</FormLabel>
                     <FormControl>
-                      <NativeSelect className="w-full" {...field}>
-                        {CrmRecordTypeFormOptions.map((option) => (
-                          <NativeSelectOption key={option.id} value={option.id}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
+                      <SelectField
+                        className="w-full"
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        onBlur={field.onBlur}
+                        ref={field.ref}
+                        options={CrmRecordTypeFormOptions}
+                      />
                     </FormControl>
                   </FormItem>
                 )}

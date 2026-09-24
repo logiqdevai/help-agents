@@ -7,9 +7,9 @@ import { Card } from "@/components/ui/card";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ErrorState } from "@/components/ui/error-state";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { PageHeader } from "@/components/ui/page-header";
 import { PaginationControls } from "@/components/ui/pagination-controls";
+import { SelectField } from "@/components/ui/select-field";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertStatusFormOptions } from "@/config/constants/dropdowns/alerts/alert-status-form.options";
 import { AlertTypeFilterOptions } from "@/config/constants/dropdowns/alerts/alert-type-filter.options";
@@ -104,21 +104,16 @@ const AlertsPage: FC = () => {
                 ))}
               </TabsList>
             </Tabs>
-            <NativeSelect
+            <SelectField
               size="sm"
               aria-label="Filter by alert type"
               value={type}
-              onChange={(event) => {
-                setType(event.target.value as AlertType | "all");
+              onValueChange={(value) => {
+                setType(value);
                 setPage(1);
               }}
-            >
-              {AlertTypeFilterOptions.map((option) => (
-                <NativeSelectOption key={option.id} value={option.id}>
-                  {option.label}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
+              options={AlertTypeFilterOptions}
+            />
           </div>
 
           {alerts.isError ? (

@@ -2,8 +2,8 @@
 
 import type { FC } from "react";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { SegmentedControl } from "@/components/ui/segmented-control";
+import { SelectField } from "@/components/ui/select-field";
 import { UsagePeriodFormOptions } from "@/config/constants/dropdowns/analytics/usage-period-form.options";
 import type { AgentFilterOption, UsagePeriod } from "@/features/analytics/interfaces/analytics.interfaces";
 import { ALL_AGENTS } from "@/views/analytics/hooks/use-usage-filters";
@@ -70,18 +70,12 @@ export const UsageToolbar: FC<UsageToolbarProps> = ({
         ) : null}
       </div>
     ) : null}
-    <NativeSelect
+    <SelectField
       aria-label="Filter by agent"
       value={agentId}
-      onChange={(event) => onAgentChange(event.target.value)}
+      onValueChange={onAgentChange}
       className="ml-auto"
-    >
-      <NativeSelectOption value={ALL_AGENTS}>All agents</NativeSelectOption>
-      {agents.map((agent) => (
-        <NativeSelectOption key={agent.id} value={agent.id}>
-          {agent.name}
-        </NativeSelectOption>
-      ))}
-    </NativeSelect>
+      options={[{ id: ALL_AGENTS, label: "All agents" }, ...agents.map((agent) => ({ id: agent.id, label: agent.name }))]}
+    />
   </div>
 );

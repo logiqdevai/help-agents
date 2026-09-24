@@ -6,7 +6,7 @@ import { Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { SelectField } from "@/components/ui/select-field";
 import { AutomationActionTypeFormOptions } from "@/config/constants/dropdowns/agents/automation-action-type-form.options";
 import { AutomationDelayUnitFormOptions } from "@/config/constants/dropdowns/agents/automation-delay-unit-form.options";
 import type { Agent } from "@/features/agents/interfaces/agents.interfaces";
@@ -45,13 +45,15 @@ export const AutomationActionEditor: FC<AutomationActionEditorProps> = ({ contro
             <FormItem className="min-w-0 flex-1">
               <FormLabel className="sr-only">Action {index + 1}</FormLabel>
               <FormControl>
-                <NativeSelect className="w-full" {...field}>
-                  {AutomationActionTypeFormOptions.map((option) => (
-                    <NativeSelectOption key={option.id} value={option.id}>
-                      {option.label}
-                    </NativeSelectOption>
-                  ))}
-                </NativeSelect>
+                <SelectField
+                  className="w-full"
+                  name={field.name}
+                  ref={field.ref}
+                  onBlur={field.onBlur}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  options={AutomationActionTypeFormOptions}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -77,13 +79,15 @@ export const AutomationActionEditor: FC<AutomationActionEditorProps> = ({ contro
                 render={({ field: unitField }) => (
                   <FormItem>
                     <FormControl>
-                      <NativeSelect aria-label="Unit of time" {...unitField}>
-                        {AutomationDelayUnitFormOptions.map((option) => (
-                          <NativeSelectOption key={option.id} value={option.id}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
+                      <SelectField
+                        aria-label="Unit of time"
+                        name={unitField.name}
+                        ref={unitField.ref}
+                        onBlur={unitField.onBlur}
+                        value={unitField.value}
+                        onValueChange={unitField.onChange}
+                        options={AutomationDelayUnitFormOptions}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
