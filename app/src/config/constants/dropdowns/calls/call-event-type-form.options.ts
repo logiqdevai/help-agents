@@ -1,0 +1,40 @@
+// Event types are open-ended strings written by the platform while a call runs.
+export const CallEventTypeFormOptions: { id: string; label: string }[] = [
+  { id: "call.requested", label: "Call requested" },
+  { id: "call.personalized", label: "Personalization prepared" },
+  { id: "call.dialed", label: "Dialing started" },
+  { id: "call.received", label: "Inbound call received" },
+  { id: "call.started", label: "Call started" },
+  { id: "call.ended", label: "Call ended" },
+  { id: "call.failed", label: "Call failed" },
+  { id: "call.canceled", label: "Call canceled" },
+  { id: "call.stop_requested", label: "Stop requested" },
+  { id: "call.closed", label: "Call closed automatically" },
+  { id: "call.reconciled", label: "Call result recovered" },
+  { id: "call.analyzed", label: "Call analysed" },
+  { id: "analysis.failed", label: "Call analysis failed" },
+  { id: "call.transfer_started", label: "Transfer started" },
+  { id: "call.transfer_bridged", label: "Call transferred" },
+  { id: "call.transfer_cancelled", label: "Transfer not completed" },
+  { id: "call.transfer_ended", label: "Transfer finished" },
+  { id: "voicemail.detected", label: "Voicemail detected" },
+  { id: "crm.contact_linked", label: "CRM contact found" },
+  { id: "crm.contact_not_found", label: "CRM contact not found" },
+  { id: "crm.lookup_failed", label: "CRM lookup failed" },
+  { id: "crm.personalization_failed", label: "CRM personalization failed" },
+  { id: "crm_sync.request_failed", label: "CRM update could not start" },
+  { id: "action.requested", label: "Action requested" },
+  { id: "action.executed", label: "Action carried out" },
+  { id: "action.rejected", label: "Action rejected" },
+  { id: "action.failed", label: "Action failed" },
+  { id: "cost.failed", label: "Cost calculation failed" },
+  { id: "scheduling.failed", label: "Follow-up scheduling failed" },
+  { id: "automation.failed", label: "Automation failed" },
+  { id: "recording.stored", label: "Recording stored" },
+  { id: "recording.failed", label: "Recording could not be stored" },
+  { id: "recording.deleted", label: "Recording removed" },
+];
+
+export function getCallEventTypeLabel(type: string): string {
+  return CallEventTypeFormOptions.find((option) => option.id === type)?.label ?? type;
+}

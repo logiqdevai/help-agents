@@ -28,7 +28,10 @@ import { ProvisionPhoneNumberDto } from './dto/provision-phone-number.dto';
 import { UpdatePhoneNumberDto } from './dto/update-phone-number.dto';
 import { PhoneNumberResponse } from './interfaces/phone-number.interface';
 
-const WITH_AGENT = { agent: { select: { id: true, name: true } } } satisfies Prisma.PhoneNumberInclude;
+const WITH_AGENT = {
+  agent: { select: { id: true, name: true } },
+  _count: { select: { calls: true } },
+} satisfies Prisma.PhoneNumberInclude;
 type PhoneNumberRow = Prisma.PhoneNumberGetPayload<{ include: typeof WITH_AGENT }>;
 
 @Injectable()
@@ -305,6 +308,7 @@ export class PhoneNumbersService {
       status: phone.status,
       last_error: phone.last_error,
       agent: phone.agent ? { id: phone.agent.id, name: phone.agent.name } : null,
+      call_count: phone._count.calls,
       ...(phone.source === PhoneNumberSource.BYO && {
         setup: {
           inbound_sip_address: byo?.inbound_sip_address ?? null,

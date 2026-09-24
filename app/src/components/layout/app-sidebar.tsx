@@ -21,6 +21,7 @@ import {
   SecondaryNavItems,
   type NavItem,
 } from "@/config/constants/navigation";
+import { AccountMenu } from "@/components/layout/account-menu";
 import { Routes } from "@/routes/routes";
 
 function NavMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
@@ -68,6 +69,7 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter className="border-t border-sidebar-border">
         <NavMenu items={SecondaryNavItems} pathname={pathname} />
+        <AccountMenu />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

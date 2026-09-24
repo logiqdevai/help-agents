@@ -17,7 +17,7 @@ import { CrmHttpError } from './crm/http/crm-http.client';
 import { CreateIntegrationDto } from './dto/create-integration.dto';
 import { UpdateIntegrationDto } from './dto/update-integration.dto';
 import { IntegrationQueryType } from './dto/integration-query.schema';
-import { IntegrationEntity, ProviderInfoEntity } from './entities/integration.entity';
+import { IntegrationAgentEntity, IntegrationEntity, ProviderInfoEntity } from './entities/integration.entity';
 import { PROVIDER_CATALOGUE } from './interfaces/integration.interface';
 import { OAuthTokenClient } from './oauth/oauth-token.client';
 import { IntegrationCredentialsService } from './services/integration-credentials.service';
@@ -46,15 +46,19 @@ export class IntegrationsService {
   ) {}
 
   providers(): ProviderInfoEntity[] {
-    return Object.values(PROVIDER_CATALOGUE).map((p) => ({
-      provider: p.provider,
-      display_name: p.display_name,
-      category: p.category,
-      auth_types: p.auth_types,
-      oauth_available: !!p.oauth_env_prefix && this.oauth.isConfigured(p.provider),
-      requires_base_url: p.requires_base_url,
-      supports_crm_actions: p.has_crm_adapter,
-    }));
+    return Object.values(PROVIDER_CATALOGUE).map((p) => {
+      const oauthAvailable = !!p.oauth_env_prefix && this.oauth.isConfigured(p.provider);
+      return {
+        provider: p.provider,
+        display_name: p.display_name,
+        category: p.category,
+        auth_types: p.auth_types,
+        oauth_available: oauthAvailable,
+        requires_base_url: p.requires_base_url,
+        supports_crm_actions: p.has_crm_adapter,
+        coming_soon: !p.has_crm_adapter && !oauthAvailable,
+      };
+    });
   }
 
   async findAll(companyUuid: string, query: IntegrationQueryType) {
@@ -70,11 +74,37 @@ export class IntegrationsService {
       this.prisma.integration.findMany({ where, orderBy: { created_at: 'desc' }, ...skipTake(query) }),
       this.prisma.integration.count({ where }),
     ]);
-    return paginated(items.map((i) => this.toView(i)), total, query.page, query.limit);
+    const counts = await this.agentCounts(companyUuid, items.map((i) => i.id));
+    return paginated(items.map((i) => this.toView(i, counts.get(i.id) ?? 0)), total, query.page, query.limit);
   }
 
   async findOne(companyUuid: string, id: string): Promise<IntegrationEntity> {
-    return this.toView(await this.load(companyUuid, id));
+    const integration = await this.load(companyUuid, id);
+    const counts = await this.agentCounts(companyUuid, [integration.id]);
+    return this.toView(integration, counts.get(integration.id) ?? 0);
+  }
+
+  /** Agents that use this connection, with the CRM tools each one is allowed to call. */
+  async agents(companyUuid: string, id: string): Promise<{ data: IntegrationAgentEntity[] }> {
+    const integration = await this.load(companyUuid, id);
+    const agents = await this.prisma.agent.findMany({
+      where: { company_uuid: companyUuid, crm_integration_uuid: integration.id, deleted_at: null },
+      orderBy: { name: 'asc' },
+      select: {
+        id: true,
+        name: true,
+        status: true,
+        crm_tools: { select: { crm_tool: { select: { id: true, key: true, name: true } } } },
+      },
+    });
+    return {
+      data: agents.map((a) => ({
+        id: a.id,
+        name: a.name,
+        status: a.status,
+        allowed_tools: a.crm_tools.map((t) => t.crm_tool).sort((x, y) => x.name.localeCompare(y.name)),
+      })),
+    };
   }
 
   async create(ctx: CompanyContextData, dto: CreateIntegrationDto, ip?: string): Promise<IntegrationEntity> {
@@ -217,7 +247,7 @@ export class IntegrationsService {
     }
   }
 
-  toView(integration: Integration): IntegrationEntity {
+  toView(integration: Integration, agentCount = 0): IntegrationEntity {
     const { credentials_encrypted, ...rest } = integration;
     return {
       id: rest.id,
@@ -235,6 +265,7 @@ export class IntegrationsService {
       config: (rest.config as Record<string, any> | null) ?? null,
       last_error: rest.last_error,
       last_verified_at: rest.last_verified_at,
+      agent_count: agentCount,
       created_at: rest.created_at,
       updated_at: rest.updated_at,
     };
@@ -253,6 +284,16 @@ export class IntegrationsService {
       throw new BadRequestException('This integration is not a CRM connection');
     }
     return integration;
+  }
+
+  private async agentCounts(companyUuid: string, integrationIds: string[]): Promise<Map<string, number>> {
+    if (!integrationIds.length) return new Map();
+    const rows = await this.prisma.agent.groupBy({
+      by: ['crm_integration_uuid'],
+      where: { company_uuid: companyUuid, crm_integration_uuid: { in: integrationIds }, deleted_at: null },
+      _count: { _all: true },
+    });
+    return new Map(rows.map((r) => [r.crm_integration_uuid as string, r._count._all]));
   }
 
   private allowHttp(): boolean {

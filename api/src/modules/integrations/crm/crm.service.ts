@@ -74,14 +74,13 @@ export class CrmService {
   ) {}
 
   /** CRM tools available for a connection: platform catalogue for its provider + tools defined on the connection. */
-  async listToolsForIntegration(companyUuid: string, integrationUuid: string): Promise<CrmTool[]> {
+  async listToolsForIntegration(companyUuid: string, integrationUuid: string, includeInactive = false): Promise<CrmTool[]> {
     const integration = await this.loadCrm(companyUuid, integrationUuid, false);
     return this.prisma.crmTool.findMany({
       where: {
-        is_active: true,
         OR: [
-          { provider: integration.provider, company_uuid: null, integration_uuid: null },
-          { integration_uuid: integration.id, company_uuid: companyUuid },
+          { provider: integration.provider, company_uuid: null, integration_uuid: null, is_active: true },
+          { integration_uuid: integration.id, company_uuid: companyUuid, ...(!includeInactive && { is_active: true }) },
         ],
       },
       orderBy: [{ category: 'asc' }, { name: 'asc' }],

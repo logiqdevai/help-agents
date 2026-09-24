@@ -88,11 +88,14 @@ export class OAuthService {
     return { authorization_url: `${cfg.authorize_url}?${params.toString()}` };
   }
 
-  /** Completes the flow and returns the frontend URL to redirect the browser to. */
+  /**
+   * Completes the flow and returns the frontend URL to redirect the browser to:
+   * `/integrations/oauth/callback?connected=<provider>&integration=<id>` or `?error=<code>`.
+   */
   async handleCallback(query: { code?: string; state?: string; error?: string }): Promise<string> {
     const target = (result: Record<string, string>) => {
       const base = (this.config.get<string>('APP_URL') ?? '').replace(/\/+$/, '');
-      return `${base}/integrations?${new URLSearchParams(result).toString()}`;
+      return `${base}/integrations/oauth/callback?${new URLSearchParams(result).toString()}`;
     };
 
     let state: OAuthState;

@@ -42,6 +42,16 @@ export interface KnowledgeSourceResponse {
   used_by: KnowledgeAgentRef[];
 }
 
+export interface KnowledgeStatsResponse {
+  total: number;
+  /** Ready and switched on, i.e. actually usable by agents. */
+  ready: number;
+  processing: number;
+  failed: number;
+  /** Switched off by the user. */
+  disabled: number;
+}
+
 export interface KnowledgeSourceDetailResponse extends KnowledgeSourceResponse {
   content: string | null;
   versions: KnowledgeVersionSummary[];

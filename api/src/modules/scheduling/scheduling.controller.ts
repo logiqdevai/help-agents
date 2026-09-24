@@ -22,7 +22,7 @@ import { UpdateScheduledCallDto } from './dto/update-scheduled-call.dto';
 import { CancelForContactDto } from './dto/cancel-for-contact.dto';
 import { UpsertRetryRuleDto } from './dto/upsert-retry-rule.dto';
 import { ScheduledCallQuerySchema, ScheduledCallQueryType } from './dto/scheduled-call-query.schema';
-import { ScheduledCallEntity, RetryRuleEntity } from './entities/scheduling.entity';
+import { ScheduledCallEntity, ScheduledCallCounts, RetryRuleEntity } from './entities/scheduling.entity';
 
 @ApiTags('Scheduled Calls')
 @CompanyAuth()
@@ -41,8 +41,9 @@ export class ScheduledCallsController {
   @Get()
   @RequirePermissions(Permissions.SCHEDULING_READ)
   @ApiOperation({ summary: 'List scheduled calls and pending follow-ups' })
-  @ApiQuery({ name: 'status', required: false })
+  @ApiQuery({ name: 'status', required: false, description: 'Comma separated scheduled call statuses' })
   @ApiQuery({ name: 'source', required: false })
+  @ApiQuery({ name: 'search', required: false, description: 'Contact name or phone' })
   @ApiQuery({ name: 'agent_uuid', required: false })
   @ApiQuery({ name: 'contact_uuid', required: false })
   @ApiQuery({ name: 'from', required: false })
@@ -54,6 +55,14 @@ export class ScheduledCallsController {
     @Query(new ZodValidationPipe(ScheduledCallQuerySchema)) query: ScheduledCallQueryType,
   ) {
     return this.scheduledCalls.findAll(ctx, query);
+  }
+
+  @Get('counts')
+  @RequirePermissions(Permissions.SCHEDULING_READ)
+  @ApiOperation({ summary: 'Counts per tab: pending, completed, canceled / skipped' })
+  @ApiResponse({ status: 200, type: ScheduledCallCounts })
+  getCounts(@CompanyContext() ctx: CompanyContextData) {
+    return this.scheduledCalls.getCounts(ctx);
   }
 
   @Post('cancel-for-contact')

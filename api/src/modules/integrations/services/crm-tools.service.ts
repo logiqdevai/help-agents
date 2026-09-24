@@ -22,8 +22,8 @@ export class CrmToolsService {
   ) {}
 
   /** Only the tools of the connected CRM: platform catalogue for its provider + tools defined on the connection. */
-  async list(companyUuid: string, integrationUuid: string): Promise<CrmToolEntity[]> {
-    const tools = await this.crm.listToolsForIntegration(companyUuid, integrationUuid);
+  async list(companyUuid: string, integrationUuid: string, includeInactive = false): Promise<CrmToolEntity[]> {
+    const tools = await this.crm.listToolsForIntegration(companyUuid, integrationUuid, includeInactive);
     return tools.map((t) => this.toView(t));
   }
 

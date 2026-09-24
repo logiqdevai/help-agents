@@ -20,7 +20,9 @@ export class CompaniesService {
   async listForUser(userUuid: string) {
     const memberships = await this.prisma.companyMember.findMany({
       where: { user_uuid: userUuid, company: { deleted_at: null } },
-      include: { company: { select: { id: true, name: true, timezone: true } } },
+      include: {
+        company: { select: { id: true, name: true, timezone: true, _count: { select: { members: true } } } },
+      },
       orderBy: { created_at: 'asc' },
     });
 
@@ -29,6 +31,7 @@ export class CompaniesService {
         id: m.company.id,
         name: m.company.name,
         timezone: m.company.timezone,
+        member_count: m.company._count.members,
         role: m.role,
       })),
     };
@@ -50,6 +53,7 @@ export class CompaniesService {
       recording_retention_days: company.recording_retention_days,
       deletion_requested_at: company.deletion_requested_at,
       created_at: company.created_at,
+      updated_at: company.updated_at,
       member_count,
       my_role: ctx.role,
       my_permissions: ctx.permissions,

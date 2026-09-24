@@ -22,12 +22,14 @@ import { ConnectKnowledgeDto } from './dto/connect-knowledge.dto';
 import { CreateKnowledgeDto } from './dto/create-knowledge.dto';
 import { CreateKnowledgeVersionDto } from './dto/create-knowledge-version.dto';
 import { KnowledgeQueryType } from './dto/knowledge-query.schema';
+import { ReplaceKnowledgeAgentsDto } from './dto/replace-knowledge-agents.dto';
 import { UpdateKnowledgeDto } from './dto/update-knowledge.dto';
 import { UploadKnowledgeDto } from './dto/upload-knowledge.dto';
 import { INTERNAL_SOURCE_TYPES, KnowledgeConnectorRegistry } from './connectors/knowledge-connector.registry';
 import {
   KnowledgeSourceDetailResponse,
   KnowledgeSourceResponse,
+  KnowledgeStatsResponse,
   KnowledgeVersionDetail,
   KnowledgeVersionSummary,
 } from './interfaces/knowledge.interface';
@@ -74,6 +76,7 @@ export class KnowledgeService {
       ...(query.status && { status: query.status }),
       ...(query.type && { type: query.type }),
       ...(query.is_enabled !== undefined && { is_enabled: query.is_enabled }),
+      ...(query.agent_uuid && { agents: { some: { agent_uuid: query.agent_uuid, agent: { deleted_at: null } } } }),
       ...(query.search && { name: { contains: query.search, mode: 'insensitive' } }),
     };
 
@@ -89,6 +92,18 @@ export class KnowledgeService {
     ]);
 
     return paginated(items.map(toSourceResponse), total, query.page, query.limit);
+  }
+
+  async stats(ctx: CompanyContextData): Promise<KnowledgeStatsResponse> {
+    const where: Prisma.KnowledgeSourceWhereInput = { company_uuid: ctx.company_uuid, deleted_at: null };
+    const [total, ready, processing, failed, disabled] = await Promise.all([
+      this.prisma.knowledgeSource.count({ where }),
+      this.prisma.knowledgeSource.count({ where: { ...where, status: KnowledgeStatus.READY, is_enabled: true } }),
+      this.prisma.knowledgeSource.count({ where: { ...where, status: KnowledgeStatus.PROCESSING } }),
+      this.prisma.knowledgeSource.count({ where: { ...where, status: KnowledgeStatus.FAILED } }),
+      this.prisma.knowledgeSource.count({ where: { ...where, is_enabled: false } }),
+    ]);
+    return { total, ready, processing, failed, disabled };
   }
 
   async findOne(ctx: CompanyContextData, id: string): Promise<KnowledgeSourceDetailResponse> {
@@ -214,6 +229,48 @@ export class KnowledgeService {
       { name: updated.name },
     );
     return this.toDetail(updated);
+  }
+
+  async replaceAgents(
+    ctx: CompanyContextData,
+    id: string,
+    dto: ReplaceKnowledgeAgentsDto,
+  ): Promise<KnowledgeSourceDetailResponse> {
+    const source = await this.getSource(ctx.company_uuid, id);
+    const next = [...new Set(dto.agent_uuids)];
+
+    if (next.length) {
+      const found = await this.prisma.agent.count({
+        where: { id: { in: next }, company_uuid: ctx.company_uuid, deleted_at: null },
+      });
+      if (found !== next.length) throw new BadRequestException('Some agents were not found');
+    }
+
+    const previous = await this.processing.attachedAgentIds(id);
+    await this.prisma.$transaction([
+      this.prisma.agentKnowledgeSource.deleteMany({ where: { source_uuid: id } }),
+      this.prisma.agentKnowledgeSource.createMany({ data: next.map((agent_uuid) => ({ agent_uuid, source_uuid: id })) }),
+    ]);
+
+    const changed = [
+      ...previous.filter((agentId) => !next.includes(agentId)),
+      ...next.filter((agentId) => !previous.includes(agentId)),
+    ];
+    if (changed.length) {
+      setImmediate(async () => {
+        try {
+          await this.processing.resyncAgents(changed);
+        } catch (error) {
+          this.logger.error(`Re-sync after changing agents of ${id} failed: ${error?.message}`);
+        }
+      });
+    }
+
+    await this.activity.logFor(ctx, 'knowledge.agents_updated', 'knowledge_source', id, {
+      name: source.name,
+      agent_count: next.length,
+    });
+    return this.findOne(ctx, id);
   }
 
   async createVersion(

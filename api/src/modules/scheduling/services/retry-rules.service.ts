@@ -6,10 +6,11 @@ import { CompanyContextData } from '@/shared/decorators/company.decorator';
 import { ActivityLogService } from '@/shared/services/activity-log/activity-log.service';
 import { AgentAccessService } from '@/shared/services/agent-access/agent-access.service';
 import { UpsertRetryRuleDto } from '../dto/upsert-retry-rule.dto';
+import { DEFAULT_MAX_ATTEMPTS } from '../utils/scheduling.utils';
 
 const DEFAULTS = {
   is_enabled: false,
-  max_attempts: 3,
+  max_attempts: DEFAULT_MAX_ATTEMPTS,
   delays_minutes: [120, 1440],
   retry_on: [RetryTrigger.NO_ANSWER, RetryTrigger.BUSY, RetryTrigger.FAILED],
   calling_hours_override: null,

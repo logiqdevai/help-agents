@@ -6,9 +6,16 @@ class CallAgentRef {
   @ApiProperty() name: string;
 }
 
+class CallIntegrationRef {
+  @ApiProperty() id: string;
+  @ApiProperty() name: string;
+}
+
 class CallContactRef {
   @ApiProperty() id: string;
   @ApiProperty({ nullable: true }) name: string | null;
+  @ApiProperty({ type: CallIntegrationRef, nullable: true, description: 'CRM connection the contact belongs to' })
+  integration: CallIntegrationRef | null;
 }
 
 class CallOutcomeRef {
@@ -36,9 +43,22 @@ export class CallListItem {
   @ApiProperty() is_test: boolean;
   @ApiProperty() has_recording: boolean;
   @ApiProperty({ description: 'A CRM update or other action failed and needs attention' }) has_pending_issues: boolean;
+  @ApiProperty({ nullable: true, description: 'Why a failed call failed, in plain language' }) failure_reason: string | null;
 }
 
 export class CallDetail extends CallListItem {
+  @ApiProperty({ nullable: true }) answered_at: Date | null;
+  @ApiProperty({ nullable: true }) ended_at: Date | null;
+  @ApiProperty() attempt_number: number;
+  @ApiProperty({ nullable: true }) in_voicemail: boolean | null;
+  @ApiProperty() transferred: boolean;
+  @ApiProperty({ nullable: true }) error_message: string | null;
+  @ApiProperty({ description: 'Post-call analysis state: PENDING | PROCESSING | COMPLETED | FAILED' }) analysis_status: string;
+  @ApiProperty({ description: 'Knowledge sources the agent had at call time', type: 'array', items: { type: 'object' } })
+  knowledge_used: Array<{ name: string; version: number | null }>;
+  @ApiProperty({ description: 'Details given to the agent before dialing: { key, label, value }', type: 'array', items: { type: 'object' } })
+  personalization: Array<{ key: string; label: string; value: string }>;
+  @ApiProperty({ nullable: true, description: 'Language the agent was configured with at call time' }) agent_language: string | null;
   @ApiProperty({ nullable: true }) summary: string | null;
   @ApiProperty({ description: 'Transcript segments: { role: agent|customer, text, start?, end? }', type: 'array', items: { type: 'object' } })
   transcript: Array<Record<string, any>>;

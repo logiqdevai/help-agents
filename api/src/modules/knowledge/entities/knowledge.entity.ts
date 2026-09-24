@@ -92,6 +92,23 @@ export class KnowledgeSource {
   used_by: KnowledgeAgent[];
 }
 
+export class KnowledgeStats {
+  @ApiProperty()
+  total: number;
+
+  @ApiProperty({ description: 'Ready and switched on, i.e. actually usable by agents' })
+  ready: number;
+
+  @ApiProperty()
+  processing: number;
+
+  @ApiProperty()
+  failed: number;
+
+  @ApiProperty({ description: 'Switched off by the user' })
+  disabled: number;
+}
+
 export class KnowledgeSourceDetail extends KnowledgeSource {
   @ApiProperty({ nullable: true, description: 'Text of the current version' })
   content: string | null;

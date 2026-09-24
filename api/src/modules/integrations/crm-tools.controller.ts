@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Ip, Param, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Ip, Param, ParseUUIDPipe, Patch, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CompanyAuth, CompanyContext, CompanyContextData, RequirePermissions } from '@/shared/decorators/company.decorator';
 import { Permissions } from '@/shared/permissions/permissions';
+import { ZodValidationPipe } from '@/shared/pipes/zod.validation.pipe';
 import { CrmToolsService } from './services/crm-tools.service';
 import { CreateCrmToolDto } from './dto/create-crm-tool.dto';
 import { UpdateCrmToolDto } from './dto/update-crm-tool.dto';
+import { CrmToolsQuerySchema, CrmToolsQueryType } from './dto/integration-query.schema';
 import { CrmToolEntity } from './entities/integration.entity';
 
 @ApiTags('Integrations - CRM tools')
@@ -17,8 +19,12 @@ export class CrmToolsController {
   @RequirePermissions(Permissions.INTEGRATIONS_READ)
   @ApiOperation({ summary: 'Tools (actions) available for this CRM connection' })
   @ApiResponse({ status: 200, type: [CrmToolEntity] })
-  list(@CompanyContext('company_uuid') companyUuid: string, @Param('id', ParseUUIDPipe) id: string) {
-    return this.toolsService.list(companyUuid, id).then((data) => ({ data }));
+  list(
+    @CompanyContext('company_uuid') companyUuid: string,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Query(new ZodValidationPipe(CrmToolsQuerySchema)) query: CrmToolsQueryType,
+  ) {
+    return this.toolsService.list(companyUuid, id, query.include_inactive).then((data) => ({ data }));
   }
 
   @Post()

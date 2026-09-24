@@ -1,12 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ActionStatus, AlertStatus, CallStatus, ScheduledCallStatus } from 'generated/prisma';
+import { ActionStatus, AgentStatus, AlertStatus, CallStatus, ScheduledCallStatus } from 'generated/prisma';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { AgentAccessService } from '@/shared/services/agent-access/agent-access.service';
 import type { CompanyContextData } from '@/shared/decorators/company.decorator';
 import { CallScope, CallStatsService } from './call-stats.service';
 import { DashboardQueryType } from './dto/period-query.schema';
-import { DashboardResponse } from './interfaces/dashboard.interface';
-import { defaultBucket, resolvePeriod, round, toNumber } from './utils/period.utils';
+import {
+  DashboardAttentionCall,
+  DashboardFollowUp,
+  DashboardMostActiveAgent,
+  DashboardRecentCall,
+  DashboardResponse,
+} from './interfaces/dashboard.interface';
+import {
+  defaultBucket,
+  monthToDatePeriod,
+  previousPeriod,
+  projectMonthCost,
+  resolvePeriod,
+  round,
+  toNumber,
+} from './utils/period.utils';
 
 const ATTENTION_WINDOW_DAYS = 7;
 const LIST_LIMIT = 20;
@@ -36,12 +50,20 @@ export class DashboardService {
     const where = this.stats.buildWhere(scope, period);
     const bucket = defaultBucket(period);
     const todayPeriod = period.period === 'today' ? period : resolvePeriod({ period: 'today' }, company.timezone);
+    const previous = previousPeriod(period);
+    const previousWhere = this.stats.buildWhere(scope, previous);
+    const month = monthToDatePeriod(company.timezone);
 
     const [
       totals,
+      conversions,
+      previousTotals,
+      previousConversions,
       todayCount,
       outcomes,
       points,
+      previousPoints,
+      monthTotals,
       topAgents,
       recentCalls,
       attention,
@@ -49,11 +71,16 @@ export class DashboardService {
       openAlerts,
     ] = await Promise.all([
       this.stats.totals(where),
+      this.stats.conversions(where),
+      this.stats.totals(previousWhere),
+      this.stats.conversions(previousWhere),
       period.period === 'today'
         ? Promise.resolve(null)
         : this.prisma.call.count({ where: this.stats.buildWhere(scope, todayPeriod) }),
       this.stats.outcomeBreakdown(where),
       this.stats.timeseries(scope, period, bucket),
+      this.stats.timeseries(scope, previous, bucket),
+      this.stats.totals(this.stats.buildWhere(scope, month.period)),
       this.mostActiveAgents(where),
       this.recentCalls(ctx.company_uuid, accessibleAgentIds, query.include_test),
       this.failedCallsNeedingAttention(ctx.company_uuid, accessibleAgentIds, query.include_test),
@@ -81,13 +108,23 @@ export class DashboardService {
         calls_today: todayCount ?? totals.total_calls,
         successful_calls: totals.successful_calls,
         success_rate: successRate,
+        interested_leads: conversions.interested_leads,
+        appointments_booked: conversions.appointments_booked,
         average_call_duration_seconds: totals.average_duration_seconds,
         ai_cost: totals.costs.ai_cost,
         telephony_cost: totals.costs.telephony_cost,
         total_cost: totals.costs.total_cost,
         currency: totals.costs.currency,
+        previous: {
+          total_calls: previousTotals.total_calls,
+          successful_calls: previousTotals.successful_calls,
+          interested_leads: previousConversions.interested_leads,
+          appointments_booked: previousConversions.appointments_booked,
+          average_call_duration_seconds: previousTotals.average_duration_seconds,
+          total_cost: previousTotals.costs.total_cost,
+        },
       },
-      calls_over_time: { bucket, points },
+      calls_over_time: { bucket, points, previous_points: previousPoints },
       successful_vs_unsuccessful: {
         successful: totals.successful_calls,
         unsuccessful: totals.unsuccessful_calls,
@@ -95,7 +132,10 @@ export class DashboardService {
       },
       outcome_breakdown: outcomes,
       most_active_agents: topAgents,
-      estimated_costs: totals.costs,
+      estimated_costs: {
+        ...totals.costs,
+        month_to_date: projectMonthCost(monthTotals.costs.total_cost, month),
+      },
       recent_calls: recentCalls,
       failed_calls_needing_attention: attention,
       pending_follow_ups: pendingFollowUps,
@@ -103,7 +143,9 @@ export class DashboardService {
     };
   }
 
-  private async mostActiveAgents(where: Parameters<CallStatsService['totals']>[0]) {
+  private async mostActiveAgents(
+    where: Parameters<CallStatsService['totals']>[0],
+  ): Promise<DashboardMostActiveAgent[]> {
     const top = await this.prisma.call.groupBy({
       by: ['agent_uuid'],
       where,
@@ -122,17 +164,19 @@ export class DashboardService {
       }),
       this.prisma.agent.findMany({
         where: { id: { in: agentIds } },
-        select: { id: true, name: true },
+        select: { id: true, name: true, status: true },
       }),
     ]);
 
     return top.map((t) => {
       const successful = successRows.find((s) => s.agent_uuid === t.agent_uuid)?._count._all ?? 0;
       const calls = t._count._all;
+      const agent = agents.find((a) => a.id === t.agent_uuid);
       return {
         agent: {
           id: t.agent_uuid,
-          name: agents.find((a) => a.id === t.agent_uuid)?.name ?? 'Unknown agent',
+          name: agent?.name ?? 'Unknown agent',
+          status: agent?.status ?? AgentStatus.INACTIVE,
         },
         calls,
         successful_calls: successful,
@@ -141,7 +185,11 @@ export class DashboardService {
     });
   }
 
-  private async recentCalls(companyUuid: string, agentIds: string[] | null, includeTest: boolean) {
+  private async recentCalls(
+    companyUuid: string,
+    agentIds: string[] | null,
+    includeTest: boolean,
+  ): Promise<DashboardRecentCall[]> {
     const calls = await this.prisma.call.findMany({
       where: {
         company_uuid: companyUuid,
@@ -178,7 +226,7 @@ export class DashboardService {
     companyUuid: string,
     agentIds: string[] | null,
     includeTest: boolean,
-  ) {
+  ): Promise<DashboardAttentionCall[]> {
     const since = new Date(Date.now() - ATTENTION_WINDOW_DAYS * 24 * 60 * 60 * 1000);
     const problemActionStatuses = [ActionStatus.NEEDS_ATTENTION, ActionStatus.FAILED];
 
@@ -218,7 +266,7 @@ export class DashboardService {
 
     return calls.map(({ actions, ...call }) => {
       const action = actions[0];
-      const reason =
+      const reason: DashboardAttentionCall['reason'] =
         call.status === CallStatus.FAILED
           ? {
               type: 'call_failed',
@@ -235,7 +283,10 @@ export class DashboardService {
     });
   }
 
-  private async pendingFollowUps(companyUuid: string, agentIds: string[] | null) {
+  private async pendingFollowUps(
+    companyUuid: string,
+    agentIds: string[] | null,
+  ): Promise<{ total: number; items: DashboardFollowUp[] }> {
     const where = {
       company_uuid: companyUuid,
       status: ScheduledCallStatus.PENDING,

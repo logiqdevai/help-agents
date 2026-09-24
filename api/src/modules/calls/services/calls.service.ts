@@ -23,6 +23,7 @@ import { CallPlacementService } from '@/modules/call-engine/services/call-placem
 import { CallActionsService } from '@/modules/call-engine/services/call-actions.service';
 import {
   ACTION_LABELS,
+  CallMarkers,
   ISSUE_ACTION_STATUSES,
   RECORDING_URL_TTL_MINUTES,
   RETRYABLE_ACTION_STATUSES,
@@ -57,8 +58,9 @@ const LIST_SELECT = {
   currency: true,
   recording_path: true,
   recording_deleted_at: true,
+  error_message: true,
   agent: { select: { id: true, name: true } },
-  contact: { select: { id: true, name: true } },
+  contact: { select: { id: true, name: true, integration: { select: { id: true, name: true } } } },
   actions: {
     where: { status: { in: ISSUE_ACTION_STATUSES } },
     select: { id: true },
@@ -86,17 +88,37 @@ const DETAIL_SELECT = {
   knowledge_snapshot: true,
   ai_cost: true,
   telephony_cost: true,
-  error_message: true,
+  dynamic_variables: true,
   contact: {
-    select: { id: true, name: true, phone: true, email: true, external_url: true, record_type: true },
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+      email: true,
+      external_url: true,
+      record_type: true,
+      integration: { select: { id: true, name: true } },
+    },
   },
   events: { orderBy: { occurred_at: 'asc' }, take: 500 },
   cost_items: { orderBy: { created_at: 'asc' } },
   actions: {
     orderBy: { created_at: 'asc' },
-    include: { crm_tool: { select: { name: true } } },
+    include: { crm_tool: { select: { name: true } }, integration: { select: { name: true } } },
   },
 } satisfies Prisma.CallSelect;
+
+const INTERNAL_EVENT_TYPES = new Set<string>(Object.values(CallMarkers));
+const ACTION_EVENT_TYPES = new Set(['action.requested', 'action.executed']);
+const HIDDEN_PERSONALIZATION_KEYS = new Set(['company_name', 'agent_name']);
+
+interface EventRow {
+  id: string;
+  type: string;
+  message: string | null;
+  data: unknown;
+  occurred_at: Date;
+}
 
 type ListRow = Prisma.CallGetPayload<{ select: typeof LIST_SELECT }>;
 type DetailRow = Prisma.CallGetPayload<{ select: typeof DETAIL_SELECT }>;
@@ -208,7 +230,7 @@ export class CallsService {
       where: { call_uuid: id },
       orderBy: { occurred_at: 'asc' },
     });
-    return { data: events.map((e) => this.mapEvent(e)) };
+    return { data: this.mapEvents(events) };
   }
 
   private mapListItem(row: ListRow) {
@@ -233,6 +255,8 @@ export class CallsService {
       is_test: row.is_test,
       has_recording: !!row.recording_path && !row.recording_deleted_at,
       has_pending_issues: row.actions.length > 0,
+      failure_reason:
+        row.status === CallStatus.FAILED && row.error_message ? stripProviderInfo(row.error_message) : null,
     };
   }
 
@@ -243,6 +267,8 @@ export class CallsService {
       tool_key: action.tool_key,
       kind: action.kind,
       label: ACTION_LABELS[action.tool_key] ?? action.crm_tool?.name ?? humanizeKey(action.tool_key),
+      tool_name: action.crm_tool?.name ?? null,
+      integration_name: action.integration?.name ?? null,
       status: action.status,
       executed_at: action.executed_at,
       attempt_count: action.attempt_count,
@@ -264,7 +290,10 @@ export class CallsService {
       }
     }
     if (row.status === CallStatus.FAILED) {
-      warnings.push({ type: 'CALL_FAILED', message: row.error_message ?? 'Call failed' });
+      warnings.push({
+        type: 'CALL_FAILED',
+        message: row.error_message ? stripProviderInfo(row.error_message) : 'Call failed',
+      });
     }
     if (row.analysis_status === 'FAILED') {
       warnings.push({ type: 'ANALYSIS_FAILED', message: 'The call could not be analyzed' });
@@ -303,24 +332,35 @@ export class CallsService {
           currency: item.currency,
         })),
       },
-      activity_log: row.events.map((event) => this.mapEvent(event)),
+      activity_log: this.mapEvents(row.events),
       recording: {
         available: recordingAvailable,
         duration_seconds: recordingAvailable ? row.recording_duration_seconds : null,
         expires_at: row.recording_expires_at,
       },
       knowledge_used: this.mapKnowledge(row.knowledge_snapshot),
+      personalization: this.mapPersonalization(row.dynamic_variables),
+      agent_language: this.snapshotLanguage(row.agent_snapshot),
       warnings,
-      error_message: row.error_message,
+      error_message: row.error_message ? stripProviderInfo(row.error_message) : null,
       analysis_status: row.analysis_status,
     };
   }
 
-  private mapEvent(event: { id: string; type: string; message: string | null; data: unknown; occurred_at: Date }) {
+  private mapEvents(events: EventRow[]) {
+    return events.filter((event) => !INTERNAL_EVENT_TYPES.has(event.type)).map((event) => this.mapEvent(event));
+  }
+
+  private mapEvent(event: EventRow) {
+    // Action events carry the raw tool key as their message; show the readable label instead.
+    const message =
+      event.message && ACTION_EVENT_TYPES.has(event.type)
+        ? (ACTION_LABELS[event.message] ?? humanizeKey(event.message))
+        : event.message;
     return {
       id: event.id,
       type: event.type,
-      message: event.message ? stripProviderInfo(event.message) : null,
+      message: message ? stripProviderInfo(message) : null,
       data: event.data ? stripProviderInfo(event.data) : null,
       occurred_at: event.occurred_at,
     };
@@ -341,6 +381,22 @@ export class CallsService {
     return list
       .filter((item: any) => item && typeof item.name === 'string')
       .map((item: any) => ({ name: item.name, version: typeof item.version === 'number' ? item.version : null }));
+  }
+
+  /** Values passed to the agent before dialing; internal identifiers and unknown values are left out. */
+  private mapPersonalization(variables: unknown): Array<{ key: string; label: string; value: string }> {
+    if (!variables || typeof variables !== 'object' || Array.isArray(variables)) return [];
+    return Object.entries(variables as Record<string, unknown>)
+      .filter((entry): entry is [string, string] => {
+        const [key, value] = entry;
+        return !HIDDEN_PERSONALIZATION_KEYS.has(key) && typeof value === 'string' && !!value.trim() && value !== 'unknown';
+      })
+      .map(([key, value]) => ({ key, label: humanizeKey(key), value }));
+  }
+
+  private snapshotLanguage(snapshot: unknown): string | null {
+    const language = (snapshot as Record<string, unknown> | null)?.language;
+    return typeof language === 'string' ? language : null;
   }
 
   private async buildInformation(row: DetailRow) {

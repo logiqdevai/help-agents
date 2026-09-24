@@ -14,6 +14,8 @@ export class ActivityLogEntry {
   @ApiProperty({ example: 'agent.created' }) action: string;
   @ApiProperty({ nullable: true, type: String }) entity_type: string | null;
   @ApiProperty({ nullable: true, type: String }) entity_uuid: string | null;
+  @ApiProperty({ nullable: true, type: String, example: 'Call #18372' }) entity_label: string | null;
   @ApiProperty({ type: 'object', additionalProperties: true, nullable: true }) metadata: object | null;
+  @ApiProperty({ nullable: true, type: String }) ip_address: string | null;
   @ApiProperty() created_at: Date;
 }

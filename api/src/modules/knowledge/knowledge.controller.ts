@@ -8,6 +8,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Put,
   Query,
   UploadedFile,
   UseInterceptors,
@@ -27,11 +28,13 @@ import { ConnectKnowledgeDto } from './dto/connect-knowledge.dto';
 import { CreateKnowledgeDto } from './dto/create-knowledge.dto';
 import { CreateKnowledgeVersionDto } from './dto/create-knowledge-version.dto';
 import { KnowledgeQuerySchema, KnowledgeQueryType } from './dto/knowledge-query.schema';
+import { ReplaceKnowledgeAgentsDto } from './dto/replace-knowledge-agents.dto';
 import { UpdateKnowledgeDto } from './dto/update-knowledge.dto';
 import { UploadKnowledgeDto } from './dto/upload-knowledge.dto';
 import {
   KnowledgeSource,
   KnowledgeSourceDetail,
+  KnowledgeStats,
   KnowledgeVersionDetailEntity,
   KnowledgeVersionSummaryEntity,
 } from './entities/knowledge.entity';
@@ -53,6 +56,7 @@ export class KnowledgeController {
   @ApiQuery({ name: 'status', required: false })
   @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'is_enabled', required: false })
+  @ApiQuery({ name: 'agent_uuid', required: false, description: 'Only sources this agent uses' })
   @ApiQuery({ name: 'search', required: false })
   @ApiResponse({ status: 200, description: 'Paginated knowledge sources', type: [KnowledgeSource] })
   findAll(
@@ -60,6 +64,14 @@ export class KnowledgeController {
     @Query(new ZodValidationPipe(KnowledgeQuerySchema)) query: KnowledgeQueryType,
   ) {
     return this.knowledge.findAll(ctx, query);
+  }
+
+  @Get('stats')
+  @RequirePermissions(Permissions.KNOWLEDGE_READ)
+  @ApiOperation({ summary: 'Counts of sources by state (for the knowledge overview)' })
+  @ApiResponse({ status: 200, type: KnowledgeStats })
+  stats(@CompanyContext() ctx: CompanyContextData) {
+    return this.knowledge.stats(ctx);
   }
 
   @Post()
@@ -111,6 +123,18 @@ export class KnowledgeController {
     @Body() dto: UpdateKnowledgeDto,
   ) {
     return this.knowledge.update(ctx, id, dto);
+  }
+
+  @Put(':id/agents')
+  @RequirePermissions(Permissions.KNOWLEDGE_WRITE)
+  @ApiOperation({ summary: 'Choose which agents can use this source' })
+  @ApiResponse({ status: 200, type: KnowledgeSourceDetail })
+  replaceAgents(
+    @CompanyContext() ctx: CompanyContextData,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: ReplaceKnowledgeAgentsDto,
+  ) {
+    return this.knowledge.replaceAgents(ctx, id, dto);
   }
 
   @Delete(':id')

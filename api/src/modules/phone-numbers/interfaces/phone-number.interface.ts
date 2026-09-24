@@ -20,6 +20,7 @@ export interface PhoneNumberResponse {
   status: PhoneNumberStatus;
   last_error: string | null;
   agent: PhoneNumberAgentRef | null;
+  call_count: number;
   setup?: PhoneNumberSetup;
   created_at: Date;
   updated_at: Date;

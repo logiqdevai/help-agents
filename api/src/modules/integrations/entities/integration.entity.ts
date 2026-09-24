@@ -18,6 +18,7 @@ export class IntegrationEntity {
   @ApiPropertyOptional({ nullable: true, type: 'object', additionalProperties: true }) config: Record<string, any> | null;
   @ApiPropertyOptional({ nullable: true }) last_error: string | null;
   @ApiPropertyOptional({ nullable: true }) last_verified_at: Date | null;
+  @ApiProperty({ description: 'Agents that currently use this connection' }) agent_count: number;
   @ApiProperty() created_at: Date;
   @ApiProperty() updated_at: Date;
 }
@@ -30,6 +31,20 @@ export class ProviderInfoEntity {
   @ApiProperty({ description: 'True when the one-click OAuth2 connect flow is available on this platform' }) oauth_available: boolean;
   @ApiProperty() requires_base_url: boolean;
   @ApiProperty({ description: 'True when contacts can be looked up and updated through this provider' }) supports_crm_actions: boolean;
+  @ApiProperty({ description: 'True when the app cannot be connected yet (no CRM adapter and no OAuth flow available)' }) coming_soon: boolean;
+}
+
+export class IntegrationAgentToolEntity {
+  @ApiProperty() id: string;
+  @ApiProperty() key: string;
+  @ApiProperty() name: string;
+}
+
+export class IntegrationAgentEntity {
+  @ApiProperty() id: string;
+  @ApiProperty() name: string;
+  @ApiProperty({ enum: ['DRAFT', 'ACTIVE', 'INACTIVE'] }) status: string;
+  @ApiProperty({ type: [IntegrationAgentToolEntity], description: 'CRM tools this agent is allowed to use on the connection' }) allowed_tools: IntegrationAgentToolEntity[];
 }
 
 export class CrmToolEntity {

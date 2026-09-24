@@ -55,8 +55,16 @@ export class AutomationRulesService {
       company_uuid: ctx.company_uuid,
       ...(query.trigger && { trigger: query.trigger }),
       ...(query.is_enabled !== undefined && { is_enabled: query.is_enabled }),
-      ...(query.agent_uuid && { agent_uuid: query.agent_uuid }),
-      ...(accessible !== null && { OR: [{ agent_uuid: null }, { agent_uuid: { in: accessible } }] }),
+      AND: [
+        ...(query.agent_uuid
+          ? [
+              query.include_company_wide
+                ? { OR: [{ agent_uuid: query.agent_uuid }, { agent_uuid: null }] }
+                : { agent_uuid: query.agent_uuid },
+            ]
+          : []),
+        ...(accessible !== null ? [{ OR: [{ agent_uuid: null }, { agent_uuid: { in: accessible } }] }] : []),
+      ],
     };
 
     const [items, count] = await Promise.all([

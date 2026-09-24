@@ -12,12 +12,27 @@ import { CreateScheduledCallDto, ScheduleWhenDto } from '../dto/create-scheduled
 import { UpdateScheduledCallDto } from '../dto/update-scheduled-call.dto';
 import { CancelForContactDto } from '../dto/cancel-for-contact.dto';
 import { ScheduledCallQueryType } from '../dto/scheduled-call-query.schema';
-import { resolveRequestedTime } from '../utils/scheduling.utils';
+import { DEFAULT_MAX_ATTEMPTS, resolveRequestedTime } from '../utils/scheduling.utils';
 
 const INCLUDE = {
-  agent: { select: { id: true, name: true } },
+  agent: { select: { id: true, name: true, retry_rule: { select: { max_attempts: true } } } },
   contact: { select: { id: true, name: true, phone: true } },
+  call: { select: { id: true, call_number: true, status: true } },
 } satisfies Prisma.ScheduledCallInclude;
+
+const OPEN_STATUSES: ScheduledCallStatus[] = [ScheduledCallStatus.PENDING, ScheduledCallStatus.IN_PROGRESS];
+const DONE_STATUSES: ScheduledCallStatus[] = [ScheduledCallStatus.COMPLETED, ScheduledCallStatus.FAILED];
+const CLOSED_STATUSES: ScheduledCallStatus[] = [ScheduledCallStatus.CANCELED, ScheduledCallStatus.SKIPPED];
+
+type ScheduledCallRow = Prisma.ScheduledCallGetPayload<{ include: typeof INCLUDE }>;
+
+function present({ agent, ...row }: ScheduledCallRow) {
+  return {
+    ...row,
+    agent: { id: agent.id, name: agent.name },
+    max_attempts: agent.retry_rule?.max_attempts ?? DEFAULT_MAX_ATTEMPTS,
+  };
+}
 
 @Injectable()
 export class ScheduledCallsService {
@@ -67,7 +82,7 @@ export class ScheduledCallsService {
       contact_uuid: contact.id,
       scheduled_for: scheduledFor.toISOString(),
     });
-    return created;
+    return present(created);
   }
 
   async findAll(ctx: CompanyContextData, query: ScheduledCallQueryType) {
@@ -75,8 +90,16 @@ export class ScheduledCallsService {
     const where: Prisma.ScheduledCallWhereInput = {
       company_uuid: ctx.company_uuid,
       ...scope,
-      ...(query.status && { status: query.status }),
+      ...(query.status?.length && { status: { in: query.status } }),
       ...(query.source && { source: query.source }),
+      ...(query.search && {
+        contact: {
+          OR: [
+            { name: { contains: query.search, mode: 'insensitive' } },
+            { phone: { contains: query.search } },
+          ],
+        },
+      }),
       ...(query.contact_uuid && { contact_uuid: query.contact_uuid }),
       ...(query.from || query.to
         ? { scheduled_for: { ...(query.from && { gte: query.from }), ...(query.to && { lte: query.to }) } }
@@ -97,17 +120,31 @@ export class ScheduledCallsService {
       }),
       this.prisma.scheduledCall.count({ where }),
     ]);
-    return paginated(items, count, query.page, query.limit);
+    return paginated(items.map(present), count, query.page, query.limit);
+  }
+
+  /** Tab counters for the scheduled calls page. */
+  async getCounts(ctx: CompanyContextData) {
+    const scope = await this.agentAccess.agentScope(ctx);
+    const groups = await this.prisma.scheduledCall.groupBy({
+      by: ['status'],
+      where: { company_uuid: ctx.company_uuid, ...scope },
+      _count: { _all: true },
+    });
+    const total = (statuses: ScheduledCallStatus[]) =>
+      groups.filter((g) => statuses.includes(g.status)).reduce((sum, g) => sum + g._count._all, 0);
+
+    return { pending: total(OPEN_STATUSES), completed: total(DONE_STATUSES), canceled: total(CLOSED_STATUSES) };
   }
 
   async findOne(ctx: CompanyContextData, id: string) {
     const item = await this.prisma.scheduledCall.findFirst({
       where: { id, company_uuid: ctx.company_uuid },
-      include: { ...INCLUDE, call: { select: { id: true, call_number: true, status: true } } },
+      include: INCLUDE,
     });
     if (!item) throw new NotFoundException('Scheduled call not found');
     await this.agentAccess.assertAgentAccess(ctx, item.agent_uuid);
-    return item;
+    return present(item);
   }
 
   async update(ctx: CompanyContextData, id: string, dto: UpdateScheduledCallDto) {

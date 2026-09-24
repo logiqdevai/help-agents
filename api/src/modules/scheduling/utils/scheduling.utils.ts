@@ -3,6 +3,9 @@ import { DateTime, IANAZone } from 'luxon';
 
 export const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
 
+/** Attempts allowed for an agent without a stored retry rule. */
+export const DEFAULT_MAX_ATTEMPTS = 3;
+
 export type ScheduleMode = 'immediately' | 'after_minutes' | 'tomorrow' | 'date';
 
 export interface WhenInput {

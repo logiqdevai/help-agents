@@ -28,7 +28,6 @@ import {
 } from './interfaces/voice-provider.interface';
 import {
   GENERIC_SYNC_ERROR,
-  INBOUND_SIP_ADDRESS,
   PROVISIONING_COUNTRIES,
   WEBHOOK_PATHS,
 } from './voice-provider.constants';
@@ -333,7 +332,11 @@ export class VoiceProviderService {
       number: imported.phone_number,
       external_id: imported.phone_number,
       provider_number_type: imported.phone_number_type,
-      byo_config: { termination_uri: input.termination_uri, inbound_sip_address: INBOUND_SIP_ADDRESS },
+      byo_config: {
+        termination_uri: input.termination_uri,
+        // Customer-facing branded hostname (CNAME to the provider); never the provider's own address (spec §31).
+        inbound_sip_address: this.config.get<string>('INBOUND_SIP_ADDRESS') || undefined,
+      },
     };
   }
 

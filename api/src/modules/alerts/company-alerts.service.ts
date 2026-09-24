@@ -38,14 +38,26 @@ export class CompanyAlertsService {
   }
 
   async summary(companyUuid: string) {
-    const where = { company_uuid: companyUuid, status: AlertStatus.OPEN };
-    const [byType, bySeverity] = await Promise.all([
-      this.prisma.alert.groupBy({ by: ['type'], where, _count: { _all: true } }),
-      this.prisma.alert.groupBy({ by: ['severity'], where, _count: { _all: true } }),
+    const open = { company_uuid: companyUuid, status: AlertStatus.OPEN };
+    const [byType, bySeverity, byStatus] = await Promise.all([
+      this.prisma.alert.groupBy({ by: ['type'], where: open, _count: { _all: true } }),
+      this.prisma.alert.groupBy({ by: ['severity'], where: open, _count: { _all: true } }),
+      this.prisma.alert.groupBy({
+        by: ['status'],
+        where: { company_uuid: companyUuid },
+        _count: { _all: true },
+      }),
     ]);
+    const statusCount = (status: AlertStatus) =>
+      byStatus.find((r) => r.status === status)?._count._all ?? 0;
 
     return {
       open_total: byType.reduce((sum, r) => sum + r._count._all, 0),
+      by_status: {
+        open: statusCount(AlertStatus.OPEN),
+        resolved: statusCount(AlertStatus.RESOLVED),
+        dismissed: statusCount(AlertStatus.DISMISSED),
+      },
       by_type: byType.map((r) => ({ type: r.type, count: r._count._all })),
       by_severity: bySeverity.map((r) => ({ severity: r.severity, count: r._count._all })),
     };

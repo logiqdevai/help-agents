@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CallStatus, Prisma } from 'generated/prisma';
+import { ActionKind, ActionStatus, CallStatus, Prisma } from 'generated/prisma';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
+import { CANONICAL_ACTION_KEYS } from '@/shared/constants/crm-fields';
 import {
   CallTotals,
+  ConversionCounts,
   OutcomeCount,
   ResolvedPeriod,
   TimeBucket,
   TimeseriesPoint,
 } from './interfaces/dashboard.interface';
+import { toOutcomeCounts } from './utils/outcome.utils';
 import { bucketKey, enumerateBuckets, round, toNumber } from './utils/period.utils';
 
 export interface CallScope {
@@ -20,6 +23,9 @@ export interface CallScope {
 
 const EXCLUDED_STATUSES = [CallStatus.SCHEDULED, CallStatus.CANCELED];
 const DEFAULT_CURRENCY = 'EUR';
+/** Keys of the default outcomes every agent starts with (see DEFAULT_OUTCOMES). */
+const INTERESTED_OUTCOME_KEY = 'interested';
+const APPOINTMENT_OUTCOME_KEY = 'appointment_requested';
 
 /** Shared call aggregation used by the dashboard and the usage reports. */
 @Injectable()
@@ -27,7 +33,7 @@ export class CallStatsService {
   constructor(private readonly prisma: PrismaService) {}
 
   /** Resolves the agent filter; null = unrestricted, [] = nothing visible. */
-  private effectiveAgentIds(scope: CallScope): string[] | null {
+  effectiveAgentIds(scope: CallScope): string[] | null {
     const { accessible_agent_ids: allowed, agent_uuid } = scope;
     if (allowed === null) return agent_uuid ? [agent_uuid] : null;
     if (agent_uuid) return allowed.includes(agent_uuid) ? [agent_uuid] : [];
@@ -79,6 +85,8 @@ export class CallStatsService {
       total_calls,
       completed_calls: statusCount(CallStatus.COMPLETED, CallStatus.TRANSFERRED),
       failed_calls: statusCount(CallStatus.FAILED),
+      transferred_calls: statusCount(CallStatus.TRANSFERRED),
+      no_answer_calls: statusCount(CallStatus.NO_ANSWER, CallStatus.BUSY),
       successful_calls: successCount(true),
       unsuccessful_calls: successCount(false),
       pending_analysis_calls: successCount(null),
@@ -93,16 +101,44 @@ export class CallStatsService {
     };
   }
 
+  /** Interested leads, and appointments (requested by the caller or booked in a connected calendar). */
+  async conversions(where: Prisma.CallWhereInput): Promise<ConversionCounts> {
+    const [interested_leads, appointments_booked] = await Promise.all([
+      this.prisma.call.count({ where: { AND: [where, { outcome_key: INTERESTED_OUTCOME_KEY }] } }),
+      this.prisma.call.count({
+        where: {
+          AND: [
+            where,
+            {
+              OR: [
+                { outcome_key: APPOINTMENT_OUTCOME_KEY },
+                {
+                  actions: {
+                    some: {
+                      kind: ActionKind.CALENDAR,
+                      tool_key: CANONICAL_ACTION_KEYS.CALENDAR_CREATE_EVENT,
+                      status: ActionStatus.EXECUTED,
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      }),
+    ]);
+
+    return { interested_leads, appointments_booked };
+  }
+
   async outcomeBreakdown(where: Prisma.CallWhereInput): Promise<OutcomeCount[]> {
     const rows = await this.prisma.call.groupBy({
-      by: ['outcome_key', 'outcome_label'],
+      by: ['outcome_key', 'outcome_label', 'is_successful'],
       where,
       _count: { _all: true },
     });
 
-    return rows
-      .map((r) => ({ key: r.outcome_key, label: r.outcome_label, count: r._count._all }))
-      .sort((a, b) => b.count - a.count);
+    return toOutcomeCounts(rows);
   }
 
   /** Zero-filled series bucketed in the company timezone. */
@@ -127,7 +163,16 @@ export class CallStatsService {
       if (agentIds !== null) conditions.push(Prisma.sql`agent_uuid IN (${Prisma.join(agentIds)})`);
 
       const rows = await this.prisma.$queryRaw<
-        Array<{ bucket: string; calls: number; successful: number; seconds: number; cost: number }>
+        Array<{
+          bucket: string;
+          calls: number;
+          successful: number;
+          unsuccessful: number;
+          seconds: number;
+          ai_cost: number;
+          telephony_cost: number;
+          cost: number;
+        }>
       >(Prisma.sql`
         SELECT
           to_char(
@@ -136,7 +181,10 @@ export class CallStatsService {
           ) AS bucket,
           COUNT(*)::int AS calls,
           (COUNT(*) FILTER (WHERE is_successful = true))::int AS successful,
+          (COUNT(*) FILTER (WHERE is_successful = false))::int AS unsuccessful,
           COALESCE(SUM(duration_seconds), 0)::float8 AS seconds,
+          COALESCE(SUM(ai_cost), 0)::float8 AS ai_cost,
+          COALESCE(SUM(telephony_cost), 0)::float8 AS telephony_cost,
           COALESCE(SUM(total_cost), 0)::float8 AS cost
         FROM calls
         WHERE ${Prisma.join(conditions, ' AND ')}
@@ -148,7 +196,10 @@ export class CallStatsService {
         values.set(row.bucket, {
           calls: Number(row.calls),
           successful_calls: Number(row.successful),
+          unsuccessful_calls: Number(row.unsuccessful),
           minutes: round(Number(row.seconds) / 60, 2),
+          ai_cost: round(Number(row.ai_cost), 4),
+          telephony_cost: round(Number(row.telephony_cost), 4),
           cost: round(Number(row.cost), 4),
         });
       }
@@ -156,7 +207,15 @@ export class CallStatsService {
 
     return buckets.map((dt) => ({
       bucket_start: dt.toISO(),
-      ...(values.get(bucketKey(dt)) ?? { calls: 0, successful_calls: 0, minutes: 0, cost: 0 }),
+      ...(values.get(bucketKey(dt)) ?? {
+        calls: 0,
+        successful_calls: 0,
+        unsuccessful_calls: 0,
+        minutes: 0,
+        ai_cost: 0,
+        telephony_cost: 0,
+        cost: 0,
+      }),
     }));
   }
 }

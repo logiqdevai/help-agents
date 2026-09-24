@@ -39,6 +39,9 @@ export class PhoneNumber {
   @ApiProperty({ type: PhoneNumberAgent, nullable: true })
   agent: PhoneNumberAgent | null;
 
+  @ApiProperty({ description: 'Calls made or received on this number' })
+  call_count: number;
+
   @ApiProperty({ type: PhoneNumberSetupEntity, required: false, description: 'Carrier setup details (own numbers only)' })
   setup?: PhoneNumberSetupEntity;
 

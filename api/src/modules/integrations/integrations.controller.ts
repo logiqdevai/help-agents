@@ -18,7 +18,7 @@ import { IntegrationsService } from './integrations.service';
 import { CreateIntegrationDto } from './dto/create-integration.dto';
 import { UpdateIntegrationDto } from './dto/update-integration.dto';
 import { IntegrationQuerySchema, IntegrationQueryType } from './dto/integration-query.schema';
-import { IntegrationEntity, ProviderInfoEntity } from './entities/integration.entity';
+import { IntegrationAgentEntity, IntegrationEntity, ProviderInfoEntity } from './entities/integration.entity';
 
 @ApiTags('Integrations')
 @Controller('integrations')
@@ -59,6 +59,14 @@ export class IntegrationsController {
   @ApiResponse({ status: 200, type: IntegrationEntity })
   findOne(@CompanyContext('company_uuid') companyUuid: string, @Param('id', ParseUUIDPipe) id: string) {
     return this.integrationsService.findOne(companyUuid, id);
+  }
+
+  @Get(':id/agents')
+  @RequirePermissions(Permissions.INTEGRATIONS_READ)
+  @ApiOperation({ summary: 'Agents that use this integration and the CRM tools each is allowed to use' })
+  @ApiResponse({ status: 200, type: [IntegrationAgentEntity] })
+  agents(@CompanyContext('company_uuid') companyUuid: string, @Param('id', ParseUUIDPipe) id: string) {
+    return this.integrationsService.agents(companyUuid, id);
   }
 
   @Patch(':id')

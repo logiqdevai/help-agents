@@ -22,6 +22,8 @@ import { Permissions } from '@/shared/permissions/permissions';
 import { ZodValidationPipe } from '@/shared/pipes/zod.validation.pipe';
 import { AgentsService } from './agents.service';
 import { AgentConfigService } from './services/agent-config.service';
+import { AgentTeamAccessService } from './services/agent-team-access.service';
+import { SetAgentMembersDto } from './dto/agent-access.dto';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { UpdateAgentDto } from './dto/update-agent.dto';
 import { AgentQuerySchema, AgentQueryType } from './dto/agent-query.schema';
@@ -34,6 +36,7 @@ import {
   ReplaceTransferOutcomesDto,
 } from './dto/replace-children.dto';
 import {
+  AgentAccessListEntity,
   AgentListItemEntity,
   AgentOverviewEntity,
   AgentReadinessEntity,
@@ -46,6 +49,7 @@ export class AgentsController {
   constructor(
     private readonly agentsService: AgentsService,
     private readonly configService: AgentConfigService,
+    private readonly teamAccess: AgentTeamAccessService,
   ) {}
 
   @Get()
@@ -210,5 +214,25 @@ export class AgentsController {
     @Body() dto: ReplaceKnowledgeSourcesDto,
   ) {
     return this.configService.replaceKnowledgeSources(ctx, id, dto);
+  }
+
+  @Get(':id/access')
+  @RequirePermissions(Permissions.TEAM_READ)
+  @ApiOperation({ summary: 'Who can use this agent (members with access, and roles that always have it)' })
+  @ApiResponse({ status: 200, type: AgentAccessListEntity })
+  getAccess(@CompanyContext() ctx: CompanyContextData, @Param('id', ParseUUIDPipe) id: string) {
+    return this.teamAccess.get(ctx, id);
+  }
+
+  @Put(':id/access')
+  @RequirePermissions(Permissions.TEAM_MANAGE)
+  @ApiOperation({ summary: 'Replace the members who can use this agent' })
+  @ApiResponse({ status: 200, type: AgentAccessListEntity })
+  replaceAccess(
+    @CompanyContext() ctx: CompanyContextData,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: SetAgentMembersDto,
+  ) {
+    return this.teamAccess.replace(ctx, id, dto);
   }
 }

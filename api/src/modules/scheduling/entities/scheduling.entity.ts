@@ -18,6 +18,20 @@ export class ScheduledCallEntity {
     properties: { id: { type: 'string' }, name: { type: 'string' }, phone: { type: 'string' } },
   })
   contact: { id: string; name: string | null; phone: string | null };
+  @ApiProperty({ description: "Attempts allowed by the agent's retry rule (defaults to 3)" }) max_attempts: number;
+  @ApiPropertyOptional({
+    nullable: true,
+    description: 'The call placed for this schedule, once dialing started',
+    type: 'object',
+    properties: { id: { type: 'string' }, call_number: { type: 'number' }, status: { type: 'string' } },
+  })
+  call: { id: string; call_number: number; status: string } | null;
+}
+
+export class ScheduledCallCounts {
+  @ApiProperty({ description: 'Pending and in-progress' }) pending: number;
+  @ApiProperty({ description: 'Completed and failed' }) completed: number;
+  @ApiProperty({ description: 'Canceled and skipped' }) canceled: number;
 }
 
 export class RetryRuleEntity {

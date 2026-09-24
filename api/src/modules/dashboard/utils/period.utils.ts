@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { DateTime, IANAZone } from 'luxon';
-import { PeriodKey, ResolvedPeriod, TimeBucket } from '../interfaces/dashboard.interface';
+import { MonthToDateCost, PeriodKey, ResolvedPeriod, TimeBucket } from '../interfaces/dashboard.interface';
 
 const MAX_RANGE_DAYS = 366;
 const MAX_BUCKETS = 1000;
@@ -56,6 +56,65 @@ export function resolvePeriod(
     to: to.toJSDate(),
     from_iso: from.toISO(),
     to_iso: to.toISO(),
+  };
+}
+
+/** The window of equal length directly before `period` (e.g. yesterday for "today"). */
+export function previousPeriod(period: ResolvedPeriod): ResolvedPeriod {
+  const from = DateTime.fromJSDate(period.from).setZone(period.timezone);
+  const to = DateTime.fromJSDate(period.to).setZone(period.timezone);
+  const days = Math.max(1, Math.round(to.diff(from, 'days').days));
+  const prevFrom = from.minus({ days });
+  const prevTo = from.minus({ milliseconds: 1 });
+
+  return {
+    period: 'custom',
+    timezone: period.timezone,
+    from: prevFrom.toJSDate(),
+    to: prevTo.toJSDate(),
+    from_iso: prevFrom.toISO(),
+    to_iso: prevTo.toISO(),
+  };
+}
+
+/** From the first of the current month up to the end of today, in the company timezone. */
+export function monthToDatePeriod(timezone?: string | null): {
+  period: ResolvedPeriod;
+  days_elapsed: number;
+  days_in_month: number;
+  month_end: string;
+} {
+  const zone = safeZone(timezone);
+  const now = DateTime.now().setZone(zone);
+  const from = now.startOf('month');
+  const to = now.endOf('day');
+
+  return {
+    period: {
+      period: 'custom',
+      timezone: zone,
+      from: from.toJSDate(),
+      to: to.toJSDate(),
+      from_iso: from.toISO(),
+      to_iso: to.toISO(),
+    },
+    days_elapsed: now.day,
+    days_in_month: now.daysInMonth,
+    month_end: now.endOf('month').toISODate(),
+  };
+}
+
+/** Linear projection of a month-to-date total to the whole month. */
+export function projectMonthCost(
+  totalCost: number,
+  month: { days_elapsed: number; days_in_month: number; month_end: string },
+): MonthToDateCost {
+  return {
+    total_cost: totalCost,
+    projected_total_cost: round((totalCost / month.days_elapsed) * month.days_in_month, 2),
+    days_elapsed: month.days_elapsed,
+    days_in_month: month.days_in_month,
+    month_end: month.month_end,
   };
 }
 

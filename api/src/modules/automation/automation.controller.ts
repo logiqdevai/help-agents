@@ -28,6 +28,7 @@ export class AutomationController {
   @ApiOperation({ summary: 'List automation rules' })
   @ApiQuery({ name: 'trigger', required: false })
   @ApiQuery({ name: 'agent_uuid', required: false })
+  @ApiQuery({ name: 'include_company_wide', required: false, description: 'With agent_uuid: also company-wide rules' })
   @ApiQuery({ name: 'is_enabled', required: false })
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })

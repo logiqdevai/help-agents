@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { ScheduledCallSource, ScheduledCallStatus } from 'generated/prisma';
-import { PaginationQuerySchema } from '@/shared/utils/pagination/pagination';
+import { csvToArray, PaginationQuerySchema } from '@/shared/utils/pagination/pagination';
 
 const dateParam = z
   .string()
@@ -8,8 +8,14 @@ const dateParam = z
   .refine((v) => !v || !Number.isNaN(Date.parse(v)), { message: 'Invalid date' })
   .transform((v) => (v ? new Date(v) : undefined));
 
+const multi = z
+  .union([z.string(), z.array(z.string())])
+  .optional()
+  .transform((v) => (Array.isArray(v) ? v.flatMap((item) => csvToArray(item) ?? []) : csvToArray(v)));
+
 export const ScheduledCallQuerySchema = PaginationQuerySchema.extend({
-  status: z.nativeEnum(ScheduledCallStatus).optional(),
+  status: multi.pipe(z.array(z.nativeEnum(ScheduledCallStatus)).optional()),
+  search: z.string().trim().max(100).optional(),
   source: z.nativeEnum(ScheduledCallSource).optional(),
   agent_uuid: z.string().uuid().optional(),
   contact_uuid: z.string().uuid().optional(),

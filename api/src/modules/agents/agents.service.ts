@@ -20,6 +20,8 @@ import { AgentAccessService } from '@/shared/services/agent-access/agent-access.
 import type { CompanyContextData } from '@/shared/decorators/company.decorator';
 import { paginated, skipTake } from '@/shared/utils/pagination/pagination';
 import { VoiceProviderService } from '@/modules/voice-provider/voice-provider.service';
+import { CallStatsService } from '@/modules/dashboard/call-stats.service';
+import { previousPeriod, resolvePeriod } from '@/modules/dashboard/utils/period.utils';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { UpdateAgentDto } from './dto/update-agent.dto';
 import { AgentQueryType } from './dto/agent-query.schema';
@@ -35,7 +37,7 @@ import {
 
 type Ctx = CompanyContextData;
 
-const CRM_SELECT = { id: true, name: true, provider: true } as const;
+const CRM_SELECT = { id: true, name: true, provider: true, status: true } as const;
 
 @Injectable()
 export class AgentsService {
@@ -47,6 +49,7 @@ export class AgentsService {
     private readonly activity: ActivityLogService,
     private readonly sync: AgentSyncService,
     private readonly voiceProvider: VoiceProviderService,
+    private readonly callStats: CallStatsService,
   ) {}
 
   /** Loads a non-deleted agent of the caller's company and enforces MEMBER agent grants. */
@@ -115,7 +118,7 @@ export class AgentsService {
       this.prisma.agent.count({ where }),
     ]);
 
-    const stats = await this.callStats(ctx.company_uuid, agents.map((a) => a.id));
+    const stats = await this.listCallStats(ctx.company_uuid, agents.map((a) => a.id));
 
     const data: AgentListItem[] = agents.map((a) => {
       const s = stats.get(a.id);
@@ -132,6 +135,7 @@ export class AgentsService {
         knowledge_sources_count: a._count.knowledge_sources,
         calls_made: s?.calls_made ?? 0,
         success_rate: s?.success_rate ?? null,
+        last_call_at: s?.last_call_at ?? null,
         created_at: a.created_at,
         updated_at: a.updated_at,
       };
@@ -192,7 +196,7 @@ export class AgentsService {
             source: { select: { id: true, name: true, type: true, status: true, is_enabled: true } },
           },
         },
-        crm_integration: { select: { ...CRM_SELECT, status: true } },
+        crm_integration: { select: CRM_SELECT },
         _count: { select: { access: true } },
       },
     });
@@ -464,6 +468,7 @@ export class AgentsService {
         goal: true,
         voice: true,
         language: true,
+        activated_at: true,
         crm_integration: { select: CRM_SELECT },
         phone_numbers: {
           where: { status: { not: PhoneNumberStatus.RELEASED } },
@@ -477,8 +482,27 @@ export class AgentsService {
     const base = { company_uuid: ctx.company_uuid, agent_uuid: id, is_test: false };
     const finalWhere: Prisma.CallWhereInput = { ...base, status: { in: FINAL_CALL_STATUSES } };
 
-    const [callsMade, finalCount, successCount, averages, lastCall, unresolved, readiness] =
-      await Promise.all([
+    const company = await this.prisma.company.findUnique({
+      where: { id: ctx.company_uuid },
+      select: { timezone: true },
+    });
+    const today = resolvePeriod({ period: 'today' }, company?.timezone);
+    const scope = { company_uuid: ctx.company_uuid, accessible_agent_ids: null, agent_uuid: id };
+    const monthWhere = this.callStats.buildWhere(scope, resolvePeriod({ period: '30d' }, company?.timezone));
+
+    const [
+      callsMade,
+      finalCount,
+      successCount,
+      averages,
+      lastCall,
+      unresolved,
+      readiness,
+      callsToday,
+      callsYesterday,
+      monthTotals,
+      monthOutcomes,
+    ] = await Promise.all([
         this.prisma.call.count({ where: base }),
         this.prisma.call.count({ where: finalWhere }),
         this.prisma.call.count({ where: { ...finalWhere, is_successful: true } }),
@@ -500,6 +524,10 @@ export class AgentsService {
           },
         }),
         this.loadReadiness(ctx.company_uuid, id),
+        this.prisma.call.count({ where: this.callStats.buildWhere(scope, today) }),
+        this.prisma.call.count({ where: this.callStats.buildWhere(scope, previousPeriod(today)) }),
+        this.callStats.totals(monthWhere),
+        this.callStats.outcomeBreakdown(monthWhere),
       ]);
 
     const avgCost = averages._avg.total_cost;
@@ -521,6 +549,17 @@ export class AgentsService {
       average_cost: avgCost !== null && avgCost !== undefined ? Number(avgCost) : null,
       currency: lastCall?.currency ?? 'EUR',
       last_call_at: lastCall?.created_at ?? null,
+      activated_at: agent.activated_at,
+      calls_today: callsToday,
+      calls_yesterday: callsYesterday,
+      last_30_days: {
+        total_calls: monthTotals.total_calls,
+        successful_calls: monthTotals.successful_calls,
+        success_rate: monthTotals.total_calls
+          ? Math.round((monthTotals.successful_calls / monthTotals.total_calls) * 100)
+          : null,
+      },
+      outcomes_30_days: monthOutcomes,
       readiness,
       unresolved_alerts: unresolved,
     };
@@ -561,8 +600,11 @@ export class AgentsService {
     });
   }
 
-  private async callStats(companyUuid: string, agentIds: string[]) {
-    const stats = new Map<string, { calls_made: number; success_rate: number | null }>();
+  private async listCallStats(companyUuid: string, agentIds: string[]) {
+    const stats = new Map<
+      string,
+      { calls_made: number; success_rate: number | null; last_call_at: Date | null }
+    >();
     if (!agentIds.length) return stats;
 
     const [made, final] = await Promise.all([
@@ -570,6 +612,7 @@ export class AgentsService {
         by: ['agent_uuid'],
         where: { company_uuid: companyUuid, agent_uuid: { in: agentIds }, is_test: false },
         _count: { _all: true },
+        _max: { created_at: true },
       }),
       this.prisma.call.groupBy({
         by: ['agent_uuid', 'is_successful'],
@@ -583,8 +626,12 @@ export class AgentsService {
       }),
     ]);
 
-    for (const id of agentIds) stats.set(id, { calls_made: 0, success_rate: null });
-    for (const row of made) stats.get(row.agent_uuid).calls_made = row._count._all;
+    for (const id of agentIds) stats.set(id, { calls_made: 0, success_rate: null, last_call_at: null });
+    for (const row of made) {
+      const entry = stats.get(row.agent_uuid);
+      entry.calls_made = row._count._all;
+      entry.last_call_at = row._max.created_at;
+    }
 
     const totals = new Map<string, { total: number; success: number }>();
     for (const row of final) {

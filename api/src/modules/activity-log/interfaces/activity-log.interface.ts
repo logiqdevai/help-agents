@@ -7,6 +7,9 @@ export interface ActivityLogItem {
   action: string;
   entity_type: string | null;
   entity_uuid: string | null;
+  /** Human-readable name of the affected record when it can be resolved (e.g. "Call #18372"). */
+  entity_label: string | null;
   metadata: unknown;
+  ip_address: string | null;
   created_at: Date;
 }

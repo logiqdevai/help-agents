@@ -22,3 +22,13 @@ export const FieldMappingsQuerySchema = z.object({
 });
 
 export type FieldMappingsQueryType = z.infer<typeof FieldMappingsQuerySchema>;
+
+export const CrmToolsQuerySchema = z.object({
+  /** Custom tools switched off are hidden unless the management screen asks for them. */
+  include_inactive: z
+    .enum(['true', 'false'])
+    .optional()
+    .transform((v) => v === 'true'),
+});
+
+export type CrmToolsQueryType = z.infer<typeof CrmToolsQuerySchema>;

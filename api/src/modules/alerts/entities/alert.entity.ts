@@ -16,8 +16,15 @@ export class AlertEntity {
   @ApiProperty() updated_at: Date;
 }
 
+class AlertStatusCountsEntity {
+  @ApiProperty() open: number;
+  @ApiProperty() resolved: number;
+  @ApiProperty() dismissed: number;
+}
+
 export class AlertsSummaryEntity {
   @ApiProperty() open_total: number;
+  @ApiProperty({ type: AlertStatusCountsEntity }) by_status: AlertStatusCountsEntity;
   @ApiProperty({ type: 'array', items: { type: 'object' } }) by_type: Array<{ type: AlertType; count: number }>;
   @ApiProperty({ type: 'array', items: { type: 'object' } }) by_severity: Array<{
     severity: AlertSeverity;
