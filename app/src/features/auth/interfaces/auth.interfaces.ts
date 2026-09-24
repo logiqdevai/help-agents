@@ -47,7 +47,6 @@ export interface RegisterDto {
   password: string;
   company_name?: string;
   phone?: string;
-  company_website?: string;
   timezone?: string;
   invitation_token?: string;
 }

@@ -17,7 +17,7 @@ const SignupPage: FC = () => {
   const register = useRegister();
   const form = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
-    defaultValues: { name: "", email: "", password: "", company_name: "", phone: "", company_website: "" },
+    defaultValues: { name: "", email: "", password: "", company_name: "", phone: "" },
   });
 
   const onSubmit = (values: SignupFormData) => {
@@ -27,7 +27,6 @@ const SignupPage: FC = () => {
       password: values.password,
       company_name: values.company_name.trim(),
       phone: values.phone?.trim() || undefined,
-      company_website: values.company_website?.trim() || undefined,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     });
   };
@@ -96,38 +95,21 @@ const SignupPage: FC = () => {
               </FormItem>
             )}
           />
-          <div className="grid gap-4 sm:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Phone <span className="font-normal text-muted-foreground">Optional</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input type="tel" autoComplete="tel" placeholder="+30 21 0000 0000" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="company_website"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Website <span className="font-normal text-muted-foreground">Optional</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input autoComplete="url" placeholder="aegeanhomes.gr" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Phone <span className="font-normal text-muted-foreground">Optional</span>
+                </FormLabel>
+                <FormControl>
+                  <Input type="tel" autoComplete="tel" placeholder="+30 21 0000 0000" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <ActionButtonWithPending type="submit" size="lg" className="h-10 w-full" isPending={register.isPending}>
             Create account
           </ActionButtonWithPending>

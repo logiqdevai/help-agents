@@ -72,7 +72,6 @@ export class EmailAuthService {
             const company = await tx.company.create({
                 data: {
                     name: dto.company_name!.trim(),
-                    website: dto.company_website?.trim() || null,
                     timezone,
                     members: { create: { user_uuid: user.id, role: CompanyRole.OWNER } },
                     calling_hours: { create: DEFAULT_CALLING_DAYS },

@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString, IsUrl, MaxLength, MinLength, ValidateIf } from 'class-validator';
+import { IsEmail, IsOptional, IsString, MaxLength, MinLength, ValidateIf } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterEmailDto {
@@ -42,12 +42,6 @@ export class RegisterEmailDto {
     @IsString()
     @MaxLength(32)
     phone?: string;
-
-    @ApiProperty({ description: 'Company website', example: 'https://acme.com', required: false })
-    @IsOptional()
-    @IsUrl({ require_protocol: false })
-    @MaxLength(255)
-    company_website?: string;
 
     @ApiProperty({ description: 'IANA timezone of the company', example: 'Europe/Athens', required: false })
     @IsOptional()

@@ -17,12 +17,11 @@ export const signupSchema = z.object({
   password: passwordField,
   company_name: z.string().trim().min(1, "Company name is required").max(160),
   phone: z.string().max(32).optional(),
-  company_website: z.string().max(255).optional(),
 });
 export type SignupFormData = z.infer<typeof signupSchema>;
 
 // Joining through an invitation: the company already exists, so no company name.
-export const inviteSignupSchema = signupSchema.omit({ company_name: true, company_website: true });
+export const inviteSignupSchema = signupSchema.omit({ company_name: true });
 export type InviteSignupFormData = z.infer<typeof inviteSignupSchema>;
 
 export const forgotPasswordSchema = z.object({
