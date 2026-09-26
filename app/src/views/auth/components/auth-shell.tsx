@@ -30,7 +30,7 @@ export function AuthShell({ children, artTitle, artText, orbs = ["mint", "lavend
   return (
     <div className="grid min-h-screen bg-background lg:grid-cols-2">
       <div className="flex flex-col px-5 py-6 md:px-12 md:py-7">
-        <Link href={Routes.auth.login} className="flex items-center gap-2.5">
+        <Link href={Routes.home} className="flex items-center gap-2.5">
           <span
             aria-hidden
             className="size-7 rounded-full bg-[radial-gradient(circle_at_30%_30%,var(--color-gradient-mint),var(--color-gradient-lavender)_60%,var(--color-gradient-peach))]"
