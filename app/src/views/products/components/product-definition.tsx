@@ -14,11 +14,7 @@ export function ProductDefinition({ product }: { product: ProductContent }) {
           >
             {definition.title}
           </h2>
-          <div className="mt-6 flex max-w-[50ch] flex-col gap-4 leading-[1.65] tracking-[0.01em] text-body">
-            {definition.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
+          <p className="mt-6 max-w-[50ch] leading-[1.65] tracking-[0.01em] text-body">{definition.body}</p>
         </div>
 
         <div className="lg:col-span-7">

@@ -48,7 +48,6 @@ export function ProductHero({ product }: { product: ProductContent }) {
               {product.hero.title}
             </h1>
             <p className="mt-6 max-w-[52ch] text-lg leading-[1.55] tracking-[0.01em] text-body">{product.hero.lead}</p>
-            <p className="mt-4 max-w-[52ch] leading-[1.6] tracking-[0.01em] text-body">{product.hero.support}</p>
             <div className="mt-9 flex flex-wrap gap-3">
               <CtaLink href={environments.demoUrl ?? Routes.auth.signup}>Book a demo</CtaLink>
               <CtaLink variant="outline" href="#how-it-works">

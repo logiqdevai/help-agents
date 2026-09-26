@@ -2,7 +2,6 @@ import {
   BookOpenIcon,
   CalendarDaysIcon,
   ClipboardCheckIcon,
-  ContactIcon,
   DatabaseIcon,
   FileTextIcon,
   InboxIcon,
@@ -18,28 +17,23 @@ import { ProductSlugs, type ProductContent } from "./product.types";
 export const VoiceAgentProduct: ProductContent = {
   slug: ProductSlugs.voice,
   name: "AI voice agent",
-  tagline: "Makes and receives phone calls, follows your rules and updates your systems.",
+  tagline: "Makes and answers calls, follows your rules and updates your CRM afterwards.",
   href: Routes.marketing.voiceAgent,
   icon: MicIcon,
   orbs: ["mint", "sky"],
   seo: {
     title: "AI Voice Agent | AI Phone Agent for Business",
     description:
-      "AI voice agent that makes and receives phone calls for your business: follows up leads, answers questions, books appointments and updates your CRM.",
+      "An AI voice agent that makes and answers calls, follows up leads, books appointments and updates your CRM afterwards.",
   },
   hero: {
     title: "AI voice agent for your business calls",
-    lead: "An AI phone agent that makes and receives calls for you. It follows up leads, answers questions, collects information and books appointments, then updates your CRM after every call.",
-    support:
-      "You set its job, give it your information and choose what it may do. It calls only in your calling hours and keeps a full record of every conversation.",
+    lead: "An AI phone agent that makes and answers calls for you. It follows up leads, answers questions, books appointments and updates your CRM after every call. It only calls during the hours you set.",
   },
   definition: {
     title: "What is an AI voice agent?",
-    paragraphs: [
-      "An AI voice agent is software that holds phone conversations on your behalf. It listens, understands what the person says, answers in natural speech and takes the actions you allow, such as booking an appointment or updating a record.",
-      "You may also hear it called an AI phone agent or an AI calling agent. It works in both directions: it calls the people you need to reach, such as new leads, and it answers the calls of people who reach you.",
-    ],
-    contrastTitle: "Not a phone menu. Not a fixed script.",
+    body: "An AI voice agent is software that holds phone conversations for you. It listens, understands what the person says, answers in natural speech and takes the actions you allow, like booking an appointment or updating a record. You may also hear it called an AI phone agent or AI calling agent. It works both ways: it calls people you need to reach, and it answers people who call you.",
+    contrastTitle: "How it differs from a phone menu",
     beforeLabel: "Phone menus and scripted dialers",
     afterLabel: "AI voice agent",
     rows: [
@@ -48,16 +42,12 @@ export const VoiceAgentProduct: ProductContent = {
         after: "The caller says what they need in their own words",
       },
       {
-        before: "Follows one script and breaks when the person goes off it",
+        before: "Follows one script and gets lost when the person goes off it",
         after: "Follows your rules and handles questions in any order",
       },
       {
-        before: "Knows nothing about the person it is calling",
-        after: "Reads the contact record from your CRM before the call",
-      },
-      {
-        before: "Ends with a voicemail box or a task for someone to call back",
-        after: "Ends with an outcome, notes and an updated CRM",
+        before: "Knows nothing about the person it’s calling",
+        after: "Reads the contact from your CRM before the call",
       },
     ],
   },
@@ -68,39 +58,29 @@ export const VoiceAgentProduct: ProductContent = {
       {
         icon: PhoneOutgoingIcon,
         title: "Make outbound calls",
-        body: "Follow up new leads, confirm appointments and reach contacts on a schedule: immediately, after a set delay, tomorrow or on a specific date.",
+        body: "Follow up new leads, confirm appointments and reach contacts on a schedule: right away, after a delay or on a set date. It retries by your rules when nobody answers.",
       },
       {
         icon: PhoneIncomingIcon,
         title: "Answer inbound calls",
-        body: "Answer calls to your number, handle routine requests and collect the caller’s details, at any hour you choose.",
+        body: "Pick up calls to your number at any hour you choose, handle routine requests and collect the caller’s details.",
       },
       {
         icon: ClipboardCheckIcon,
-        title: "Qualify and collect information",
-        body: "Ask the questions your team would ask and save every answer, so nobody has to repeat themselves later.",
-      },
-      {
-        icon: BookOpenIcon,
-        title: "Answer questions from your knowledge",
-        body: "Use the information you give it, typed or uploaded, to answer accurately. It passes on what it cannot answer.",
+        title: "Qualify and answer questions",
+        body: "Ask the questions your team would ask and save every answer. It answers from the knowledge you give it and passes on what it can’t answer.",
       },
       {
         icon: CalendarDaysIcon,
-        title: "Book appointments",
-        body: "Agree a time, create the calendar event and confirm it with the person on the call.",
-      },
-      {
-        icon: ContactIcon,
-        title: "Update your CRM",
-        body: "After every call it records the outcome, notes and any fields you have chosen, and can trigger follow-up actions.",
+        title: "Book appointments and update your CRM",
+        body: "Agree a time, create the calendar event and confirm it on the call. Afterwards it records the outcome and notes in your CRM.",
       },
     ],
   },
   example: {
     title: "One call, start to finish",
     intro:
-      "Here is what happens when a new enquiry arrives, from the first CRM read to the saved transcript. The agent works alone until a person is needed.",
+      "A new enquiry comes in. Here’s what the agent does, from reading the CRM to saving the transcript, before anyone on your team gets involved.",
     ledger: {
       title: "Example run: outbound follow-up call",
       doneLabel: "Call complete in 3 minutes",
@@ -147,24 +127,16 @@ export const VoiceAgentProduct: ProductContent = {
     },
   },
   setup: {
-    title: "Set up an AI voice agent in five steps",
-    intro: "Most of the work is telling the agent what you want. There is nothing to install and nothing to code.",
+    title: "How to set up an AI voice agent",
+    intro: "Most of the work is telling the agent what you want. There’s nothing to install and no code to write.",
     steps: [
       {
-        title: "Give it a job",
-        body: "Describe what the agent is for, such as following up leads or confirming appointments, and how it should speak and behave.",
+        title: "Give it a job and your information",
+        body: "Describe what the agent is for, like following up leads, and how it should sound. Then add what it needs to know: services, prices, opening hours and answers to common questions.",
       },
       {
-        title: "Add your information",
-        body: "Type in or upload the knowledge it needs: services, prices, opening hours, policies and answers to common questions.",
-      },
-      {
-        title: "Connect your CRM and calendar",
-        body: "Link the systems that hold your contacts and diaries, and choose which actions the agent may take in them.",
-      },
-      {
-        title: "Choose a phone number",
-        body: "Use a number provisioned for you, or bring your own, and assign it to the agent.",
+        title: "Connect your CRM, calendar and phone number",
+        body: "Link the systems that hold your contacts and diaries and choose which actions the agent may take in them. Then assign a number, either one we provide or your own.",
       },
       {
         title: "Test it, then go live",
@@ -174,85 +146,69 @@ export const VoiceAgentProduct: ProductContent = {
   },
   control: {
     title: "You set the rules for every call",
-    intro: "The agent is fast, but you decide how far it goes. Every limit below is yours to set.",
+    intro: "The agent is fast, but you decide how far it goes.",
     items: [
-      "Calling hours for each day, in your time zone. The AI never calls outside them",
-      "Retry rules: how many attempts, how long between them and when to stop",
-      "Hand a live call to a person when asked, or when the AI cannot resolve it",
-      "Take a message and log a follow-up if nobody answers the transfer",
-      "Recognise voicemail and leave only a message you have approved",
-      "Choose exactly which CRM actions each agent may use",
-      "Record calls where allowed and choose how long recordings are kept",
-      "Read the transcript, outcome and cost of every call",
+      "Set calling hours for each day in your time zone. It never calls outside them, and you choose how many retries it gets",
+      "Hand a live call to a person when the caller asks or when the AI can’t resolve it",
+      "Choose exactly which CRM actions each agent may use. Every action is checked against those permissions before anything changes",
+      "Read the transcript, outcome and cost of every call, and choose whether recordings are kept and for how long",
     ],
-    closing:
-      "The AI can only request an action. The platform checks that this agent is allowed to take it before anything changes in your systems.",
   },
   industries: {
-    title: "One agent, configured for how your business works",
-    intro: "The same AI voice agent is set up differently in each business. These are the most common uses.",
+    title: "How teams use it",
+    intro: "The same agent is set up differently in each business.",
     items: [
       {
         slug: IndustrySlugs.realEstate,
-        body: "Call property enquiries within minutes, qualify buyers and renters and book viewings.",
+        body: "Calls property enquiries within minutes and books viewings.",
       },
       {
         slug: IndustrySlugs.sales,
-        body: "Call new leads, qualify them against your criteria and book sales meetings.",
+        body: "Calls new leads, checks them against your criteria and books the meeting.",
       },
       {
         slug: IndustrySlugs.customerSupport,
-        body: "Answer and return routine support calls, and route the rest to your team.",
+        body: "Answers and returns routine calls and passes the rest to your team.",
       },
       {
         slug: IndustrySlugs.recruitment,
-        body: "Call applicants, collect availability and book interviews.",
+        body: "Calls applicants, checks availability and books interviews.",
       },
       {
         slug: IndustrySlugs.professionalServices,
-        body: "Confirm appointments, collect information and return routine client calls.",
+        body: "Confirms appointments and returns routine client calls.",
       },
     ],
   },
   faqs: [
     {
-      question: "What is an AI voice agent?",
+      question: "Can an AI voice agent make and answer phone calls?",
       answer:
-        "An AI voice agent is software that holds phone conversations for your business. It understands what people say, answers in natural speech and takes actions you allow, such as booking an appointment or updating your CRM. It is also called an AI phone agent or AI calling agent.",
+        "Yes, both. Outbound calls can go out right away, after a set delay, the next day or on a specific date. Inbound calls reach the agent through the phone number you assign to it.",
     },
     {
-      question: "Can an AI voice agent make outbound calls?",
+      question: "What does it do when it reaches voicemail?",
       answer:
-        "Yes. It can follow up new leads, confirm appointments and contact people on a schedule you define: immediately, after a set delay, the next day or on a specific date. It retries by your rules when nobody answers.",
+        "It recognises voicemail and leaves only a message you’ve approved, so nothing goes out that you haven’t seen.",
     },
     {
-      question: "Can an AI voice agent answer inbound calls?",
+      question: "What happens if nobody picks up the transfer?",
       answer:
-        "Yes. Assign the agent a phone number and it answers calls to it, handles routine requests, collects the caller’s details and records the outcome. It can hand a live call to a person when needed.",
-    },
-    {
-      question: "What happens when the AI cannot handle a call?",
-      answer:
-        "You decide. The agent can transfer the call to a person when the caller asks or when it cannot resolve the conversation. If nobody is available it takes a message, tells the caller someone will be in touch and logs a follow-up.",
+        "The agent takes a message, tells the caller someone will be in touch and logs a follow-up, so the call doesn’t just end.",
     },
     {
       question: "Does an AI voice agent work with our CRM?",
       answer:
-        "Yes. The agent connects to CRM systems, including custom CRMs through their APIs. Before a call it can read the contact’s details, and afterwards it records the outcome and notes. You choose which actions each agent is allowed to use.",
-    },
-    {
-      question: "Can I control when the AI calls people?",
-      answer:
-        "Yes. You set calling hours for each day and your time zone, and the agent never calls outside them. You also set how many times it retries and how long it waits between attempts.",
+        "Yes, including custom CRMs through their APIs. Before a call it can read the contact’s details, and afterwards it records the outcome and notes.",
     },
     {
       question: "How much does an AI voice agent cost?",
       answer:
-        "The cost of every call is recorded and shown against the call, with usage reports for any period. Book a demo and we will walk through pricing for your call volume.",
+        "The cost of every call is recorded against the call, with usage reports for any period. Book a demo and we’ll walk through pricing for your call volume.",
     },
   ],
   cta: {
-    title: "What would your voice agent do first?",
-    body: "Tell us which calls take the most of your team’s time and we will show you how an AI voice agent would handle them.",
+    title: "Which calls would you hand over first?",
+    body: "Tell us which calls take most of your team’s time and we’ll show you how a voice agent would handle them.",
   },
 };

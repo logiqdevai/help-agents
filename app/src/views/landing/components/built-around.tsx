@@ -20,15 +20,11 @@ export function BuiltAround() {
             id="built-around-title"
             className="max-w-[18ch] font-display text-[clamp(2rem,4.4vw,3rem)] leading-[1.08] font-light tracking-[-0.02em] text-ink"
           >
-            Not another chatbot. An AI automation layer.
+            You stay in control
           </h2>
-          <div className="mt-6 flex max-w-[50ch] flex-col gap-4 leading-[1.6] tracking-[0.01em] text-body">
-            <p>Every business works differently.</p>
-            <p>
-              That&rsquo;s why the platform is designed around your existing systems, processes and requirements.
-            </p>
-            <p className="font-medium text-ink">Your AI agents operate within the workflows you define.</p>
-          </div>
+          <p className="mt-6 max-w-[50ch] leading-[1.6] tracking-[0.01em] text-body">
+            The agents only do what you allow, and you can check afterwards exactly what they did.
+          </p>
         </div>
 
         <div className="relative isolate lg:col-span-6">

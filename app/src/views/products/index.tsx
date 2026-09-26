@@ -31,8 +31,8 @@ const ProductPage: FC<{ product: ProductContent }> = ({ product }) => (
     <ProductIndustries product={product} />
     <FaqSection faqs={product.faqs} />
     <ProductLinks
-      title="Use it alongside the other AI agents"
-      intro="Voice, email and messaging agents share the same knowledge and connected systems, so one workflow can use all three."
+      title="Works with the other two agents"
+      intro="All three share the same knowledge and connected systems, so one workflow can use voice, email and messaging together."
       exclude={product.slug}
     />
     <FinalCta title={product.cta.title} body={product.cta.body} />

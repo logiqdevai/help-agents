@@ -1,5 +1,4 @@
 import {
-  BookOpenIcon,
   CalendarDaysIcon,
   ContactIcon,
   DatabaseIcon,
@@ -24,8 +23,7 @@ export const SalesIndustry: IndustryContent = {
   },
   hero: {
     title: "AI sales automation that follows up every lead",
-    lead: "An AI sales agent that contacts new leads, qualifies prospects, chases open opportunities and books meetings, so your reps spend their time on conversations that can close.",
-    support: "Built for sales and lead generation teams whose pipeline is bigger than the hours in their day.",
+    lead: "An AI sales agent for sales and lead generation teams. It contacts new leads, qualifies prospects, chases open opportunities and books meetings, so your reps spend their time on conversations that can close.",
     stack: ["AI voice", "Email", "CRM"],
   },
   ledger: {
@@ -74,8 +72,7 @@ export const SalesIndustry: IndustryContent = {
   },
   pains: {
     title: "Where sales time disappears",
-    intro:
-      "Selling is mostly conversations, but the work around them is what fills the day: chasing, qualifying, scheduling and updating records.",
+    intro: "Selling is mostly conversations, but chasing, qualifying and scheduling are what fill the day.",
     items: [
       {
         title: "New leads wait for a free rep",
@@ -83,62 +80,41 @@ export const SalesIndustry: IndustryContent = {
       },
       {
         title: "Follow-ups get forgotten",
-        body: "A good process needs several touches. When reps are busy the second and third follow-up quietly do not happen, and opportunities go cold.",
+        body: "A good process needs several touches. When reps are busy, the second and third follow-up quietly don’t happen and opportunities go cold.",
       },
       {
         title: "Qualification eats the day",
         body: "Discovery calls with prospects who have no budget, no authority or no timeline take the same effort as calls with real buyers.",
       },
-      {
-        title: "Meetings take too many messages to book",
-        body: "Finding a slot that suits both sides can take several emails, and some of those threads never end in a meeting.",
-      },
-      {
-        title: "Pipeline data is stale",
-        body: "Statuses and notes are updated when someone has time. Forecasts and hand-offs then rest on records nobody trusts.",
-      },
     ],
   },
   capabilities: {
     title: "What an AI sales agent does",
-    intro:
-      "Each agent takes one job in your sales process, follows your rules and writes its results back to your CRM.",
+    intro: "Each agent takes one job in your sales process, follows your rules and writes its results back to your CRM.",
     items: [
       {
         icon: PhoneIcon,
         channel: IndustryChannels.voice,
-        title: "Call new leads within minutes",
-        body: "The AI voice agent contacts each new lead while interest is fresh, referring to what they asked for, and retries by your rules if they do not answer.",
-      },
-      {
-        icon: MicIcon,
-        channel: IndustryChannels.voice,
-        title: "Qualify against your criteria",
-        body: "Budget, need, timeline, decision-maker or whichever framework you use. The agent asks the questions and saves the answers to the record.",
+        title: "Call and qualify new leads",
+        body: "The voice agent calls each new lead while interest is fresh and refers to what they asked for. It asks your qualification questions (budget, need, timeline, decision-maker, or whichever framework you use) and saves the answers to the record.",
       },
       {
         icon: RepeatIcon,
         channel: IndustryChannels.voice,
-        title: "Follow up open opportunities",
-        body: "Quotes, proposals and stalled deals get a scheduled follow-up call, with the history from the CRM in hand.",
-      },
-      {
-        icon: CalendarDaysIcon,
-        channel: IndustryChannels.voice,
-        title: "Book sales meetings",
-        body: "Once a prospect qualifies, the agent books a meeting into the right rep’s calendar and confirms it.",
+        title: "Follow up and book meetings",
+        body: "Quotes, proposals and stalled deals get a scheduled follow-up call, with the CRM history in hand. Once a prospect qualifies, it books a meeting in the right rep’s calendar and confirms it.",
       },
       {
         icon: MailIcon,
         channel: IndustryChannels.email,
         title: "Handle replies",
-        body: "The AI email agent reads replies, works out whether the prospect is interested, not now or the wrong contact, and triggers the next step.",
+        body: "The email agent reads replies, works out whether the prospect is interested, not now or the wrong contact, and triggers the next step.",
       },
       {
         icon: ContactIcon,
         channel: IndustryChannels.crm,
         title: "Log every touch",
-        body: "Outcome, notes and next action go into the CRM after every call, so the pipeline reflects what happened.",
+        body: "Outcome, notes and next action go into the CRM after every call, so the pipeline reflects what actually happened.",
       },
     ],
   },
@@ -147,60 +123,16 @@ export const SalesIndustry: IndustryContent = {
     intro: "Start with one workflow, such as new-lead follow-up, and add more as it proves itself.",
     steps: [
       {
-        title: "Connect your CRM and calendar",
-        body: "Link the CRM that holds your leads and opportunities, and the calendars demos and meetings are booked into.",
+        title: "Connect your tools",
+        body: "Link the CRM that holds your leads and opportunities, the calendars demos go into and the mailbox for recaps and replies. Call from a number provisioned for you, or bring your own.",
       },
       {
         title: "Give it your pitch and rules",
-        body: "Add your product and pricing information, common objections and your qualification questions.",
-      },
-      {
-        title: "Define outcomes and what follows",
-        body: "For example: interested leads get a meeting booked, call back later schedules a new call, not interested closes the follow-up.",
+        body: "Add your product and pricing information, common objections and qualification questions. Then define what follows each outcome: interested leads get a meeting, call back later schedules another call, not interested closes the follow-up.",
       },
       {
         title: "Test it, then go live",
-        body: "Try the agent with test calls first. Then set calling hours and retry rules and turn it on for real leads.",
-      },
-      {
-        title: "Review calls and refine",
-        body: "Read transcripts and outcomes, see how many calls end in meetings and adjust the agent’s script and rules.",
-      },
-    ],
-  },
-  systems: {
-    title: "Connects to the tools your sales team already uses",
-    intro: "Leads, deals and calendars stay where they are. The agent works with them.",
-    items: [
-      {
-        icon: ContactIcon,
-        title: "CRM",
-        body: "Read lead and deal history, update stages and add notes.",
-      },
-      {
-        icon: CalendarDaysIcon,
-        title: "Calendar",
-        body: "Book demos and meetings against real availability.",
-      },
-      {
-        icon: MailIcon,
-        title: "Email",
-        body: "Send recaps and read replies from prospects.",
-      },
-      {
-        icon: PhoneIcon,
-        title: "Phone numbers",
-        body: "Call from a number provisioned for you, or bring your own.",
-      },
-      {
-        icon: BookOpenIcon,
-        title: "Sales knowledge",
-        body: "Product details, pricing, case studies and objection handling.",
-      },
-      {
-        icon: DatabaseIcon,
-        title: "Custom systems",
-        body: "Connect your own APIs and internal tools.",
+        body: "Try test calls first, then set calling hours and retry rules and turn it on for real leads. Read transcripts and outcomes to see how many calls end in meetings, and adjust from there.",
       },
     ],
   },
@@ -209,48 +141,40 @@ export const SalesIndustry: IndustryContent = {
     intro: "The AI does the first contact and the chasing. Your team closes.",
     items: [
       "Transfer a live call to a rep when the prospect asks for a person",
-      "Decide which outcomes book a meeting and which close the follow-up",
-      "Choose the hours the AI is allowed to call",
-      "Limit each agent to the CRM actions it needs",
-      "Keep the AI to the pricing and claims you have approved",
-      "Read every transcript and CRM change afterwards",
+      "Set the calling hours, and decide which outcomes book a meeting and which close the follow-up",
+      "Keep the AI to the pricing and claims you’ve approved, and limit each agent to the CRM actions it needs",
+      "Read every transcript and CRM change afterwards. Every action is checked against permissions and logged",
     ],
-    closing: "Nothing the AI does is hidden: every action is checked against its permissions and recorded.",
   },
   faqs: [
     {
       question: "What is AI sales automation?",
       answer:
-        "AI sales automation uses AI agents to handle repetitive sales work: contacting new leads, qualifying prospects, following up opportunities, booking meetings and updating the CRM. Reps then spend their time on conversations with qualified buyers.",
+        "It uses AI agents to handle repetitive sales work: contacting new leads, qualifying prospects, following up opportunities, booking meetings and updating the CRM. Your reps then spend their time on conversations with qualified buyers.",
     },
     {
       question: "Can an AI sales agent call leads?",
       answer:
-        "Yes. The AI voice agent can call new leads within minutes of an enquiry, hold a natural conversation, ask your qualification questions and record the result. It only calls within the hours you set and retries by your rules when there is no answer.",
+        "Yes. The voice agent can call new leads within minutes of an enquiry and hold a natural conversation. It only calls within the hours you set and retries by your rules when there’s no answer.",
     },
     {
       question: "How does an AI sales agent qualify prospects?",
       answer:
-        "You define the questions and what counts as qualified, for example budget, need, timeline and decision-maker. The agent asks them during the call, saves the answers to the CRM and applies the outcome you defined, such as booking a meeting.",
+        "You define the questions and what counts as qualified. The agent asks them during the call, saves the answers to the CRM and applies the outcome you defined, such as booking a meeting.",
     },
     {
       question: "Will sales AI automation work with our CRM?",
       answer:
-        "AI agents connect to CRM systems and to custom CRMs through their APIs. They can read lead and deal information before a call and update records afterwards, using only the actions you have allowed.",
-    },
-    {
-      question: "Can it follow up on old opportunities?",
-      answer:
-        "Yes. You can schedule follow-up calls for quotes, proposals and stalled deals. The agent uses the history in your CRM to open the conversation and records what the prospect says.",
+        "Yes. AI agents connect to CRM systems and to custom CRMs through their APIs. They read lead and deal information before a call and update records afterwards, using only the actions you’ve allowed.",
     },
     {
       question: "Does an AI sales agent replace salespeople?",
       answer:
-        "No. It handles first contact, chasing and scheduling. Your reps run the discovery, demos and negotiation, and the AI can hand a live call to a person whenever a prospect wants one.",
+        "No. It handles first contact, chasing and scheduling. Your reps run discovery, demos and negotiation, and the AI can hand a live call to a person whenever a prospect wants one.",
     },
   ],
   cta: {
-    title: "What could your sales team hand off?",
-    body: "Tell us how your leads are handled today and we will show you where AI agents can take over the follow-up.",
+    title: "Which leads are going cold?",
+    body: "Tell us how leads are handled today, and we’ll show you where an agent could take over the follow-up. Start with one workflow and add more once it’s working.",
   },
 };

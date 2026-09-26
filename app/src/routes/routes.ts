@@ -9,7 +9,6 @@ export const Routes = {
     voiceAgent: "/ai-voice-agent",
     emailAgent: "/ai-email-agent",
     messagingAgent: "/ai-messaging-agent",
-    useCases: "/use-cases",
     industries: {
       realEstate: "/industries/real-estate",
       sales: "/industries/sales",
@@ -22,7 +21,6 @@ export const Routes = {
       solutions: "/#solutions",
       howItWorks: "/#how-it-works",
       useCases: "/#use-cases",
-      integrations: "/#integrations",
       faq: "/#faq",
     },
   },

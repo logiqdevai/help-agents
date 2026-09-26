@@ -42,21 +42,6 @@ export function IndustryHero({ industry }: { industry: IndustryContent }) {
               {hero.title}
             </h1>
             <p className="mt-6 max-w-[52ch] text-lg leading-[1.55] tracking-[0.01em] text-body">{hero.lead}</p>
-            <p className="mt-4 max-w-[52ch] leading-[1.6] tracking-[0.01em] text-body">{hero.support}</p>
-            <ul aria-label="Built with" className="mt-6 flex flex-wrap items-center gap-x-1.5 gap-y-2">
-              {hero.stack.map((item, index) => (
-                <li key={item} className="flex items-center gap-1.5">
-                  {index > 0 ? (
-                    <span aria-hidden className="text-muted-soft">
-                      +
-                    </span>
-                  ) : null}
-                  <span className="rounded-full border border-hairline-strong bg-surface-card px-3 py-1 text-[13px] font-medium text-ink">
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
             <div className="mt-9 flex flex-wrap gap-3">
               <CtaLink href={environments.demoUrl ?? Routes.auth.signup}>Book a demo</CtaLink>
               <CtaLink variant="outline" href="#how-it-works">

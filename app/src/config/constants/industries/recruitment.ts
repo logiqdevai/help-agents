@@ -1,12 +1,10 @@
 import {
   BellRingIcon,
   CalendarDaysIcon,
-  ClipboardCheckIcon,
   ContactIcon,
   DatabaseIcon,
   InboxIcon,
   MailIcon,
-  MessageSquareIcon,
   MicIcon,
   PhoneIcon,
 } from "lucide-react";
@@ -21,12 +19,11 @@ export const RecruitmentIndustry: IndustryContent = {
   seo: {
     title: "AI for Recruitment | Recruitment AI Automation",
     description:
-      "AI recruitment agents that contact candidates, collect availability and experience, schedule interviews and keep your recruitment system updated.",
+      "AI recruitment agents that call candidates, collect availability and experience, book interviews and keep your recruitment system updated.",
   },
   hero: {
     title: "AI recruitment agents that keep candidates moving",
-    lead: "Recruitment AI automation that contacts candidates, collects the details you need, schedules interviews and keeps your recruitment system up to date.",
-    support: "Built for recruitment agencies and in-house hiring teams that spend more time chasing than talking to people.",
+    lead: "Recruitment automation for agencies and in-house hiring teams. The agents contact candidates, collect the details you need, book interviews and keep your recruitment system up to date.",
     stack: ["AI voice", "Email", "CRM"],
   },
   ledger: {
@@ -75,164 +72,90 @@ export const RecruitmentIndustry: IndustryContent = {
   },
   pains: {
     title: "Where recruiters lose time",
-    intro:
-      "Recruiting is a people business, but a large share of the day goes on logistics: reaching candidates, asking the same questions and coordinating diaries.",
+    intro: "Recruiting is a people business, but a big share of the day goes on logistics.",
     items: [
       {
-        title: "Chasing candidates who do not answer",
-        body: "A first call often means several attempts at different times. Each unanswered call is time that could have gone to a real conversation.",
-      },
-      {
-        title: "The same screening questions, every time",
-        body: "Availability, notice period, location, salary expectations. The answers are simple, but collecting them from every applicant is slow.",
+        title: "Chasing candidates who don’t answer",
+        body: "A first call often takes several attempts at different times, and each miss is time you could have spent on a real conversation.",
       },
       {
         title: "Interview scheduling goes back and forth",
-        body: "Matching candidate availability to interviewers takes many messages, and each delay gives the candidate time to accept another offer.",
+        body: "Matching candidate availability to interviewers takes many messages, and every delay gives the candidate time to accept another offer.",
       },
       {
-        title: "Candidates hear nothing",
-        body: "When the team is busy, applicants wait for updates and drop out of a process that never told them what happens next.",
-      },
-      {
-        title: "Records are updated late",
-        body: "Notes and stages are written after the fact, so the recruitment system is rarely an accurate picture of the pipeline.",
+        title: "The same screening questions, every time",
+        body: "Availability, notice period, salary expectations. The answers are simple, but collecting them from every applicant is slow, and the notes often reach the system late.",
       },
     ],
   },
   capabilities: {
     title: "What AI recruitment agents do",
-    intro:
-      "They handle the contact and the collection. Your recruiters handle the judgement.",
+    intro: "They handle the contact and the collection. Your recruiters handle the judgement.",
     items: [
       {
         icon: PhoneIcon,
         channel: IndustryChannels.voice,
-        title: "Contact applicants quickly",
-        body: "The AI voice agent calls new applicants soon after they apply, follows your calling hours and retries by your rules if they do not answer.",
-      },
-      {
-        icon: ClipboardCheckIcon,
-        channel: IndustryChannels.voice,
-        title: "Screen with your questions",
-        body: "Availability, notice period, location, salary expectations or anything else you ask. The agent collects the answers and saves them to the candidate’s profile.",
-      },
-      {
-        icon: CalendarDaysIcon,
-        channel: IndustryChannels.voice,
-        title: "Schedule interviews",
-        body: "It agrees a time with the candidate, creates the interview in the right calendar and confirms the details.",
+        title: "Call, screen and book interviews",
+        body: "The voice agent calls new applicants soon after they apply, asks your screening questions and agrees an interview time. It follows your calling hours, retries by your rules and saves everything to the candidate’s profile.",
       },
       {
         icon: BellRingIcon,
         channel: IndustryChannels.messaging,
         title: "Confirm and remind",
-        body: "Confirmations and reminders by message or email help candidates turn up and tell you early when they cannot.",
+        body: "Confirmations and reminders by message or email help candidates turn up, and tell you early when they can’t.",
       },
       {
         icon: MailIcon,
         channel: IndustryChannels.email,
         title: "Read candidate emails",
-        body: "The AI email agent reads replies, reschedule requests and documents, extracts the details and starts the matching workflow.",
+        body: "The email agent reads replies, reschedule requests and documents, pulls out the details and starts the matching workflow.",
       },
       {
         icon: ContactIcon,
         channel: IndustryChannels.crm,
         title: "Keep the system updated",
-        body: "Stages, notes and answers go into your CRM or recruitment system after every conversation.",
+        body: "Stages, notes and answers go into your CRM or recruitment system after every conversation, so the record matches what happened.",
       },
     ],
   },
   workflow: {
     title: "How it works for a recruitment team",
-    intro: "Start with one stage of your process, such as first contact after application, and grow from there.",
+    intro: "Start with one stage, such as first contact after an application, and grow from there.",
     steps: [
       {
-        title: "Connect your recruitment system and calendars",
-        body: "Link the CRM or recruitment system that holds your candidates, and the calendars interviews are booked into.",
+        title: "Connect your tools",
+        body: "Link your CRM or recruitment system, your calendars and your email. Add messaging channels and a phone number too, either one provisioned for you or your own.",
       },
       {
-        title: "Give it the role information",
-        body: "Add job descriptions, company details, location and process, so it can answer a candidate’s first questions.",
-      },
-      {
-        title: "Define the questions and outcomes",
-        body: "Choose exactly what the agent asks, what outcomes are possible, and what happens after each one.",
+        title: "Tell it what to ask",
+        body: "Add job descriptions and company details so it can answer a candidate’s first questions. Then choose exactly what it asks, which outcomes are possible and what happens after each one.",
       },
       {
         title: "Test it, then go live",
-        body: "Run test calls first. Then set calling hours and retry rules and switch the agent on for real candidates.",
-      },
-      {
-        title: "Review every conversation",
-        body: "Recruiters see the transcript, the answers and what was updated, and refine the agent as they learn.",
-      },
-    ],
-  },
-  systems: {
-    title: "Connects to the tools your recruiters already use",
-    intro: "Candidates, roles and calendars stay in your systems. The agent works with them.",
-    items: [
-      {
-        icon: ContactIcon,
-        title: "CRM or recruitment system",
-        body: "Read candidate records and update stages, notes and answers.",
-      },
-      {
-        icon: CalendarDaysIcon,
-        title: "Calendar",
-        body: "Book interviews against real availability.",
-      },
-      {
-        icon: MailIcon,
-        title: "Email",
-        body: "Send interview details and read candidate replies.",
-      },
-      {
-        icon: MessageSquareIcon,
-        title: "Messaging",
-        body: "Send confirmations and reminders on the channels candidates use.",
-      },
-      {
-        icon: PhoneIcon,
-        title: "Phone numbers",
-        body: "Call from a provisioned number or your own.",
-      },
-      {
-        icon: DatabaseIcon,
-        title: "Databases and custom systems",
-        body: "Give the agent access to structured data and your own APIs.",
+        body: "Run test calls first, then set calling hours and retry rules and switch it on. Your recruiters can read every transcript and see what was updated, so you can refine the agent as you learn.",
       },
     ],
   },
   control: {
     title: "Recruiters make the decisions",
-    intro: "The AI collects information and schedules. It does not decide who gets hired.",
+    intro: "The AI collects information and schedules. It doesn’t decide who gets hired.",
     items: [
-      "Decide exactly what the AI asks candidates, and nothing more",
-      "Transfer a live call to a recruiter when the candidate asks for a person",
-      "Choose the hours the AI is allowed to call",
-      "Limit each agent to the records and actions it needs",
-      "Keep hiring decisions with your team",
-      "Read every transcript and record change afterwards",
+      "You decide exactly what it asks candidates, and nothing more",
+      "It calls only in the hours you set, and transfers a live call to a recruiter when a candidate asks for a person",
+      "Each agent is limited to the records and actions it needs",
+      "Every action is checked against those permissions and logged, so you can read any transcript or record change afterwards",
     ],
-    closing: "Every action the AI takes is checked against its permissions and recorded, so you always see what happened.",
   },
   faqs: [
     {
       question: "How is AI used in recruitment?",
       answer:
-        "AI agents handle the contact and admin around hiring: calling applicants, asking screening questions, scheduling interviews, sending confirmations and updating the recruitment system. Recruiters then spend their time interviewing and advising.",
+        "AI agents handle the contact and admin around hiring: calling applicants, asking screening questions, scheduling interviews, sending reminders and updating your recruitment system. Recruiters then spend their time interviewing and advising.",
     },
     {
       question: "Can an AI agent call candidates?",
       answer:
-        "Yes. The AI voice agent can call candidates, ask the questions you define, such as availability and notice period, and record the answers. It calls only within the hours you set and retries by your rules if a candidate does not answer.",
-    },
-    {
-      question: "Can AI schedule interviews?",
-      answer:
-        "Yes. Connected to your calendars, the agent can agree an interview time with the candidate, create the event and send the details by email or message.",
+        "Yes. The voice agent asks the questions you define, such as availability and notice period, and records the answers. It only calls in the hours you set and retries by your rules if a candidate doesn’t answer. Connected to your calendars, it can also agree an interview time and send the details by email or message.",
     },
     {
       question: "Does the AI make hiring decisions?",
@@ -242,11 +165,11 @@ export const RecruitmentIndustry: IndustryContent = {
     {
       question: "Will it work with our recruitment system or CRM?",
       answer:
-        "AI agents connect to CRM systems and to custom systems through their APIs. They can read a candidate’s record before a call and update stages, notes and answers afterwards, using only the actions you allow.",
+        "Yes. Agents connect to CRM systems, and to custom systems through their APIs. They read a candidate’s record before a call and update stages, notes and answers afterwards, using only the actions you allow.",
     },
   ],
   cta: {
     title: "What could your recruiters hand off?",
-    body: "Tell us how candidates move through your process and we will show you where AI agents can take over the chasing.",
+    body: "Tell us how candidates move through your process today, and we’ll show you where an agent could take over the chasing.",
   },
 };

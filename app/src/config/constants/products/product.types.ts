@@ -33,10 +33,10 @@ export interface ProductContent {
   icon: LucideIcon;
   orbs: [OrbColorName, OrbColorName];
   seo: { title: string; description: string };
-  hero: { title: string; lead: string; support: string };
+  hero: { title: string; lead: string };
   definition: {
     title: string;
-    paragraphs: string[];
+    body: string;
     contrastTitle: string;
     beforeLabel: string;
     afterLabel: string;
@@ -45,7 +45,7 @@ export interface ProductContent {
   capabilities: { title: string; intro: string; items: ProductCapability[] };
   example: { title: string; intro: string; ledger: RunLedgerContent };
   setup: { title: string; intro: string; steps: MarketingTextItem[] };
-  control: { title: string; intro: string; items: string[]; closing: string };
+  control: { title: string; intro: string; items: string[] };
   industries: { title: string; intro: string; items: ProductIndustryUse[] };
   faqs: FaqItem[];
   cta: { title: string; body: string };

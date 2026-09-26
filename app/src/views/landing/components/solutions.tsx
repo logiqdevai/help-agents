@@ -30,11 +30,8 @@ export function Solutions() {
             id="solutions-title"
             className="font-display text-[clamp(2rem,4.4vw,3rem)] leading-[1.08] font-light tracking-[-0.02em] text-ink"
           >
-            One platform. Multiple AI agents.
+            One agent for each channel
           </h2>
-          <p className="mt-5 max-w-[52ch] text-lg leading-[1.55] tracking-[0.01em] text-body">
-            Build AI-powered workflows around the way your business operates.
-          </p>
         </div>
 
         <div className="mt-16 lg:mt-20">
@@ -55,12 +52,7 @@ export function Solutions() {
                   <h3 className="mt-5 font-display text-[clamp(1.75rem,3.2vw,2.25rem)] leading-[1.13] font-light tracking-[-0.01em] text-ink">
                     {solution.title}
                   </h3>
-                  <div className="mt-5 flex max-w-[50ch] flex-col gap-4 leading-[1.6] tracking-[0.01em] text-body">
-                    {solution.body.map((paragraph) => (
-                      <p key={paragraph}>{paragraph}</p>
-                    ))}
-                  </div>
-                  <p className="mt-6 text-lg font-medium text-ink">{solution.tagline}</p>
+                  <p className="mt-5 max-w-[50ch] leading-[1.6] tracking-[0.01em] text-body">{solution.body}</p>
                   <Link
                     href={solution.href}
                     className="group mt-6 inline-flex items-center gap-2 rounded-full text-[15px] font-medium text-ink underline decoration-hairline-strong underline-offset-[6px] transition-colors hover:decoration-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"

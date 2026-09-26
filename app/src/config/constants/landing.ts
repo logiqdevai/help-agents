@@ -1,5 +1,4 @@
 import {
-  BlocksIcon,
   CalendarDaysIcon,
   ContactIcon,
   DatabaseIcon,
@@ -9,6 +8,7 @@ import {
   MicIcon,
   type LucideIcon,
 } from "lucide-react";
+import { environments } from "@/config/environments";
 import type { RunLedgerContent } from "@/interfaces/marketing.interfaces";
 import { Routes } from "@/routes/routes";
 
@@ -45,15 +45,14 @@ export const LandingLedger: RunLedgerContent = {
 export const LandingSeo = {
   title: "AI Automation Platform | AI Agents for Business",
   description:
-    "Automate business workflows with AI agents for voice calls, email and messaging. Connect AI to your CRM, business systems and data to automate repetitive work and customer interactions.",
-  ogAlt: "AI agents that work for your business: voice, email and messaging on one connected AI platform.",
+    "AI agents that make calls, read email and answer messages for your business. Connect them to your CRM, set the rules and let them do the repetitive work.",
+  ogAlt: "AI agents that handle your calls, emails and messages.",
 } as const;
 
 export const LandingNavLinks = [
   { title: "Solutions", href: Routes.marketing.sections.solutions },
   { title: "How it works", href: Routes.marketing.sections.howItWorks },
   { title: "Use cases", href: Routes.marketing.sections.useCases },
-  { title: "Integrations", href: Routes.marketing.sections.integrations },
   { title: "FAQ", href: Routes.marketing.sections.faq },
 ] as const;
 
@@ -65,8 +64,7 @@ export interface LandingSolution {
   name: string;
   icon: LucideIcon;
   title: string;
-  body: string[];
-  tagline: string;
+  body: string;
   cta: string;
   href: string;
 }
@@ -76,82 +74,49 @@ export const LandingSolutions: LandingSolution[] = [
     id: LandingSolutionIds.voice,
     name: "AI voice agent",
     icon: MicIcon,
-    title: "AI-powered voice calls that get things done",
-    body: [
-      "Make and receive automated phone calls with an AI agent that can understand conversations, follow business rules and take action.",
-      "The AI voice agent can follow up with leads, qualify prospects, answer questions, collect information, schedule appointments and update your systems automatically.",
-    ],
-    tagline: "Automate the conversation — not just the call.",
-    cta: "Explore AI voice agent",
+    title: "Calls your leads so your team doesn’t have to",
+    body: "The voice agent calls new leads as soon as they come in, asks your qualifying questions and books a time in your calendar. It also answers inbound calls, and whatever it learns goes straight into your CRM.",
+    cta: "See the voice agent",
     href: Routes.marketing.voiceAgent,
   },
   {
     id: LandingSolutionIds.email,
     name: "AI email agent",
     icon: MailIcon,
-    title: "Turn emails into actions",
-    body: [
-      "Let AI understand your incoming emails and take action instead of leaving your team to process everything manually.",
-      "The AI email agent can read conversations, extract information, identify requests, update your systems and trigger workflows based on the content of each email.",
-    ],
-    tagline: "From inbox to action, automatically.",
-    cta: "Explore AI email agent",
+    title: "An inbox that sorts itself",
+    body: "The email agent reads each message, works out what the sender wants and pulls out the details. Then it takes the next step: sending a reply, updating a record or passing it to the right person.",
+    cta: "See the email agent",
     href: Routes.marketing.emailAgent,
   },
   {
     id: LandingSolutionIds.messaging,
     name: "AI messaging agent",
     icon: MessageSquareIcon,
-    title: "AI conversations across messaging channels",
-    body: [
-      "Give customers and users an AI-powered way to interact with your business through messaging.",
-      "The AI agent can use your business data and connected systems to answer questions, provide information and perform actions.",
-    ],
-    tagline: "Instant answers powered by your business data.",
-    cta: "Explore AI messaging",
+    title: "Answers for customers, day and night",
+    body: "Customers message you on the apps they already use, and the agent replies with information from your own systems, like prices, availability or order status. If it can’t help, it passes the chat to a person.",
+    cta: "See the messaging agent",
     href: Routes.marketing.messagingAgent,
   },
 ];
 
 export const LandingSteps = [
   {
-    title: "Connect",
-    body: "Connect your CRM, email, databases, calendars, communication channels and other business systems.",
+    title: "Connect your tools",
+    body: "Link your CRM, calendar, email and messaging apps. Have an in-house system? Connect it through its API.",
   },
   {
-    title: "Give AI context",
-    body: "Provide the information, knowledge and rules your AI agents need to understand your business.",
+    title: "Set the rules",
+    body: "Decide what the agent can see, what it can change and when a person should step in. Add your prices, FAQs and the way you talk to customers.",
   },
   {
-    title: "Define what AI can do",
-    body: "Configure the actions, workflows and processes your agents can execute.",
+    title: "Let it work",
+    body: "It talks to leads and customers, does the follow-up and writes everything back to your CRM. You can review any conversation afterwards.",
   },
-  {
-    title: "Let AI work",
-    body: "Your AI agents communicate with customers, process information and execute tasks automatically.",
-  },
-  {
-    title: "Keep everything connected",
-    body: "Actions and results can be synchronized with your existing systems so your team always has the latest information.",
-  },
-] as const;
-
-export const LandingLoopVerbs = ["Read", "Understand", "Decide", "Act", "Update"] as const;
-
-export const LandingExampleFlow = [
-  "New lead",
-  "AI reads CRM",
-  "AI calls lead",
-  "Qualifies interest",
-  "Recommends options",
-  "Books appointment",
-  "Updates CRM",
 ] as const;
 
 export interface LandingUseCase {
   title: string;
   body: string;
-  stack: string[];
   cta: string;
   href: string;
 }
@@ -159,150 +124,81 @@ export interface LandingUseCase {
 export const LandingUseCases: LandingUseCase[] = [
   {
     title: "Real estate",
-    body: "Automate lead follow-ups, property inquiries, customer qualification, property recommendations and appointment scheduling.",
-    stack: ["AI voice agent", "CRM", "Viber"],
-    cta: "Explore real estate automation",
+    body: "Call back every property inquiry, find out what the buyer wants, suggest matching listings and book viewings.",
+    cta: "Explore real estate",
     href: Routes.marketing.industries.realEstate,
   },
   {
     title: "Sales & lead generation",
-    body: "Automatically contact new leads, qualify prospects, follow up with opportunities and schedule sales meetings.",
-    stack: ["AI voice", "Email", "CRM"],
-    cta: "Explore sales automation",
+    body: "Contact new leads the moment they arrive, qualify them and book the meeting for your sales team.",
+    cta: "Explore sales",
     href: Routes.marketing.industries.sales,
   },
   {
     title: "Customer support",
-    body: "Answer common questions, provide information and route conversations to the right person when human assistance is needed.",
-    stack: ["AI messaging", "Knowledge base", "CRM"],
-    cta: "Explore customer support automation",
+    body: "Answer the common questions and hand the rest to the right person.",
+    cta: "Explore support",
     href: Routes.marketing.industries.customerSupport,
   },
   {
     title: "Professional services",
-    body: "Automate client communication, appointment scheduling, information requests and administrative workflows.",
-    stack: ["AI voice", "Email", "Calendar"],
+    body: "Book appointments, send reminders and answer the routine questions clients keep asking.",
     cta: "Explore professional services",
     href: Routes.marketing.industries.professionalServices,
   },
   {
     title: "Recruitment",
-    body: "Communicate with candidates, collect information, schedule interviews and keep recruitment systems updated.",
-    stack: ["AI voice", "Email", "CRM"],
-    cta: "Explore recruitment automation",
+    body: "Talk to candidates, collect their details, schedule interviews and keep your recruiting system current.",
+    cta: "Explore recruitment",
     href: Routes.marketing.industries.recruitment,
   },
 ];
 
 export const LandingAnyWorkflow = {
-  title: "Any workflow",
-  body: "If a process involves repetitive communication, information processing or actions across business systems, it may be a candidate for AI automation.",
-  cta: "Explore all use cases",
-  href: Routes.marketing.useCases,
+  title: "Something else?",
+  body: "If the work is repetitive and involves talking to people or updating your systems, it can probably be automated.",
+  cta: "Ask us about it",
+  href: environments.demoUrl ?? Routes.auth.signup,
 } as const;
 
-export interface LandingIntegration {
-  title: string;
-  body: string;
-  icon: LucideIcon;
-}
-
-export const LandingIntegrations: LandingIntegration[] = [
-  {
-    title: "CRM",
-    body: "Access customer, lead and business information and automatically update records.",
-    icon: ContactIcon,
-  },
-  { title: "Email", body: "Read, understand and process incoming communication.", icon: MailIcon },
-  { title: "Calendar", body: "Schedule appointments and coordinate availability.", icon: CalendarDaysIcon },
-  {
-    title: "Messaging",
-    body: "Connect AI conversations to the channels your customers already use.",
-    icon: MessageSquareIcon,
-  },
-  { title: "Databases", body: "Give AI access to structured business information.", icon: DatabaseIcon },
-  {
-    title: "Custom systems",
-    body: "Connect your own APIs and internal tools to create workflows around your specific requirements.",
-    icon: BlocksIcon,
-  },
-];
-
 export const LandingControls = [
-  "What information AI can access",
-  "What actions AI can perform",
-  "Which systems it can interact with",
-  "When AI should take action",
-  "When a human should take over",
-  "How every action should be recorded",
+  "Which systems and data it can access",
+  "What actions it can take",
+  "When it acts on its own",
+  "When a person takes over",
+  "What gets logged",
 ] as const;
 
-export const LandingExpansionStages = [
-  "Voice agent",
-  "Email agent",
-  "Messaging agent",
-  "CRM automation",
-  "Additional AI agents",
-] as const;
-
-export const LandingBenefits = [
-  {
-    title: "Respond faster",
-    body: "AI can respond to customers and leads without waiting for someone on your team to become available.",
-  },
-  {
-    title: "Follow up consistently",
-    body: "Automate repetitive follow-ups and reduce the number of opportunities that are forgotten.",
-  },
-  {
-    title: "Reduce manual work",
-    body: "Let AI handle repetitive communication and administrative processes.",
-  },
-  {
-    title: "Keep systems updated",
-    body: "Automatically transfer information between conversations and your business systems.",
-  },
-  {
-    title: "Scale without adding the same amount of manual work",
-    body: "Automate processes that would otherwise require additional time from your team.",
-  },
-] as const;
+export const LandingFinalCta = {
+  title: "Which task would you hand over first?",
+  body: "Tell us how you handle leads and customer messages today, and we’ll show you what an agent could take over. You can start with one workflow and add more once it’s working.",
+} as const;
 
 export const LandingFaqs = [
   {
     question: "What is an AI automation platform?",
     answer:
-      "An AI automation platform connects AI agents with business systems, data and workflows so they can perform tasks and automate repetitive processes.",
+      "It’s software that lets AI agents work with your tools and data. They call, email or message people, look things up in your systems and complete tasks, following rules you set.",
   },
   {
-    question: "What can AI agents automate?",
+    question: "Does it connect to our CRM?",
     answer:
-      "AI agents can automate communication, lead follow-ups, customer support, data processing, appointment scheduling, CRM updates and many other workflows.",
+      "Yes. The agents can read from and write to your CRM, calendar and other tools, so records stay up to date without anyone typing them in. If you use an in-house system, it can connect through an API.",
   },
   {
-    question: "Can AI agents connect to our CRM?",
+    question: "Can it really make phone calls?",
     answer:
-      "Yes. AI agents can be connected to CRM systems and other business applications to access relevant information and perform configured actions.",
+      "Yes. The voice agent makes and receives calls. Typical jobs are following up new leads, asking qualifying questions, collecting details and booking appointments.",
   },
   {
-    question: "Can the AI make phone calls?",
+    question: "What happens when the AI can’t handle something?",
     answer:
-      "Yes. The AI voice agent can make automated calls for tasks such as follow-ups, qualification, information collection and appointment scheduling.",
+      "It hands the conversation to a person. You decide in advance which situations count, such as a complaint, a complex request or a customer who asks for a human.",
   },
   {
-    question: "Can AI process emails?",
+    question: "Will it work for our industry?",
     answer:
-      "Yes. The AI email agent can understand incoming emails, extract relevant information and trigger configured actions.",
-  },
-  {
-    question: "Can AI answer questions using our business data?",
-    answer:
-      "Yes. AI agents can be connected to business information, knowledge bases and other data sources to provide context-aware responses.",
-  },
-  {
-    question: "Can we use this for our industry?",
-    answer:
-      "Yes. The platform is designed to support different industries and workflows. Dedicated solutions can be configured around the specific processes of each business.",
+      "Probably. The agents are set up around your own process, so the same platform serves real estate, sales, support, recruitment and professional services. Book a demo and we’ll tell you honestly whether it’s a fit.",
   },
 ] as const;
 
@@ -329,8 +225,7 @@ export const LandingFooterColumns = [
     title: "Platform",
     links: [
       { title: "How it works", href: Routes.marketing.sections.howItWorks },
-      { title: "Use cases", href: Routes.marketing.useCases },
-      { title: "Integrations", href: Routes.marketing.sections.integrations },
+      { title: "Use cases", href: Routes.marketing.sections.useCases },
       { title: "FAQ", href: Routes.marketing.sections.faq },
     ],
   },

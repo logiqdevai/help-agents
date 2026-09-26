@@ -9,7 +9,6 @@ import type { IndustryContent } from "@/config/constants/industries";
 import { IndustryCapabilities } from "./components/industry-capabilities";
 import { IndustryHero } from "./components/industry-hero";
 import { IndustryPains } from "./components/industry-pains";
-import { IndustrySystems } from "./components/industry-systems";
 import { OtherIndustries } from "./components/other-industries";
 
 const IndustryPage: FC<{ industry: IndustryContent }> = ({ industry }) => (
@@ -30,12 +29,11 @@ const IndustryPage: FC<{ industry: IndustryContent }> = ({ industry }) => (
     <IndustryPains industry={industry} />
     <IndustryCapabilities industry={industry} />
     <StepsSection title={industry.workflow.title} intro={industry.workflow.intro} steps={industry.workflow.steps} />
-    <IndustrySystems industry={industry} />
     <ControlPanel {...industry.control} orbs={industry.orbs} />
     <FaqSection faqs={industry.faqs} />
     <ProductLinks
-      title={`The AI agents behind ${industry.name.toLowerCase()} automation`}
-      intro="Each agent can work on its own, or together as one connected workflow."
+      title="The three agents behind it"
+      intro="Use one on its own, or let all three work on the same workflow."
     />
     <OtherIndustries currentSlug={industry.slug} />
     <FinalCta title={industry.cta.title} body={industry.cta.body} />

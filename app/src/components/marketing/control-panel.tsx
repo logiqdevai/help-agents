@@ -7,12 +7,11 @@ interface ControlPanelProps {
   title: string;
   intro: string;
   items: readonly string[];
-  closing: string;
   orbs: readonly [OrbColorName, OrbColorName];
 }
 
 /** The dark "you stay in control" band. */
-export function ControlPanel({ title, intro, items, closing, orbs }: ControlPanelProps) {
+export function ControlPanel({ title, intro, items, orbs }: ControlPanelProps) {
   return (
     <section aria-labelledby="control-title" className="px-3 pb-4 sm:px-5">
       <div className="relative isolate mx-auto max-w-[1360px] overflow-hidden rounded-2xl bg-surface-dark text-on-dark">
@@ -39,9 +38,6 @@ export function ControlPanel({ title, intro, items, closing, orbs }: ControlPane
                 </li>
               ))}
             </ul>
-            <p className="mt-8 max-w-[52ch] border-t border-white/12 pt-6 leading-[1.6] tracking-[0.01em] text-on-dark-soft">
-              {closing}
-            </p>
           </div>
         </Container>
       </div>

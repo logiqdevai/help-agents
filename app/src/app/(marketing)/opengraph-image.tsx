@@ -7,7 +7,7 @@ export const contentType = OgImageContentType;
 
 export default function OpenGraphImage() {
   return renderOgImage({
-    headline: "AI agents that work for your business",
-    subline: "Voice. Email. Messaging. One connected AI platform.",
+    headline: "AI agents that handle your calls, emails and messages",
+    subline: "Connected to your CRM. Working by your rules.",
   });
 }

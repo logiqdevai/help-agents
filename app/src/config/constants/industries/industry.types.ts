@@ -30,10 +30,6 @@ export interface IndustryCapability extends IndustryTextItem {
   channel: IndustryChannel;
 }
 
-export interface IndustrySystem extends IndustryTextItem {
-  icon: LucideIcon;
-}
-
 export interface IndustryContent {
   slug: IndustrySlug;
   /** Short name used in links and breadcrumbs. */
@@ -42,13 +38,13 @@ export interface IndustryContent {
   /** Two soft orbs behind the hero. */
   orbs: [IndustryOrbColor, IndustryOrbColor];
   seo: { title: string; description: string };
-  hero: { title: string; lead: string; support: string; stack: string[] };
+  /** `stack` is not shown in the hero; it labels this industry on the other-industries cards and the OG image. */
+  hero: { title: string; lead: string; stack: string[] };
   ledger: RunLedgerContent;
   pains: { title: string; intro: string; items: IndustryTextItem[] };
   capabilities: { title: string; intro: string; items: IndustryCapability[] };
   workflow: { title: string; intro: string; steps: IndustryTextItem[] };
-  systems: { title: string; intro: string; items: IndustrySystem[] };
-  control: { title: string; intro: string; items: string[]; closing: string };
+  control: { title: string; intro: string; items: string[] };
   faqs: FaqItem[];
   cta: { title: string; body: string };
 }
