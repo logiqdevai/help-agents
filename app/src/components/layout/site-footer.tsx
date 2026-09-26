@@ -10,7 +10,7 @@ export function SiteFooter() {
         <div className="max-w-xs">
           <BrandMark />
           <p className="mt-4 text-[15px] leading-[1.47] text-body">
-            AI agents for voice, email and messaging, connected to the systems and data your business already uses.
+            AI agents for voice, email and Viber, connected to the systems and data your business already uses.
           </p>
         </div>
         {LandingFooterColumns.map((column) => (

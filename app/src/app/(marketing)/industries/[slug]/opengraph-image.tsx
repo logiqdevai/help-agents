@@ -14,6 +14,6 @@ export default async function OpenGraphImage({ params }: { params: Promise<{ slu
   const industry = getIndustry(slug);
   return renderOgImage({
     headline: industry?.hero.title ?? "AI agents that work for your business",
-    subline: industry ? industry.hero.stack.join(" + ") : "Voice. Email. Messaging.",
+    subline: industry ? industry.hero.stack.join(" + ") : "Voice. Email. Viber.",
   });
 }

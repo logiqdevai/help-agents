@@ -14,7 +14,7 @@ import { Routes } from "@/routes/routes";
 export const LandingLedger: RunLedgerContent = {
   title: "Example run",
   doneLabel: "Done in 4 minutes",
-  description: "Example: one new lead handled across voice, email and messaging",
+  description: "Example: one new lead handled across voice, email and Viber",
   rows: [
     { icon: InboxIcon, title: "New lead", detail: "Website form: Nikos A. asked for a quote", time: "09:02" },
     {
@@ -34,7 +34,7 @@ export const LandingLedger: RunLedgerContent = {
     {
       icon: CalendarDaysIcon,
       title: "Booked Thursday, 11:00",
-      detail: "Confirmation sent by message",
+      detail: "Confirmation sent on Viber",
       time: "09:06",
     },
     { icon: ContactIcon, title: "Updated the CRM", detail: "Stage, call notes and next step", time: "09:06" },
@@ -44,8 +44,8 @@ export const LandingLedger: RunLedgerContent = {
 export const LandingSeo = {
   title: "AI Automation Platform | AI Agents for Business",
   description:
-    "AI agents that make calls, read email and answer messages for your business. Connect them to your CRM, set the rules and let them do the repetitive work.",
-  ogAlt: "AI agents that handle your calls, emails and messages.",
+    "AI agents that make calls, read email and chat with customers on Viber for your business. Connect them to your CRM, set the rules and let them do the repetitive work.",
+  ogAlt: "AI agents that handle your calls, emails and Viber chats.",
 } as const;
 
 export const LandingNavLinks = [
@@ -89,11 +89,11 @@ export const LandingSolutions: LandingSolution[] = [
   },
   {
     id: LandingSolutionIds.messaging,
-    name: "AI messaging agent",
+    name: "AI Viber chatbot",
     icon: MessageSquareIcon,
     title: "Answers for customers, day and night",
-    body: "Customers message you on the apps they already use, and the agent replies with information from your own systems, like prices, availability or order status. If it can’t help, it passes the chat to a person.",
-    cta: "See the messaging agent",
+    body: "Customers message you on Viber, the app they already use, and the chatbot replies with information from your own systems, like prices, availability or order status. If it can’t help, it passes the chat to a person.",
+    cta: "See the Viber chatbot",
     href: Routes.marketing.messagingAgent,
   },
 ];
@@ -101,7 +101,7 @@ export const LandingSolutions: LandingSolution[] = [
 export const LandingSteps = [
   {
     title: "Connect your tools",
-    body: "Link your CRM, calendar, email and messaging apps. Have an in-house system? Connect it through its API.",
+    body: "Link your CRM, calendar, email and Viber account. Have an in-house system? Connect it through its API.",
   },
   {
     title: "Set the rules",
@@ -177,7 +177,7 @@ export const LandingFaqs = [
   {
     question: "What is an AI automation platform?",
     answer:
-      "It’s software that lets AI agents work with your tools and data. They call, email or message people, look things up in your systems and complete tasks, following rules you set.",
+      "It’s software that lets AI agents work with your tools and data. They call people, email them or chat with them on Viber, look things up in your systems and complete tasks, following rules you set.",
   },
   {
     question: "Does it connect to our CRM?",
@@ -207,7 +207,7 @@ export const LandingFooterColumns = [
     links: [
       { title: "AI voice agent", href: Routes.marketing.voiceAgent },
       { title: "AI email agent", href: Routes.marketing.emailAgent },
-      { title: "AI messaging agent", href: Routes.marketing.messagingAgent },
+      { title: "AI Viber chatbot", href: Routes.marketing.messagingAgent },
     ],
   },
   {

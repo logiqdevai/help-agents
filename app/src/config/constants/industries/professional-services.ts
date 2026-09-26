@@ -159,7 +159,7 @@ export const ProfessionalServicesIndustry: IndustryContent = {
     {
       question: "Can AI chase clients for documents and information?",
       answer:
-        "Yes. It asks clients for what’s missing by email, phone or message, follows up on a schedule you set and notifies your team when it arrives.",
+        "Yes. It asks clients for what’s missing by email, phone or Viber, follows up on a schedule you set and notifies your team when it arrives.",
     },
     {
       question: "Who controls what the AI can say and do?",

@@ -113,7 +113,7 @@ const ChatMessages = [
 
 export function MessagingSpecimen({ className }: { className?: string }) {
   return (
-    <div aria-label="Example: a customer conversation handled by the AI messaging agent" className={cn(specimenShell, className)}>
+    <div aria-label="Example: a Viber conversation handled by the AI chatbot" className={cn(specimenShell, className)}>
       <div className="flex flex-col gap-2.5 px-5 py-5">
         {ChatMessages.map((message) => (
           <p
@@ -130,7 +130,7 @@ export function MessagingSpecimen({ className }: { className?: string }) {
         ))}
       </div>
       <p className="border-t border-hairline-soft px-5 py-3.5 text-sm text-muted-ink">
-        Answered from your calendar and knowledge base
+        Viber chat, answered from your calendar and knowledge base
       </p>
     </div>
   );

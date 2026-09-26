@@ -13,7 +13,7 @@ export type IndustrySlug = (typeof IndustrySlugs)[keyof typeof IndustrySlugs];
 export const IndustryChannels = {
   voice: "Voice",
   email: "Email",
-  messaging: "Messaging",
+  messaging: "Viber",
   crm: "CRM",
 } as const;
 export type IndustryChannel = (typeof IndustryChannels)[keyof typeof IndustryChannels];

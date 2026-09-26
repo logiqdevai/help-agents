@@ -102,7 +102,7 @@ export const RecruitmentIndustry: IndustryContent = {
         icon: BellRingIcon,
         channel: IndustryChannels.messaging,
         title: "Confirm and remind",
-        body: "Confirmations and reminders by message or email help candidates turn up, and tell you early when they can’t.",
+        body: "Confirmations and reminders on Viber or by email help candidates turn up, and tell you early when they can’t.",
       },
       {
         icon: MailIcon,
@@ -124,7 +124,7 @@ export const RecruitmentIndustry: IndustryContent = {
     steps: [
       {
         title: "Connect your tools",
-        body: "Link your CRM or recruitment system, your calendars and your email. Add messaging channels and a phone number too, either one provisioned for you or your own.",
+        body: "Link your CRM or recruitment system, your calendars and your email. Add Viber and a phone number too, either one provisioned for you or your own.",
       },
       {
         title: "Tell it what to ask",
@@ -155,7 +155,7 @@ export const RecruitmentIndustry: IndustryContent = {
     {
       question: "Can an AI agent call candidates?",
       answer:
-        "Yes. The voice agent asks the questions you define, such as availability and notice period, and records the answers. It only calls in the hours you set and retries by your rules if a candidate doesn’t answer. Connected to your calendars, it can also agree an interview time and send the details by email or message.",
+        "Yes. The voice agent asks the questions you define, such as availability and notice period, and records the answers. It only calls in the hours you set and retries by your rules if a candidate doesn’t answer. Connected to your calendars, it can also agree an interview time and send the details by email or on Viber.",
     },
     {
       question: "Does the AI make hiring decisions?",

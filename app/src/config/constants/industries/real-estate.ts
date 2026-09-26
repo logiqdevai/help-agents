@@ -103,7 +103,7 @@ export const RealEstateIndustry: IndustryContent = {
         icon: MessageSquareIcon,
         channel: IndustryChannels.messaging,
         title: "Recommend matching properties",
-        body: "Using the listings you provide, it suggests properties that fit what the lead said and sends the details over messaging, such as Viber.",
+        body: "Using the listings you provide, it suggests properties that fit what the lead said and sends the details on Viber.",
       },
       {
         icon: MailIcon,
@@ -125,7 +125,7 @@ export const RealEstateIndustry: IndustryContent = {
     steps: [
       {
         title: "Connect your tools",
-        body: "Link your CRM and the calendars viewings go into. Add email and messaging such as Viber, or your own listings database through its API.",
+        body: "Link your CRM and the calendars viewings go into. Add email and Viber, or your own listings database through its API.",
       },
       {
         title: "Give it your property knowledge and rules",
@@ -166,7 +166,7 @@ export const RealEstateIndustry: IndustryContent = {
     {
       question: "Can the AI book property viewings?",
       answer:
-        "Yes, once it’s connected to your calendar. It checks the agent’s real availability, creates the viewing and confirms it with the lead by message or email.",
+        "Yes, once it’s connected to your calendar. It checks the agent’s real availability, creates the viewing and confirms it with the lead on Viber or by email.",
     },
     {
       question: "Will AI replace our real estate agents?",

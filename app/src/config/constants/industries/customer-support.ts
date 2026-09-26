@@ -24,7 +24,7 @@ export const CustomerSupportIndustry: IndustryContent = {
   hero: {
     title: "AI customer support that answers and acts",
     lead: "AI support agents for teams that want faster answers without giving up the difficult conversations. They answer common questions from your knowledge base, look up account details and pass the conversation to the right person when a human is needed.",
-    stack: ["AI messaging", "Knowledge base", "CRM"],
+    stack: ["AI Viber chatbot", "Knowledge base", "CRM"],
   },
   ledger: {
     title: "Example run: customer question",
@@ -34,7 +34,7 @@ export const CustomerSupportIndustry: IndustryContent = {
       {
         icon: MessageSquareIcon,
         title: "New message",
-        detail: "“Where is my order?”, sent on messaging",
+        detail: "“Where is my order?”, sent on Viber",
         time: "19:42",
       },
       {
@@ -95,7 +95,7 @@ export const CustomerSupportIndustry: IndustryContent = {
         icon: MessageSquareIcon,
         channel: IndustryChannels.messaging,
         title: "Answer questions that fit the customer",
-        body: "The messaging agent replies instantly from your knowledge base, on the channels customers already use. It reads the customer’s record, such as their order, plan or booking, so the answer is about their situation.",
+        body: "The Viber chatbot replies instantly from your knowledge base, in the app customers already use. It reads the customer’s record, such as their order, plan or booking, so the answer is about their situation.",
       },
       {
         icon: PhoneIcon,
@@ -123,7 +123,7 @@ export const CustomerSupportIndustry: IndustryContent = {
     steps: [
       {
         title: "Connect your tools",
-        body: "Link your CRM or ticketing system and the channels customers use to reach you: messaging, email and phone. Connect order or booking systems through their APIs.",
+        body: "Link your CRM or ticketing system and the ways customers reach you: Viber, email and phone. Connect order or booking systems through their APIs.",
       },
       {
         title: "Add your knowledge and set the rules",
@@ -162,9 +162,9 @@ export const CustomerSupportIndustry: IndustryContent = {
         "Yes. Connected to your systems, an agent can look up records, update them and start workflows. You choose which actions each agent may use.",
     },
     {
-      question: "Can AI handle phone support as well as messaging?",
+      question: "Can AI handle phone support as well as Viber chats?",
       answer:
-        "Yes. The voice agent answers and returns calls for routine requests, while the messaging and email agents cover written channels. All three work from the same knowledge.",
+        "Yes. The voice agent answers and returns calls for routine requests, while the Viber chatbot and the email agent cover written conversations. All three work from the same knowledge.",
     },
   ],
   cta: {

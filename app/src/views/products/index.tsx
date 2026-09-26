@@ -32,7 +32,7 @@ const ProductPage: FC<{ product: ProductContent }> = ({ product }) => (
     <FaqSection faqs={product.faqs} />
     <ProductLinks
       title="Works with the other two agents"
-      intro="All three share the same knowledge and connected systems, so one workflow can use voice, email and messaging together."
+      intro="All three share the same knowledge and connected systems, so one workflow can use voice, email and Viber together."
       exclude={product.slug}
     />
     <FinalCta title={product.cta.title} body={product.cta.body} />

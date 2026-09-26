@@ -7,7 +7,7 @@ export const contentType = OgImageContentType;
 
 export default function OpenGraphImage() {
   return renderOgImage({
-    headline: "AI agents that handle your calls, emails and messages",
+    headline: "AI agents that handle your calls, emails and Viber chats",
     subline: "Connected to your CRM. Working by your rules.",
   });
 }

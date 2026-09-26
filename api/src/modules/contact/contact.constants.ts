@@ -7,7 +7,7 @@ export const ContactRequestTypeLabels = {
 export const ContactProductLabels = {
     voice: 'AI voice agent',
     email: 'AI email agent',
-    messaging: 'AI messaging agent',
+    messaging: 'AI Viber chatbot',
 } as const;
 
 export type ContactRequestType = keyof typeof ContactRequestTypeLabels;

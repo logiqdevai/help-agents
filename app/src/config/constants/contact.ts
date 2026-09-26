@@ -3,7 +3,7 @@ import type { MarketingTextItem } from "@/interfaces/marketing.interfaces";
 export const ContactSeo = {
   title: "Book a demo or contact us",
   description:
-    "Tell us which AI agents you’re interested in and how you work today. Book a demo or ask a question about voice, email and messaging agents.",
+    "Tell us which AI agents you’re interested in and how you work today. Book a demo or ask a question about the voice agent, email agent or Viber chatbot.",
 } as const;
 
 export const ContactSteps: MarketingTextItem[] = [

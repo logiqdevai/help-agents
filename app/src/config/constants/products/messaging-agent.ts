@@ -14,26 +14,26 @@ import { ProductSlugs, type ProductContent } from "./product.types";
 
 export const MessagingAgentProduct: ProductContent = {
   slug: ProductSlugs.messaging,
-  name: "AI messaging agent",
-  tagline: "Answers customers on messaging apps using your own data.",
+  name: "AI Viber chatbot",
+  tagline: "Answers customers on Viber from your own data.",
   href: Routes.marketing.messagingAgent,
   icon: MessageSquareIcon,
   orbs: ["lavender", "mint"],
   seo: {
-    title: "AI Messaging Agent | AI Chatbot for Business",
+    title: "AI Viber Chatbot | AI Chatbot for Business on Viber",
     description:
-      "An AI messaging agent that answers customers on messaging apps from your own data and takes actions in your connected systems.",
+      "An AI chatbot for Viber that answers customers from your own data, takes actions in your connected systems and hands over to your team when needed.",
   },
   hero: {
-    title: "AI messaging agent: a chatbot that knows your business",
-    lead: "The agent answers customers on the apps they already use, drawing on your knowledge base and connected systems. It can act, not just reply, and a person steps in when the conversation needs one.",
+    title: "AI Viber chatbot that knows your business",
+    lead: "Customers message your business on Viber and the chatbot replies from your knowledge base and connected systems. It can act, not just reply, and a person steps in when the conversation needs one.",
   },
   definition: {
-    title: "What is an AI messaging agent?",
-    body: "An AI messaging agent is an AI assistant that talks to your customers over messaging channels. It reads your knowledge base, looks up the customer’s record and takes actions like booking or updating. It’s what many businesses mean when they ask for an AI chatbot, without the menus and dead ends.",
-    contrastTitle: "How it differs from a scripted chatbot",
-    beforeLabel: "Scripted chatbots",
-    afterLabel: "AI messaging agent",
+    title: "What is an AI Viber chatbot?",
+    body: "An AI Viber chatbot is an AI assistant that chats with your customers inside Viber. It reads your knowledge base, looks up the customer’s record and takes actions like booking or updating. It’s what many businesses mean when they ask for a Viber chatbot, without the menus and dead ends.",
+    contrastTitle: "How it differs from a scripted Viber bot",
+    beforeLabel: "Scripted Viber bots",
+    afterLabel: "AI Viber chatbot",
     rows: [
       {
         before: "Offers buttons and fixed conversation paths",
@@ -50,7 +50,7 @@ export const MessagingAgentProduct: ProductContent = {
     ],
   },
   capabilities: {
-    title: "What an AI messaging agent can do",
+    title: "What an AI Viber chatbot can do",
     intro: "It answers, acts and hands over, using only the information and permissions you give it.",
     items: [
       {
@@ -65,29 +65,29 @@ export const MessagingAgentProduct: ProductContent = {
       },
       {
         icon: BellIcon,
-        title: "Follow the thread and send reminders",
-        body: "It remembers what the customer has already said and doesn’t ask twice. Within a workflow you set up, it also confirms bookings and sends reminders.",
+        title: "Follow the chat and send reminders",
+        body: "It remembers what the customer has already said in the conversation and doesn’t ask twice. Within a workflow you set up, it also confirms bookings and sends reminders on Viber.",
       },
       {
         icon: UserRoundIcon,
         title: "Hand over to a person",
-        body: "When a request needs a person, it passes the conversation on with a summary, so the customer never starts again.",
+        body: "When a request needs a person, it passes the chat on with a summary, so the customer never starts again.",
       },
     ],
   },
   example: {
-    title: "One conversation, start to finish",
+    title: "One Viber conversation, start to finish",
     intro:
-      "A customer asks about availability. The agent answers, books and updates your systems without a person stepping in.",
+      "A customer asks about availability on Viber. The chatbot answers, books and updates your systems without a person stepping in.",
     ledger: {
-      title: "Example run: customer conversation",
+      title: "Example run: Viber conversation",
       doneLabel: "Booked in 1 minute",
-      description: "Example: a customer conversation handled by an AI messaging agent",
+      description: "Example: a Viber conversation handled by an AI chatbot",
       rows: [
         {
           icon: MessageSquareIcon,
           title: "Customer message",
-          detail: "“Do you have anything available on Thursday?”",
+          detail: "“Do you have anything available on Thursday?”, sent on Viber",
           time: "18:31",
         },
         {
@@ -105,7 +105,7 @@ export const MessagingAgentProduct: ProductContent = {
         {
           icon: MessageSquareIcon,
           title: "Offered both times",
-          detail: "One reply with the options and the location",
+          detail: "One reply in the chat with the options and the location",
           time: "18:31",
         },
         {
@@ -124,12 +124,12 @@ export const MessagingAgentProduct: ProductContent = {
     },
   },
   setup: {
-    title: "How to set up an AI messaging agent",
+    title: "How to set up an AI Viber chatbot",
     intro: "You decide what it knows, what it can do and when a person takes over.",
     steps: [
       {
-        title: "Connect your channels and systems",
-        body: "Link the messaging channels your customers use, plus the CRM and calendar the agent should work with.",
+        title: "Connect Viber and your systems",
+        body: "Link your Viber account, plus the CRM and calendar the chatbot should work with.",
       },
       {
         title: "Add your knowledge and set the limits",
@@ -137,70 +137,70 @@ export const MessagingAgentProduct: ProductContent = {
       },
       {
         title: "Test it, then go live",
-        body: "Try it with the questions your customers really ask. Switch it on for one channel first and widen from there.",
+        body: "Try it with the questions your customers really ask. Start with a small group of customers and widen from there.",
       },
     ],
   },
   control: {
-    title: "You decide where the agent stops",
+    title: "You decide where the chatbot stops",
     intro: "It answers what you’ve taught it and passes on what it shouldn’t handle.",
     items: [
-      "Choose which channels it answers on and which topics go straight to a person",
-      "Set when it hands a conversation over and who receives it, history included",
+      "Choose which topics it answers and which go straight to a person",
+      "Set when it hands a chat over and who receives it, history included",
       "Limit it to the actions you allow. Every action is checked against those permissions",
-      "Read every conversation and see what the agent did",
+      "Read every conversation and see what the chatbot did",
     ],
   },
   industries: {
     title: "How teams use it",
-    intro: "The same agent is set up differently in each business.",
+    intro: "The same chatbot is set up differently in each business.",
     items: [
       {
         slug: IndustrySlugs.realEstate,
-        body: "Answers property questions, recommends listings and sends details on Viber.",
+        body: "Answers property questions on Viber, recommends listings and sends the details in the chat.",
       },
       {
         slug: IndustrySlugs.sales,
-        body: "Answers product questions and moves interested prospects toward a meeting.",
+        body: "Answers product questions on Viber and moves interested prospects toward a meeting.",
       },
       {
         slug: IndustrySlugs.customerSupport,
-        body: "Answers common questions and passes difficult ones to the right person.",
+        body: "Answers common questions on Viber and passes difficult ones to the right person.",
       },
       {
         slug: IndustrySlugs.recruitment,
-        body: "Answers candidates’ questions and sends interview confirmations and reminders.",
+        body: "Answers candidates’ questions on Viber and sends interview confirmations and reminders.",
       },
       {
         slug: IndustrySlugs.professionalServices,
-        body: "Answers routine client questions about appointments and process.",
+        body: "Answers routine client questions about appointments and process on Viber.",
       },
     ],
   },
   faqs: [
     {
-      question: "Which messaging channels does it work on?",
+      question: "Does it work on Viber?",
       answer:
-        "It connects to the channels your customers already use, such as Viber. Tell us which ones matter to you and we’ll confirm support during your demo.",
+        "Yes. The chatbot chats with customers in Viber, the app they already use, so there’s nothing new for them to install. We’ll go through connecting your Viber account during your demo.",
     },
     {
-      question: "Can an AI chatbot for business use our own data?",
+      question: "Can a Viber chatbot use our own data?",
       answer:
         "Yes. It answers from your help articles, policies and prices and from connected systems like your CRM, not from general guesses.",
     },
     {
       question: "What happens when the AI can’t answer?",
       answer:
-        "It passes the conversation to a person when the customer asks, when it can’t resolve the request or when the topic is one you’ve reserved for your team. A summary goes with it.",
+        "It passes the chat to a person when the customer asks, when it can’t resolve the request or when the topic is one you’ve reserved for your team. A summary goes with it.",
     },
     {
-      question: "Can it message customers first, for example with reminders?",
+      question: "Can it send the first message, for example a reminder?",
       answer:
-        "Yes. As part of a workflow you set up, it can send confirmations and reminders, and it carries on the conversation if the customer replies.",
+        "Yes. As part of a workflow you set up, it can send confirmations and reminders on Viber, and it carries on the conversation if the customer replies. Viber’s own messaging rules apply, and we’ll go through them with you.",
     },
   ],
   cta: {
     title: "Which questions would you hand over first?",
-    body: "Tell us what customers ask most and we’ll show you how a messaging agent would answer them.",
+    body: "Tell us what customers ask most on Viber and we’ll show you how the chatbot would answer them.",
   },
 };

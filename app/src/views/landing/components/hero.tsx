@@ -18,7 +18,7 @@ export function Hero() {
             id="hero-title"
             className="max-w-[18ch] font-display text-[clamp(2.5rem,7vw,4rem)] leading-[1.05] font-light tracking-[-0.03em] text-ink"
           >
-            AI agents that handle your calls, emails and messages
+            AI agents that handle your calls, emails and Viber chats
           </h1>
           <p className="mt-6 max-w-[52ch] text-lg leading-[1.55] tracking-[0.01em] text-body">
             Connect them to your CRM and calendar, and they follow up with leads, answer customers and book
