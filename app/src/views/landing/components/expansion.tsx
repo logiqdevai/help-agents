@@ -1,4 +1,4 @@
-import { Container } from "./container";
+import { Container } from "@/components/marketing/container";
 import { LandingExpansionStages } from "@/config/constants/landing";
 import { cn } from "@/lib/utils";
 

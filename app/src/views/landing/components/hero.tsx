@@ -1,7 +1,8 @@
-import { Container } from "./container";
-import { CtaLink } from "./cta-link";
-import { Orb } from "./orb";
-import { RunLedger } from "./run-ledger";
+import { Container } from "@/components/marketing/container";
+import { CtaLink } from "@/components/marketing/cta-link";
+import { Orb } from "@/components/marketing/orb";
+import { RunLedger } from "@/components/marketing/run-ledger";
+import { LandingLedger } from "@/config/constants/landing";
 import { environments } from "@/config/environments";
 import { Routes } from "@/routes/routes";
 
@@ -35,7 +36,7 @@ export function Hero() {
           </div>
         </div>
         <div className="lg:col-span-5">
-          <RunLedger />
+          <RunLedger content={LandingLedger} />
         </div>
       </Container>
     </section>

@@ -1,6 +1,6 @@
 import { ArrowRightIcon } from "lucide-react";
-import { Container } from "./container";
-import { Orb } from "./orb";
+import { Container } from "@/components/marketing/container";
+import { Orb } from "@/components/marketing/orb";
 import { LandingExampleFlow, LandingLoopVerbs } from "@/config/constants/landing";
 
 export function ConnectedAi() {

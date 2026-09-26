@@ -1,13 +1,13 @@
-import { LandingSeo } from "@/config/constants/landing";
+import { MessagingAgentProduct } from "@/config/constants/products/messaging-agent";
 import { OgImageContentType, OgImageSize, renderOgImage } from "@/lib/og-image";
 
-export const alt = LandingSeo.ogAlt;
+export const alt = MessagingAgentProduct.name;
 export const size = OgImageSize;
 export const contentType = OgImageContentType;
 
 export default function OpenGraphImage() {
   return renderOgImage({
-    headline: "AI agents that work for your business",
-    subline: "Voice. Email. Messaging. One connected AI platform.",
+    headline: MessagingAgentProduct.hero.title,
+    subline: MessagingAgentProduct.tagline,
   });
 }

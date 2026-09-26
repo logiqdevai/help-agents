@@ -3,8 +3,9 @@ import { Benefits } from "./components/benefits";
 import { BuiltAround } from "./components/built-around";
 import { ConnectedAi } from "./components/connected-ai";
 import { Expansion } from "./components/expansion";
-import { Faq } from "./components/faq";
-import { FinalCta } from "./components/final-cta";
+import { FaqSection } from "@/components/marketing/faq-section";
+import { FinalCta } from "@/components/marketing/final-cta";
+import { LandingFaqs } from "@/config/constants/landing";
 import { Hero } from "./components/hero";
 import { HowItWorks } from "./components/how-it-works";
 import { Integrations } from "./components/integrations";
@@ -26,7 +27,7 @@ const LandingPage: FC = () => (
     <BuiltAround />
     <Expansion />
     <Benefits />
-    <Faq />
+    <FaqSection faqs={LandingFaqs} />
     <FinalCta />
   </>
 );

@@ -1,4 +1,4 @@
-import { Container } from "./container";
+import { Container } from "@/components/marketing/container";
 import { LandingBenefits } from "@/config/constants/landing";
 
 export function Benefits() {

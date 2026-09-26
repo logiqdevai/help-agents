@@ -3,12 +3,44 @@ import {
   CalendarDaysIcon,
   ContactIcon,
   DatabaseIcon,
+  InboxIcon,
   MailIcon,
   MessageSquareIcon,
   MicIcon,
   type LucideIcon,
 } from "lucide-react";
+import type { RunLedgerContent } from "@/interfaces/marketing.interfaces";
 import { Routes } from "@/routes/routes";
+
+export const LandingLedger: RunLedgerContent = {
+  title: "Example run",
+  doneLabel: "Done in 4 minutes",
+  description: "Example: one new lead handled across voice, email and messaging",
+  rows: [
+    { icon: InboxIcon, title: "New lead", detail: "Website form: Nikos A. asked for a quote", time: "09:02" },
+    {
+      icon: DatabaseIcon,
+      title: "Read the CRM record",
+      detail: "Matched to an existing contact and an open deal",
+      time: "09:02",
+    },
+    {
+      icon: MicIcon,
+      title: "Called the lead",
+      detail: "2 min 14 s. Interested, timeline confirmed",
+      time: "09:03",
+      waveform: true,
+    },
+    { icon: MailIcon, title: "Sent a follow-up email", detail: "Options and pricing summary", time: "09:06" },
+    {
+      icon: CalendarDaysIcon,
+      title: "Booked Thursday, 11:00",
+      detail: "Confirmation sent by message",
+      time: "09:06",
+    },
+    { icon: ContactIcon, title: "Updated the CRM", detail: "Stage, call notes and next step", time: "09:06" },
+  ],
+};
 
 export const LandingSeo = {
   title: "AI Automation Platform | AI Agents for Business",

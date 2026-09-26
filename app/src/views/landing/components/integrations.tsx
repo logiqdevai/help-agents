@@ -1,4 +1,4 @@
-import { Container } from "./container";
+import { Container } from "@/components/marketing/container";
 import { LandingIntegrations } from "@/config/constants/landing";
 
 export function Integrations() {

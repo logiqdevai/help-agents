@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ArrowRightIcon } from "lucide-react";
-import { Container } from "./container";
-import { Orb, type OrbColor } from "./orb";
-import { EmailSpecimen, MessagingSpecimen, VoiceSpecimen } from "./solution-specimens";
+import { Container } from "@/components/marketing/container";
+import { Orb, type OrbColor } from "@/components/marketing/orb";
+import { EmailSpecimen, MessagingSpecimen, VoiceSpecimen } from "@/components/marketing/solution-specimens";
 import {
   LandingSolutionIds,
   LandingSolutions,

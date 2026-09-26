@@ -1,5 +1,5 @@
-import { Container } from "./container";
-import { Orb } from "./orb";
+import { Container } from "@/components/marketing/container";
+import { Orb } from "@/components/marketing/orb";
 import { LandingControls } from "@/config/constants/landing";
 
 /** Static switch glyph; the list is an illustration of what the customer controls, not a live form. */

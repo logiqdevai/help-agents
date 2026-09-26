@@ -70,7 +70,7 @@ export function VoiceSpecimen({ className }: { className?: string }) {
 }
 
 const ExtractedFields = [
-  { label: "Request", value: "Move Friday's meeting" },
+  { label: "Request", value: "Move Friday’s meeting" },
   { label: "New time", value: "Tuesday afternoon" },
   { label: "Task", value: "Send the updated proposal" },
 ];
@@ -108,7 +108,7 @@ const ChatMessages = [
   { from: "customer", text: "Do you have anything available on Thursday?" },
   { from: "agent", text: "Yes, 11:00 or 15:30. Want me to book one of them?" },
   { from: "customer", text: "11:00 please." },
-  { from: "agent", text: "Booked for Thursday at 11:00. I've sent a confirmation to your email." },
+  { from: "agent", text: "Booked for Thursday at 11:00. I’ve sent a confirmation to your email." },
 ] as const;
 
 export function MessagingSpecimen({ className }: { className?: string }) {
