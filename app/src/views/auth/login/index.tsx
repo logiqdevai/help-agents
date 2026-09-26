@@ -69,12 +69,6 @@ const LoginPage: FC = () => {
           <ActionButtonWithPending type="submit" size="lg" className="h-10 w-full" isPending={login.isPending}>
             Log in
           </ActionButtonWithPending>
-          <p className="text-center text-sm text-muted-foreground">
-            New here?{" "}
-            <Link href={Routes.auth.signup} className="text-foreground underline underline-offset-4">
-              Create an account
-            </Link>
-          </p>
         </form>
       </Form>
     </AuthShell>

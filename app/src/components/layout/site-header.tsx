@@ -32,13 +32,11 @@ function HeaderActions({ signedIn, onNavigate }: { signedIn: boolean; onNavigate
       >
         Log in
       </Link>
-      <Link
-        href={environments.demoUrl ?? Routes.auth.signup}
-        onClick={onNavigate}
-        className={cn(buttonVariants(), ctaClass)}
-      >
-        Book a demo
-      </Link>
+      {environments.demoUrl && (
+        <Link href={environments.demoUrl} onClick={onNavigate} className={cn(buttonVariants(), ctaClass)}>
+          Book a demo
+        </Link>
+      )}
     </>
   );
 }

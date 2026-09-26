@@ -26,7 +26,7 @@ export function Hero() {
             appointments, then update your records. You decide what they’re allowed to do.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <CtaLink href={environments.demoUrl ?? Routes.auth.signup}>Book a demo</CtaLink>
+            {environments.demoUrl && <CtaLink href={environments.demoUrl}>Book a demo</CtaLink>}
             <CtaLink variant="outline" href={Routes.marketing.sections.solutions}>
               See the agents
             </CtaLink>

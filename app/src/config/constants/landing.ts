@@ -158,7 +158,7 @@ export const LandingAnyWorkflow = {
   title: "Something else?",
   body: "If the work is repetitive and involves talking to people or updating your systems, it can probably be automated.",
   cta: "Ask us about it",
-  href: environments.demoUrl ?? Routes.auth.signup,
+  href: environments.demoUrl,
 } as const;
 
 export const LandingControls = [
@@ -233,7 +233,6 @@ export const LandingFooterColumns = [
     title: "Account",
     links: [
       { title: "Log in", href: Routes.auth.login },
-      { title: "Create account", href: Routes.auth.signup },
     ],
   },
 ] as const;
