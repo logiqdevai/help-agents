@@ -8,7 +8,6 @@ import { useAuthHydrated } from "@/components/providers/auth-guard";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { LandingNavLinks } from "@/config/constants/landing";
-import { environments } from "@/config/environments";
 import { cn } from "@/lib/utils";
 import { Routes } from "@/routes/routes";
 import { useAuthStore } from "@/stores/auth";
@@ -32,11 +31,9 @@ function HeaderActions({ signedIn, onNavigate }: { signedIn: boolean; onNavigate
       >
         Log in
       </Link>
-      {environments.demoUrl && (
-        <Link href={environments.demoUrl} onClick={onNavigate} className={cn(buttonVariants(), ctaClass)}>
-          Book a demo
-        </Link>
-      )}
+      <Link href={Routes.marketing.contact} onClick={onNavigate} className={cn(buttonVariants(), ctaClass)}>
+        Book a demo
+      </Link>
     </>
   );
 }

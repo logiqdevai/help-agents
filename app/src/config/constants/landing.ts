@@ -8,7 +8,6 @@ import {
   MicIcon,
   type LucideIcon,
 } from "lucide-react";
-import { environments } from "@/config/environments";
 import type { RunLedgerContent } from "@/interfaces/marketing.interfaces";
 import { Routes } from "@/routes/routes";
 
@@ -158,7 +157,7 @@ export const LandingAnyWorkflow = {
   title: "Something else?",
   body: "If the work is repetitive and involves talking to people or updating your systems, it can probably be automated.",
   cta: "Ask us about it",
-  href: environments.demoUrl,
+  href: Routes.marketing.contact,
 } as const;
 
 export const LandingControls = [
@@ -232,6 +231,7 @@ export const LandingFooterColumns = [
   {
     title: "Account",
     links: [
+      { title: "Book a demo", href: Routes.marketing.contact },
       { title: "Log in", href: Routes.auth.login },
     ],
   },

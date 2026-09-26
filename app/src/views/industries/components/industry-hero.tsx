@@ -5,7 +5,6 @@ import { CtaLink } from "@/components/marketing/cta-link";
 import { Orb } from "@/components/marketing/orb";
 import { RunLedger } from "@/components/marketing/run-ledger";
 import type { IndustryContent } from "@/config/constants/industries";
-import { environments } from "@/config/environments";
 import { Routes } from "@/routes/routes";
 
 export function IndustryHero({ industry }: { industry: IndustryContent }) {
@@ -43,7 +42,7 @@ export function IndustryHero({ industry }: { industry: IndustryContent }) {
             </h1>
             <p className="mt-6 max-w-[52ch] text-lg leading-[1.55] tracking-[0.01em] text-body">{hero.lead}</p>
             <div className="mt-9 flex flex-wrap gap-3">
-              {environments.demoUrl && <CtaLink href={environments.demoUrl}>Book a demo</CtaLink>}
+              <CtaLink href={Routes.marketing.contact}>Book a demo</CtaLink>
               <CtaLink variant="outline" href="#how-it-works">
                 See how it works
               </CtaLink>

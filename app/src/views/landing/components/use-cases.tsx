@@ -50,15 +50,13 @@ export function UseCases() {
               {LandingAnyWorkflow.body}
             </p>
             <div className="lg:col-span-4">
-              {LandingAnyWorkflow.href && (
-                <Link href={LandingAnyWorkflow.href} className={linkClass}>
-                  {LandingAnyWorkflow.cta}
-                  <ArrowRightIcon
-                    className="size-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
-                    aria-hidden
-                  />
-                </Link>
-              )}
+              <Link href={LandingAnyWorkflow.href} className={linkClass}>
+                {LandingAnyWorkflow.cta}
+                <ArrowRightIcon
+                  className="size-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
+                  aria-hidden
+                />
+              </Link>
             </div>
           </li>
         </ul>

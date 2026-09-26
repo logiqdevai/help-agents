@@ -26,6 +26,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { ActivityLogModule } from './modules/activity-log/activity-log.module';
 import { AlertsModule } from './modules/alerts/alerts.module';
 import { CompanyDeletionModule } from './modules/company-deletion/company-deletion.module';
+import { ContactModule } from './modules/contact/contact.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { CompanyDeletionModule } from './modules/company-deletion/company-deleti
     ActivityLogModule,
     AlertsModule,
     CompanyDeletionModule,
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],

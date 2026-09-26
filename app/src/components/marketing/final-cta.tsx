@@ -1,7 +1,6 @@
 import { Container } from "./container";
 import { CtaLink } from "./cta-link";
 import { Orb } from "./orb";
-import { environments } from "@/config/environments";
 import { Routes } from "@/routes/routes";
 
 interface FinalCtaProps {
@@ -33,7 +32,7 @@ export function FinalCta({
           </h2>
           <p className="mx-auto mt-6 max-w-[48ch] text-lg leading-[1.55] tracking-[0.01em] text-body">{body}</p>
           <div className="mt-9 flex flex-wrap justify-center gap-3">
-            {environments.demoUrl && <CtaLink href={environments.demoUrl}>Book a demo</CtaLink>}
+            <CtaLink href={Routes.marketing.contact}>Book a demo</CtaLink>
             <CtaLink variant="outline" href={secondaryHref}>
               {secondaryLabel}
             </CtaLink>

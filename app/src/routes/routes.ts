@@ -9,6 +9,8 @@ export const Routes = {
     voiceAgent: "/ai-voice-agent",
     emailAgent: "/ai-email-agent",
     messagingAgent: "/ai-messaging-agent",
+    /** Contact us / book a demo form. */
+    contact: "/contact",
     industries: {
       realEstate: "/industries/real-estate",
       sales: "/industries/sales",

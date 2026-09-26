@@ -11,6 +11,7 @@ export const ApiRoutes = {
     changePassword: "/auth/change-password",
     logout: "/auth/logout",
   },
+  contact: "/contact",
   company: {
     list: "/companies",
     current: "/company",

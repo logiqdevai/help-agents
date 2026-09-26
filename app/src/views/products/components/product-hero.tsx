@@ -5,7 +5,6 @@ import { CtaLink } from "@/components/marketing/cta-link";
 import { Orb } from "@/components/marketing/orb";
 import { EmailSpecimen, MessagingSpecimen, VoiceSpecimen } from "@/components/marketing/solution-specimens";
 import { ProductSlugs, type ProductContent, type ProductSlug } from "@/config/constants/products";
-import { environments } from "@/config/environments";
 import { Routes } from "@/routes/routes";
 
 const Specimens: Record<ProductSlug, React.ComponentType<{ className?: string }>> = {
@@ -49,7 +48,7 @@ export function ProductHero({ product }: { product: ProductContent }) {
             </h1>
             <p className="mt-6 max-w-[52ch] text-lg leading-[1.55] tracking-[0.01em] text-body">{product.hero.lead}</p>
             <div className="mt-9 flex flex-wrap gap-3">
-              {environments.demoUrl && <CtaLink href={environments.demoUrl}>Book a demo</CtaLink>}
+              <CtaLink href={Routes.marketing.contact}>Book a demo</CtaLink>
               <CtaLink variant="outline" href="#how-it-works">
                 See how it works
               </CtaLink>
