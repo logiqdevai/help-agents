@@ -34,7 +34,7 @@ export const useLogin = () => {
     mutationFn: login,
     onSuccess: (session) => {
       setSession(session);
-      router.replace(Routes.home);
+      router.replace(Routes.dashboard);
     },
     onError: (error) => notify.error("Could not log in", error.message),
   });
@@ -48,7 +48,7 @@ export const useRegister = () => {
     onSuccess: (session) => {
       setSession(session);
       notify.success("Account created", "Check your inbox to verify your email address.");
-      router.replace(Routes.home);
+      router.replace(Routes.dashboard);
     },
     onError: (error) => notify.error("Could not create account", error.message),
   });

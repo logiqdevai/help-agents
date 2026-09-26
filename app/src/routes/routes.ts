@@ -1,7 +1,31 @@
 // Centralized frontend paths — used as <Link href>, router.push(), and redirect() targets.
 // Auth + invitation paths must match the links the API puts in emails (api/src/shared/config/app-urls).
 export const Routes = {
+  /** Public marketing landing page. */
   home: "/",
+  dashboard: "/dashboard",
+  /** Public marketing pages (hub-and-spoke SEO: platform, then products, then industries). */
+  marketing: {
+    voiceAgent: "/ai-voice-agent",
+    emailAgent: "/ai-email-agent",
+    messagingAgent: "/ai-messaging-agent",
+    useCases: "/use-cases",
+    industries: {
+      realEstate: "/industries/real-estate",
+      sales: "/industries/sales",
+      customerSupport: "/industries/customer-support",
+      recruitment: "/industries/recruitment",
+      professionalServices: "/industries/professional-services",
+    },
+    /** In-page anchors on the landing page. */
+    sections: {
+      solutions: "/#solutions",
+      howItWorks: "/#how-it-works",
+      useCases: "/#use-cases",
+      integrations: "/#integrations",
+      faq: "/#faq",
+    },
+  },
   auth: {
     login: "/auth/login",
     signup: "/auth/signup",

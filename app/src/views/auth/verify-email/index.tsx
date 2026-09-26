@@ -36,7 +36,7 @@ const VerifyEmailPage: FC = () => {
     );
   }, [token, verify, setProfile]);
 
-  const continueHref = accessToken ? Routes.home : Routes.auth.login;
+  const continueHref = accessToken ? Routes.dashboard : Routes.auth.login;
 
   return (
     <AuthShell

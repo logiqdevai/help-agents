@@ -20,7 +20,7 @@ export interface NavItem {
 
 // Campaigns is intentionally absent: it is a Version 2 feature (docs/Product_Specification.md §37).
 export const PrimaryNavItems: NavItem[] = [
-  { title: "Dashboard", href: Routes.home, icon: LayoutDashboard },
+  { title: "Dashboard", href: Routes.dashboard, icon: LayoutDashboard },
   { title: "Agents", href: Routes.agents.root, icon: Bot },
   { title: "Calls", href: Routes.calls.root, icon: PhoneCall },
   { title: "Knowledge", href: Routes.knowledge.root, icon: BookOpen },
@@ -40,9 +40,7 @@ const ExtraTitles: { prefix: string; title: string }[] = [
 ];
 
 export function isNavItemActive(href: string, pathname: string): boolean {
-  return href === Routes.home
-    ? pathname === Routes.home
-    : pathname === href || pathname.startsWith(`${href}/`);
+  return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 export function getNavTitle(pathname: string): string | undefined {

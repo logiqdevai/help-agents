@@ -48,7 +48,7 @@ export function GuestGuard({ children }: { children: React.ReactNode }) {
   const accessToken = useAuthStore((state) => state.accessToken);
 
   useEffect(() => {
-    if (hydrated && accessToken) router.replace(Routes.home);
+    if (hydrated && accessToken) router.replace(Routes.dashboard);
   }, [hydrated, accessToken, router]);
 
   if (!hydrated || accessToken) return <FullPageSkeleton />;

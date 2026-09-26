@@ -46,7 +46,7 @@ const InviteAcceptPage: FC = () => {
     !!invite && !!signedInEmail && signedInEmail.toLowerCase() === invite.email.toLowerCase();
 
   const handleAccept = () =>
-    accept.mutate(token, { onSuccess: () => router.replace(Routes.home) });
+    accept.mutate(token, { onSuccess: () => router.replace(Routes.dashboard) });
 
   const handleSignup = (values: InviteSignupFormData) => {
     if (!invite) return;

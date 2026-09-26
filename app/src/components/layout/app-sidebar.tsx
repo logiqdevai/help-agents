@@ -68,7 +68,7 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="h-16 justify-center border-b border-sidebar-border px-5 py-0 group-data-[collapsible=icon]:px-2.5">
-        <Link href={Routes.home} className="flex items-center gap-2.5">
+        <Link href={Routes.dashboard} className="flex items-center gap-2.5">
           {/* Atmospheric gradient orb — DESIGN.MD's signature brand decoration. */}
           <span
             aria-hidden

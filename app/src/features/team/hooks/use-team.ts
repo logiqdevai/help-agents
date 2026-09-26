@@ -76,7 +76,7 @@ export const useLeaveCompany = () => {
         return;
       }
       setProfile({ companies: remaining });
-      router.replace(Routes.home);
+      router.replace(Routes.dashboard);
     },
     onError: (error) => notify.error("Could not leave the company", error.message),
   });

@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, EB_Garamond, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { APP_NAME } from "@/config/constants/app";
+import { environments } from "@/config/environments";
 import { Providers } from "./providers";
 import "./globals.css";
 
@@ -25,8 +27,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Voice Agent", template: "%s · Voice Agent" },
+  metadataBase: new URL(environments.siteUrl),
+  applicationName: APP_NAME,
+  title: { default: APP_NAME, template: `%s · ${APP_NAME}` },
   description: "Create AI voice agents that make and receive calls for your business.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#f5f5f5",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
